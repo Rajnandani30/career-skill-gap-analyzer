@@ -162,6 +162,9 @@ function App() {
                     </div>
 
                 </div>
+
+
+
                 {/* Resume Analysis */}
 <div className="dashboard-card">
     <ResumeForm
@@ -174,6 +177,7 @@ function App() {
         }}
     />
 </div>
+
 
 {/* Job Description Analysis */}
 <div className="dashboard-card">

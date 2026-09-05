@@ -601,3 +601,7 @@ footer {
     cursor: not-allowed;
     transform: none;
 }
+
+.dashboard-card {
+    margin-bottom: 24px;
+}
