@@ -420,3 +420,184 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================
+   RESUME ANALYSIS
+========================= */
+
+.resume-form {
+    width: 100%;
+}
+
+.resume-form-header {
+    margin-bottom: 20px;
+}
+
+.resume-form-header h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.resume-form-header p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.resume-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.resume-form textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    resize: vertical;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    transition: 0.3s;
+}
+
+.resume-form textarea:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+}
+
+.resume-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+.resume-form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.resume-form-footer small {
+    color: #6b7280;
+}
+
+.resume-form-footer button {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.resume-form-footer button:hover {
+    background: #374151;
+    transform: translateY(-1px);
+}
+
+.resume-form-footer button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================
+   JOB DESCRIPTION FORM
+========================= */
+
+.job-description-form {
+    width: 100%;
+}
+
+.job-form-header {
+    margin-bottom: 20px;
+}
+
+.job-form-header h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.job-form-header p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.job-description-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 16px;
+}
+
+.job-description-form input,
+.job-description-form textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.job-description-form input {
+    height: 45px;
+}
+
+.job-description-form textarea {
+    min-height: 200px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.job-description-form input:focus,
+.job-description-form textarea:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+}
+
+.job-description-form input::placeholder,
+.job-description-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+.job-form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.job-form-footer small {
+    color: #6b7280;
+}
+
+.job-form-footer button {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.job-form-footer button:hover {
+    background: #374151;
+    transform: translateY(-1px);
+}
+
+.job-form-footer button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}

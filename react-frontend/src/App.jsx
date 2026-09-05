@@ -5,9 +5,13 @@ import Header from "./components/Header";
 import StatCard from "./components/StatCard";
 import QuickActions from "./components/QuickActions";
 import SkillGap from "./components/SkillGap";
+import ResumeForm from "./components/ResumeForm";
+import JobDescriptionForm from "./components/JobDescriptionForm";
 
 function App() {
     const [targetRole, setTargetRole] = useState("Full Stack Developer");
+    const [resumeText, setResumeText] = useState("");
+    const [jobDescription, setJobDescription] = useState("");
 
     // Event handler for Quick Actions
     const handleAction = (action) => {
@@ -73,6 +77,7 @@ function App() {
 >
     ✏️ Change Target Role
 </button>
+
                     </button>
 
                 </div>
@@ -157,6 +162,33 @@ function App() {
                     </div>
 
                 </div>
+                {/* Resume Analysis */}
+<div className="dashboard-card">
+    <ResumeForm
+        resumeText={resumeText}
+        setResumeText={setResumeText}
+        onAnalyze={() => {
+            alert(
+                `Resume received! ${resumeText.length} characters ready for AI analysis.`
+            );
+        }}
+    />
+</div>
+
+{/* Job Description Analysis */}
+<div className="dashboard-card">
+    <JobDescriptionForm
+        jobDescription={jobDescription}
+        setJobDescription={setJobDescription}
+        targetRole={targetRole}
+        setTargetRole={setTargetRole}
+        onAnalyze={() => {
+            alert(
+                `Job description received! ${jobDescription.length} characters ready for AI analysis.`
+            );
+        }}
+    />
+</div>
 
 
                 {/* Skill Gaps */}
