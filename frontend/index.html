@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerAI — Career Readiness & Skill Gap Analyzer</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         MAIN DASHBOARD
+    ========================== -->
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- =========================
+                 SIDEBAR
+            ========================== -->
+
+            <div class="col-md-3 col-lg-2 sidebar text-white min-vh-100 p-4">
+
+                <!-- Logo -->
+                <div class="mb-4">
+                    <h3 class="fw-bold">
+                        <i class="bi bi-stars"></i> CareerAI
+                    </h3>
+
+                    <small class="text-secondary">
+                        Career Intelligence Platform
+                    </small>
+                </div>
+
+                <!-- Navigation -->
+                <nav>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-grid-fill"></i>
+                        Dashboard
+                    </a>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Resume Analysis
+                    </a>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-bullseye"></i>
+                        Skill Gap
+                    </a>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-map"></i>
+                        Learning Roadmap
+                    </a>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-mic"></i>
+                        Interview Prep
+                    </a>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-clock-history"></i>
+                        Analysis History
+                    </a>
+
+                </nav>
+
+                <!-- Sidebar Bottom -->
+                <div class="mt-5 pt-4 border-top border-secondary">
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-person-circle"></i>
+                        My Profile
+                    </a>
+
+                    <a href="#" class="text-white text-decoration-none">
+                        <i class="bi bi-gear"></i>
+                        Settings
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 MAIN CONTENT
+            ========================== -->
+
+            <div class="col-md-9 col-lg-10 p-4">
+
+                <!-- =========================
+                     HEADER
+                ========================== -->
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+                        <h1 class="dashboard-title">
+                            Career Dashboard
+                        </h1>
+
+                        <p class="text-muted mb-0">
+                            Welcome back! Let's improve your career readiness.
+                        </p>
+                    </div>
+
+                    <!-- Profile -->
+                    <div class="d-flex align-items-center">
+
+                        <div class="text-end me-3">
+                            <strong>Student</strong>
+                            <br>
+                            <small class="text-muted">
+                                Career Explorer
+                            </small>
+                        </div>
+
+                        <i class="bi bi-person-circle fs-1"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     TARGET CAREER
+                ========================== -->
+
+                <div class="card target-card shadow-sm p-4 mb-4">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-md-8">
+
+                            <small class="text-muted">
+                                YOUR TARGET CAREER
+                            </small>
+
+                            <h3 class="fw-bold mt-2">
+                                <i class="bi bi-code-slash"></i>
+                                Full Stack Developer
+                            </h3>
+
+                            <p class="text-muted mb-0">
+                                CareerAI is analyzing your skills against
+                                your target role.
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                            <button class="btn btn-dark">
+                                <i class="bi bi-pencil"></i>
+                                Change Target Role
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     STATISTICS CARDS
+                ========================== -->
+
+                <div class="row g-4 mb-4">
+
+                    <!-- Career Readiness -->
+                    <div class="col-md-6 col-xl-3">
+
+                        <div class="card stat-card shadow-sm p-3 h-100">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+                                    <h6 class="text-muted">
+                                        Career Readiness
+                                    </h6>
+
+                                    <h2 class="stat-number">
+                                        78%
+                                    </h2>
+                                </div>
+
+                                <i class="bi bi-graph-up-arrow fs-2"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Good progress
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Skills Matched -->
+                    <div class="col-md-6 col-xl-3">
+
+                        <div class="card stat-card shadow-sm p-3 h-100">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+                                    <h6 class="text-muted">
+                                        Skills Matched
+                                    </h6>
+
+                                    <h2 class="stat-number">
+                                        12
+                                    </h2>
+                                </div>
+
+                                <i class="bi bi-check-circle fs-2"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Skills match your target role
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Skill Gaps -->
+                    <div class="col-md-6 col-xl-3">
+
+                        <div class="card stat-card shadow-sm p-3 h-100">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+                                    <h6 class="text-muted">
+                                        Skill Gaps
+                                    </h6>
+
+                                    <h2 class="stat-number">
+                                        5
+                                    </h2>
+                                </div>
+
+                                <i class="bi bi-exclamation-circle fs-2"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Skills need improvement
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Learning Progress -->
+                    <div class="col-md-6 col-xl-3">
+
+                        <div class="card stat-card shadow-sm p-3 h-100">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+                                    <h6 class="text-muted">
+                                        Learning Progress
+                                    </h6>
+
+                                    <h2 class="stat-number">
+                                        64%
+                                    </h2>
+                                </div>
+
+                                <i class="bi bi-book fs-2"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Roadmap completed
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     CAREER READINESS
+                ========================== -->
+
+                <div class="row g-4">
+
+                    <div class="col-lg-7">
+
+                        <div class="card shadow-sm border-0 p-4 h-100">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+                                    <h4 class="fw-bold">
+                                        Career Readiness
+                                    </h4>
+
+                                    <p class="text-muted">
+                                        Your overall readiness for the target role.
+                                    </p>
+                                </div>
+
+                                <h3 class="fw-bold">
+                                    78%
+                                </h3>
+
+                            </div>
+
+                            <!-- Progress Bar -->
+
+                            <div class="progress mt-3" style="height: 12px;">
+
+                                <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style="width: 78%;"
+                                    aria-valuenow="78"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                </div>
+
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-2">
+
+                                <small class="text-muted">
+                                    Beginner
+                                </small>
+
+                                <small class="text-muted">
+                                    Job Ready
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================
+                         QUICK ACTIONS
+                    ========================== -->
+
+                    <div class="col-lg-5">
+
+                        <div class="card shadow-sm border-0 p-4 h-100">
+
+                            <h4 class="fw-bold mb-3">
+                                Quick Actions
+                            </h4>
+
+                            <div class="d-grid gap-2">
+
+                                <button class="btn btn-dark">
+                                    <i class="bi bi-file-earmark-arrow-up"></i>
+                                    Analyze My Resume
+                                </button>
+
+                                <button class="btn btn-outline-dark">
+                                    <i class="bi bi-search"></i>
+                                    Check Skill Gap
+                                </button>
+
+                                <button class="btn btn-outline-dark">
+                                    <i class="bi bi-map"></i>
+                                    View Learning Roadmap
+                                </button>
+
+                                <button class="btn btn-outline-dark">
+                                    <i class="bi bi-mic"></i>
+                                    Start Interview Prep
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SKILL GAP SECTION
+                ========================== -->
+
+                <div class="card shadow-sm border-0 p-4 mt-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <h4 class="fw-bold">
+                                <i class="bi bi-bullseye"></i>
+                                Your Top Skill Gaps
+                            </h4>
+
+                            <p class="text-muted">
+                                Focus on these skills to improve your career readiness.
+                            </p>
+                        </div>
+
+                        <button class="btn btn-outline-dark">
+                            View All
+                        </button>
+
+                    </div>
+
+
+                    <!-- Skill List -->
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-4 mb-3">
+
+                            <div class="p-3 border rounded">
+
+                                <h6 class="fw-bold">
+                                    MongoDB
+                                </h6>
+
+                                <small class="text-muted">
+                                    High Priority
+                                </small>
+
+                                <div class="progress mt-2">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: 30%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <div class="p-3 border rounded">
+
+                                <h6 class="fw-bold">
+                                    Docker
+                                </h6>
+
+                                <small class="text-muted">
+                                    Medium Priority
+                                </small>
+
+                                <div class="progress mt-2">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: 45%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <div class="p-3 border rounded">
+
+                                <h6 class="fw-bold">
+                                    REST APIs
+                                </h6>
+
+                                <small class="text-muted">
+                                    Medium Priority
+                                </small>
+
+                                <div class="progress mt-2">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: 55%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     FOOTER
+                ========================== -->
+
+                <footer class="text-center text-muted mt-5 mb-3">
+
+                    <small>
+                        © 2026 CareerAI — AI-Powered Career Readiness Platform
+                    </small>
+
+                </footer>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JavaScript -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</body>
+
+</html>

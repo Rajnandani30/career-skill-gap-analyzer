@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fb;
+    color: #212529;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #111827;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #374151;
+}
+
+/* Dashboard Header */
+.dashboard-title {
+    font-weight: 700;
+}
+
+/* Statistics Cards */
+.stat-card {
+    border: none;
+    border-radius: 14px;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Statistics Numbers */
+.stat-number {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+/* Target Career Card */
+.target-card {
+    border: none;
+    border-radius: 14px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto !important;
+    }
+}
