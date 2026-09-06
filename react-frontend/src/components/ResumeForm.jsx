@@ -1,41 +1,102 @@
-function ResumeForm({ resumeText, setResumeText, onAnalyze }) {
+import { useState } from "react";
+
+function ResumeForm({
+    resumeTitle,
+    setResumeTitle,
+    resumeText,
+    setResumeText,
+    onAnalyze
+}) {
+    const isEmpty =
+        resumeTitle.trim() === "" ||
+        resumeText.trim() === "";
+
     return (
         <div className="resume-form">
 
             <div className="resume-form-header">
-                <div>
-                    <h3>📄 Resume Analysis</h3>
+                <div className="resume-form-title">
+                    <div className="resume-form-icon">
+                        ✦
+                    </div>
 
-                    <p>
-                        Paste your resume below and CareerAI will
-                        analyze your skills.
-                    </p>
+                    <div>
+                        <h3>Resume Editor</h3>
+
+                        <p>
+                            Add or update your resume to use it
+                            for personalized CareerAI analysis.
+                        </p>
+                    </div>
                 </div>
+
+                <span className="resume-editor-status">
+                    {isEmpty
+                        ? "New Resume"
+                        : "Ready to Save"}
+                </span>
             </div>
 
-            <label htmlFor="resume">
-                Resume Content
-            </label>
+            <div className="resume-editor-body">
 
-            <textarea
-                id="resume"
-                value={resumeText}
-                onChange={(event) => setResumeText(event.target.value)}
-                placeholder="Paste your resume text here..."
-                rows="12"
-            ></textarea>
+                <label htmlFor="resume-title">
+                    Resume Title
+                </label>
+
+                <input
+                    id="resume-title"
+                    type="text"
+                    value={resumeTitle}
+                    onChange={(event) =>
+                        setResumeTitle(event.target.value)
+                    }
+                    placeholder="e.g. Full Stack Developer Resume"
+                />
+
+                <label htmlFor="resume">
+                    Resume Content
+                </label>
+
+                <textarea
+                    id="resume"
+                    value={resumeText}
+                    onChange={(event) =>
+                        setResumeText(event.target.value)
+                    }
+                    placeholder={
+                        "Paste your resume content here...\n\n" +
+                        "For example:\n" +
+                        "Education\n" +
+                        "Skills\n" +
+                        "Projects\n" +
+                        "Experience\n" +
+                        "Certifications"
+                    }
+                    rows="14"
+                ></textarea>
+            </div>
 
             <div className="resume-form-footer">
 
-                <small>
-                    {resumeText.length} characters
-                </small>
+                <div className="resume-character-info">
+                    <span>
+                        {resumeText.length.toLocaleString()} characters
+                    </span>
+
+                    {!isEmpty && (
+                        <span className="resume-ready">
+                            ✓ Resume ready
+                        </span>
+                    )}
+                </div>
 
                 <button
+                    type="button"
                     onClick={onAnalyze}
-                    disabled={resumeText.trim() === ""}
+                    disabled={isEmpty}
+                    className="save-resume-button"
                 >
-                    🤖 Analyze Resume
+                    Save Resume
                 </button>
 
             </div>
