@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerAI Mobile</title>
+
+    <!-- jQuery Mobile CSS -->
+    <link
+        rel="stylesheet"
+        href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"
+    />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- jQuery Mobile -->
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Home Page -->
+    <div data-role="page" id="home">
+
+        <div data-role="header">
+            <h1>✦ CareerAI</h1>
+        </div>
+
+        <div data-role="content">
+
+            <h2>Career Readiness</h2>
+            <p>
+                Check your career readiness and identify the skills
+                you need to improve.
+            </p>
+
+            <a href="#analysis" data-role="button">
+                🎯 Start Skill Analysis
+            </a>
+
+            <a href="#roadmap" data-role="button">
+                📚 Learning Roadmap
+            </a>
+
+            <a href="#interview" data-role="button">
+                🎤 Interview Preparation
+            </a>
+
+        </div>
+
+        <div data-role="footer">
+            <h4>CareerAI © 2026</h4>
+        </div>
+
+    </div>
+
+
+    <!-- Skill Analysis Page -->
+    <div data-role="page" id="analysis">
+
+        <div data-role="header">
+            <a href="#home" data-icon="back">Back</a>
+            <h1>Skill Analysis</h1>
+        </div>
+
+        <div data-role="content">
+
+            <label for="role">Target Job Role:</label>
+
+            <input
+                type="text"
+                id="role"
+                placeholder="e.g. Full Stack Developer"
+            />
+
+            <label for="skills">Your Skills:</label>
+
+            <textarea
+                id="skills"
+                placeholder="Enter your skills..."
+            ></textarea>
+
+            <button id="analyzeButton">
+                🤖 Analyze Skills
+            </button>
+
+            <div id="result"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Roadmap Page -->
+    <div data-role="page" id="roadmap">
+
+        <div data-role="header">
+            <a href="#home" data-icon="back">Back</a>
+            <h1>Learning Roadmap</h1>
+        </div>
+
+        <div data-role="content">
+
+            <ul data-role="listview">
+                <li>📚 Learn MongoDB</li>
+                <li>🌐 Practice REST APIs</li>
+                <li>🐳 Learn Docker</li>
+                <li>⚛️ Improve React Skills</li>
+                <li>🤖 Practice AI Integration</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- Interview Page -->
+    <div data-role="page" id="interview">
+
+        <div data-role="header">
+            <a href="#home" data-icon="back">Back</a>
+            <h1>Interview Prep</h1>
+        </div>
+
+        <div data-role="content">
+
+            <h3>Sample Question</h3>
+
+            <p>
+                What is the difference between REST API and SOAP API?
+            </p>
+
+            <textarea placeholder="Write your answer here..."></textarea>
+
+            <button>
+                Submit Answer
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        $(document).on("click", "#analyzeButton", function () {
+
+            const role = $("#role").val();
+            const skills = $("#skills").val();
+
+            if (role === "" || skills === "") {
+                $("#result").html(
+                    "<p>Please enter your target role and skills.</p>"
+                );
+                return;
+            }
+
+            $("#result").html(
+                "<p><strong>Analysis started!</strong><br>" +
+                "CareerAI will compare your skills with the requirements for " +
+                role + ".</p>"
+            );
+        });
+    </script>
+
+</body>
+</html>
