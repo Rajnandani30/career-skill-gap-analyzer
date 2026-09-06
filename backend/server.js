@@ -1,13 +1,17 @@
+const connectDB = require("./config/db");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
 const path = require("path");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
+connectDB();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/users", userRoutes);
 
 // Serve static website
 app.use(express.static(path.join(__dirname, "public")));
