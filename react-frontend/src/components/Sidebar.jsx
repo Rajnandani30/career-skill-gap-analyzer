@@ -1,25 +1,34 @@
-function Sidebar() {
+function Sidebar({ onLogout }) {
+
+    const handleLogoutClick = () => {
+        const confirmed = window.confirm(
+            "Are you sure you want to logout?"
+        );
+
+        if (confirmed) {
+            onLogout();
+        }
+    };
+
     return (
         <div className="sidebar">
 
-            {/* Logo */}
             <div className="sidebar-logo">
                 <h2>✦ CareerAI</h2>
                 <p>Career Intelligence Platform</p>
             </div>
 
-            {/* Navigation */}
             <nav className="sidebar-nav">
 
                 <a href="#" className="active">
                     🏠 Dashboard
                 </a>
 
-                <a href="#">
+                <a href="#resume-analysis">
                     📄 Resume Analysis
                 </a>
 
-                <a href="#">
+                <a href="#skill-gaps">
                     🎯 Skill Gap
                 </a>
 
@@ -37,7 +46,6 @@ function Sidebar() {
 
             </nav>
 
-            {/* Bottom Navigation */}
             <div className="sidebar-bottom">
 
                 <a href="#">
@@ -47,6 +55,14 @@ function Sidebar() {
                 <a href="#">
                     ⚙️ Settings
                 </a>
+
+                <button
+                    type="button"
+                    className="logout-button"
+                    onClick={handleLogoutClick}
+                >
+                    🚪 Logout
+                </button>
 
             </div>
 
