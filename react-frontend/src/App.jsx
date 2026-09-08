@@ -144,6 +144,7 @@ function App() {
         setSelectedResumeId(null);
         setResumeTitle("");
         setResumeText("");
+        setJobDescription("");
     };
 
     /*
@@ -462,6 +463,109 @@ function App() {
     };
 
     /*
+     * ANALYZE JOB DESCRIPTION
+     */
+    const handleAnalyzeJob = async () => {
+        try {
+            const token =
+                localStorage.getItem("careerAI_token");
+
+            if (!token) {
+                alert("Please log in again.");
+                return;
+            }
+
+            if (!selectedResumeId) {
+                alert(
+                    "Please select a resume before analyzing the job."
+                );
+                return;
+            }
+
+            if (!targetRole.trim()) {
+                alert(
+                    "Please enter a target job role."
+                );
+                return;
+            }
+
+            if (!jobDescription.trim()) {
+                alert(
+                    "Please enter a job description."
+                );
+                return;
+            }
+
+            const response = await fetch(
+                "http://localhost:5000/api/analysis",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        Authorization:
+                            `Bearer ${token}`
+                    },
+
+                    body: JSON.stringify({
+                        resumeId:
+                            selectedResumeId,
+
+                        targetRole:
+                            targetRole.trim(),
+
+                        jobDescription:
+                            jobDescription.trim(),
+
+                        userSkills: [],
+
+                        requiredSkills: [],
+
+                        matchedSkills: [],
+
+                        missingSkills: [],
+
+                        matchScore: 0,
+
+                        analysisSummary: ""
+                    })
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+                alert(
+                    data.message ||
+                        "Failed to analyze job."
+                );
+                return;
+            }
+
+            console.log(
+                "Saved analysis:",
+                data.analysis
+            );
+
+            alert(
+                "Job analysis saved successfully!"
+            );
+        } catch (error) {
+            console.error(
+                "Job analysis error:",
+                error
+            );
+
+            alert(
+                "Unable to connect to the CareerAI server."
+            );
+        }
+    };
+
+    /*
      * AUTHENTICATION SCREENS
      */
     if (!isLoggedIn) {
@@ -712,11 +816,9 @@ function App() {
                             setTargetRole
                         }
 
-                        onAnalyze={() => {
-                            alert(
-                                `Job description received! ${jobDescription.length} characters ready for AI analysis.`
-                            );
-                        }}
+                        onAnalyze={
+                            handleAnalyzeJob
+                        }
                     />
 
                 </div>

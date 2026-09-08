@@ -6,6 +6,7 @@ require("dotenv").config();
 const path = require("path");
 const userRoutes = require("./routes/userRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
+const analysisRoutes = require("./routes/analysisRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/api/users", userRoutes);
 
 // Resume API routes
 app.use("/api/resumes", resumeRoutes);
+app.use("/api/analysis", analysisRoutes);
 
 // Serve static website
 app.use(express.static(path.join(__dirname, "public")));

@@ -1,5 +1,4 @@
 function Sidebar({ onLogout }) {
-
     const handleLogoutClick = () => {
         const confirmed = window.confirm(
             "Are you sure you want to logout?"
@@ -13,11 +12,13 @@ function Sidebar({ onLogout }) {
     return (
         <div className="sidebar">
 
+            {/* Logo */}
             <div className="sidebar-logo">
                 <h2>✦ CareerAI</h2>
                 <p>Career Intelligence Platform</p>
             </div>
 
+            {/* Main Navigation */}
             <nav className="sidebar-nav">
 
                 <a href="#" className="active">
@@ -46,6 +47,7 @@ function Sidebar({ onLogout }) {
 
             </nav>
 
+            {/* Bottom Navigation */}
             <div className="sidebar-bottom">
 
                 <a href="#">

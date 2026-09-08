@@ -1428,3 +1428,25 @@ footer {
 .resume-editor-body input[type="text"]::placeholder {
     color: #94a3b8;
 }
+
+/* Fix sidebar bottom navigation visibility */
+
+.sidebar {
+    height: 100vh;
+    min-height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+
+.sidebar-bottom a,
+.sidebar-bottom button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
