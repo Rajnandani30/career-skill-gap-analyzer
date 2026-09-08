@@ -32,6 +32,10 @@ function App() {
     const [isCreatingNewResume, setIsCreatingNewResume] =
         useState(false);
 
+    // Latest AI analysis
+    const [latestAnalysis, setLatestAnalysis] =
+        useState(null);
+
     // Login state
     const [isLoggedIn, setIsLoggedIn] = useState(
         Boolean(localStorage.getItem("careerAI_token"))
@@ -45,14 +49,18 @@ function App() {
         useState(false);
 
     /*
-     * LOAD USER RESUMES
+     * LOAD USER DATA
+     *
+     * Loads:
+     * 1. Saved resumes
+     * 2. Latest analysis
      */
     useEffect(() => {
         if (!isLoggedIn) {
             return;
         }
 
-        const loadSavedResumes = async () => {
+        const loadUserData = async () => {
             try {
                 const token =
                     localStorage.getItem("careerAI_token");
@@ -61,7 +69,10 @@ function App() {
                     return;
                 }
 
-                const response = await fetch(
+                /*
+                 * LOAD SAVED RESUMES
+                 */
+                const resumeResponse = await fetch(
                     "http://localhost:5000/api/resumes",
                     {
                         method: "GET",
@@ -71,53 +82,104 @@ function App() {
                     }
                 );
 
-                const data = await response.json();
+                const resumeData =
+                    await resumeResponse.json();
 
-                if (!response.ok) {
+                if (!resumeResponse.ok) {
                     console.error(
                         "Failed to load resumes:",
-                        data.message
+                        resumeData.message
                     );
+                } else {
+                    const savedResumes =
+                        resumeData.resumes || [];
+
+                    setResumes(savedResumes);
+
+                    /*
+                     * Select the most recently updated resume
+                     */
+                    if (savedResumes.length > 0) {
+                        setSelectedResumeId(
+                            savedResumes[0]._id
+                        );
+
+                        setResumeTitle(
+                            savedResumes[0].title || ""
+                        );
+
+                        setResumeText(
+                            savedResumes[0].resumeText
+                        );
+
+                        setIsCreatingNewResume(false);
+                    } else {
+                        setSelectedResumeId(null);
+                        setResumeTitle("");
+                        setResumeText("");
+                        setIsCreatingNewResume(true);
+                    }
+                }
+
+                /*
+                 * LOAD SAVED ANALYSES
+                 */
+                const analysisResponse = await fetch(
+                    "http://localhost:5000/api/analysis",
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const analysisData =
+                    await analysisResponse.json();
+
+                if (!analysisResponse.ok) {
+                    console.error(
+                        "Failed to load analyses:",
+                        analysisData.message
+                    );
+
                     return;
                 }
 
-                const savedResumes =
-                    data.resumes || [];
-
-                setResumes(savedResumes);
+                const savedAnalyses =
+                    analysisData.analyses || [];
 
                 /*
-                 * Select the most recently updated resume
+                 * The backend returns newest analyses first.
+                 * Restore the latest analysis.
                  */
-                if (savedResumes.length > 0) {
-                    setSelectedResumeId(
-                        savedResumes[0]._id
+                if (savedAnalyses.length > 0) {
+                    const latest = savedAnalyses[0];
+
+                    setLatestAnalysis(latest);
+
+                    /*
+                     * Restore job role and job description
+                     * after page refresh.
+                     */
+                    setTargetRole(
+                        latest.targetRole ||
+                            "Full Stack Developer"
                     );
 
-                    setResumeTitle(
-                        savedResumes[0].title || ""
+                    setJobDescription(
+                        latest.jobDescription || ""
                     );
-
-                    setResumeText(
-                        savedResumes[0].resumeText
-                    );
-
-                    setIsCreatingNewResume(false);
-                } else {
-                    setSelectedResumeId(null);
-                    setResumeTitle("");
-                    setResumeText("");
-                    setIsCreatingNewResume(true);
                 }
             } catch (error) {
                 console.error(
-                    "Unable to load saved resumes:",
+                    "Unable to load CareerAI data:",
                     error
                 );
             }
         };
 
-        loadSavedResumes();
+        loadUserData();
     }, [isLoggedIn]);
 
     /*
@@ -145,6 +207,7 @@ function App() {
         setResumeTitle("");
         setResumeText("");
         setJobDescription("");
+        setLatestAnalysis(null);
     };
 
     /*
@@ -509,6 +572,13 @@ function App() {
                             `Bearer ${token}`
                     },
 
+                    /*
+                     * Only send the information
+                     * actually needed by the backend.
+                     *
+                     * Gemini generates the skills,
+                     * gaps, score and summary.
+                     */
                     body: JSON.stringify({
                         resumeId:
                             selectedResumeId,
@@ -517,19 +587,7 @@ function App() {
                             targetRole.trim(),
 
                         jobDescription:
-                            jobDescription.trim(),
-
-                        userSkills: [],
-
-                        requiredSkills: [],
-
-                        matchedSkills: [],
-
-                        missingSkills: [],
-
-                        matchScore: 0,
-
-                        analysisSummary: ""
+                            jobDescription.trim()
                     })
                 }
             );
@@ -545,14 +603,46 @@ function App() {
                 return;
             }
 
-            console.log(
-                "Saved analysis:",
+            /*
+             * Store the returned analysis
+             * so the dashboard can use it.
+             */
+            setLatestAnalysis(
                 data.analysis
             );
 
-            alert(
-                "Job analysis saved successfully!"
+            /*
+             * Keep the returned values in
+             * the form as well.
+             */
+            setTargetRole(
+                data.analysis?.targetRole ||
+                    targetRole
             );
+
+            setJobDescription(
+                data.analysis?.jobDescription ||
+                    jobDescription
+            );
+
+            console.log(
+                "AI Analysis:",
+                data.analysis
+            );
+
+            if (
+                data.message ===
+                "This analysis already exists."
+            ) {
+                alert(
+                    "This analysis already exists. The saved analysis has been loaded."
+                );
+            } else {
+                alert(
+                    "AI analysis completed and saved successfully!"
+                );
+            }
+
         } catch (error) {
             console.error(
                 "Job analysis error:",
@@ -590,10 +680,6 @@ function App() {
                 registrationSuccess={
                     registrationSuccess
                 }
-
-                onLoginPage={() => {
-                    setRegistrationSuccess(false);
-                }}
 
                 onGoToRegister={() => {
                     setRegistrationSuccess(false);
@@ -665,21 +751,41 @@ function App() {
 
                     <StatCard
                         title="Career Readiness"
-                        value="78%"
-                        description="Good progress"
+                        value={
+                            latestAnalysis
+                                ? `${latestAnalysis.matchScore}%`
+                                : "78%"
+                        }
+                        description={
+                            latestAnalysis
+                                ? "Based on your latest AI analysis"
+                                : "Good progress"
+                        }
                         icon="📈"
                     />
 
                     <StatCard
                         title="Skills Matched"
-                        value="12"
+                        value={
+                            latestAnalysis
+                                ? latestAnalysis
+                                    .matchedSkills
+                                    ?.length || 0
+                                : "12"
+                        }
                         description="Skills match your target role"
                         icon="✓"
                     />
 
                     <StatCard
                         title="Skill Gaps"
-                        value="5"
+                        value={
+                            latestAnalysis
+                                ? latestAnalysis
+                                    .missingSkills
+                                    ?.length || 0
+                                : "5"
+                        }
                         description="Skills need improvement"
                         icon="⚠️"
                     />
@@ -713,7 +819,9 @@ function App() {
                             </div>
 
                             <strong>
-                                78%
+                                {latestAnalysis
+                                    ? `${latestAnalysis.matchScore}%`
+                                    : "78%"}
                             </strong>
 
                         </div>
@@ -723,7 +831,11 @@ function App() {
                             <div
                                 className="progress-bar"
                                 style={{
-                                    width: "78%"
+                                    width: `${
+                                        latestAnalysis
+                                            ? latestAnalysis.matchScore
+                                            : 78
+                                    }%`
                                 }}
                             ></div>
 
@@ -780,11 +892,13 @@ function App() {
 
                     <ResumeForm
                         resumeTitle={resumeTitle}
+
                         setResumeTitle={
                             setResumeTitle
                         }
 
                         resumeText={resumeText}
+
                         setResumeText={
                             setResumeText
                         }
@@ -861,23 +975,45 @@ function App() {
 
                     <div className="skill-grid">
 
-                        <SkillGap
-                            skill="MongoDB"
-                            priority="High"
-                            progress={30}
-                        />
+                        {latestAnalysis &&
+                        latestAnalysis.missingSkills &&
+                        latestAnalysis.missingSkills.length >
+                            0 ? (
+                            latestAnalysis.missingSkills.map(
+                                (skill, index) => (
+                                    <SkillGap
+                                        key={`${skill}-${index}`}
+                                        skill={skill}
+                                        priority={
+                                            index === 0
+                                                ? "High"
+                                                : "Medium"
+                                        }
+                                        progress={0}
+                                    />
+                                )
+                            )
+                        ) : (
+                            <>
+                                <SkillGap
+                                    skill="MongoDB"
+                                    priority="High"
+                                    progress={30}
+                                />
 
-                        <SkillGap
-                            skill="Docker"
-                            priority="Medium"
-                            progress={45}
-                        />
+                                <SkillGap
+                                    skill="Docker"
+                                    priority="Medium"
+                                    progress={45}
+                                />
 
-                        <SkillGap
-                            skill="REST APIs"
-                            priority="Medium"
-                            progress={55}
-                        />
+                                <SkillGap
+                                    skill="REST APIs"
+                                    priority="Medium"
+                                    progress={55}
+                                />
+                            </>
+                        )}
 
                     </div>
 

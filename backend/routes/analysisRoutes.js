@@ -2,25 +2,21 @@ const express = require("express");
 const Analysis = require("../models/Analysis");
 const Resume = require("../models/Resume");
 const authMiddleware = require("../middleware/authMiddleware");
+const { analyzeCareerFit } = require("../services/aiService");
 
 const router = express.Router();
 
 /*
  * CREATE ANALYSIS
- * Saves a resume + job description analysis
+ * Uses AI to analyze resume against job description
+ * and saves the result in MongoDB.
  */
 router.post("/", authMiddleware, async (req, res) => {
     try {
         const {
             resumeId,
             targetRole,
-            jobDescription,
-            userSkills,
-            requiredSkills,
-            matchedSkills,
-            missingSkills,
-            matchScore,
-            analysisSummary
+            jobDescription
         } = req.body;
 
         if (!resumeId) {
@@ -47,7 +43,10 @@ router.post("/", authMiddleware, async (req, res) => {
             });
         }
 
-        // Make sure the resume belongs to the logged-in user
+        /*
+         * Make sure the resume belongs to
+         * the logged-in user.
+         */
         const resume = await Resume.findOne({
             _id: resumeId,
             userId: req.userId
@@ -60,29 +59,104 @@ router.post("/", authMiddleware, async (req, res) => {
             });
         }
 
-        const analysis = await Analysis.create({
+        /*
+         * Check whether the same analysis
+         * already exists.
+         */
+        const existingAnalysis = await Analysis.findOne({
             userId: req.userId,
             resumeId,
             targetRole: targetRole.trim(),
-            jobDescription: jobDescription.trim(),
-            userSkills: userSkills || [],
-            requiredSkills: requiredSkills || [],
-            matchedSkills: matchedSkills || [],
-            missingSkills: missingSkills || [],
-            matchScore: matchScore || 0,
-            analysisSummary: analysisSummary || ""
+            jobDescription: jobDescription.trim()
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Analysis saved successfully.",
-            analysis
-        });
+        if (existingAnalysis) {
+            return res.status(200).json({
+                success: true,
+                message: "This analysis already exists.",
+                analysis: existingAnalysis
+            });
+        }
+
+        /*
+         * Send resume and job description
+         * to the AI service.
+         */
+        try {
+            const aiAnalysis = await analyzeCareerFit({
+                resumeText: resume.resumeText,
+                targetRole: targetRole.trim(),
+                jobDescription: jobDescription.trim()
+            });
+
+            /*
+             * Save the AI-generated analysis
+             * in MongoDB.
+             */
+            const analysis = await Analysis.create({
+                userId: req.userId,
+                resumeId,
+                targetRole: targetRole.trim(),
+                jobDescription: jobDescription.trim(),
+
+                userSkills:
+                    aiAnalysis.userSkills || [],
+
+                requiredSkills:
+                    aiAnalysis.requiredSkills || [],
+
+                matchedSkills:
+                    aiAnalysis.matchedSkills || [],
+
+                missingSkills:
+                    aiAnalysis.missingSkills || [],
+
+                matchScore:
+                    aiAnalysis.matchScore || 0,
+
+                analysisSummary:
+                    aiAnalysis.analysisSummary || ""
+            });
+
+            res.status(201).json({
+                success: true,
+                message:
+                    "AI analysis completed and saved successfully.",
+                analysis
+            });
+
+        } catch (aiError) {
+            console.error(
+                "AI analysis error:",
+                aiError
+            );
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "AI analysis failed. Please check the AI configuration and try again."
+            });
+        }
+
     } catch (error) {
         console.error(
             "Create analysis error:",
             error
         );
+
+        /*
+         * MongoDB duplicate key error.
+         *
+         * This protects against duplicate records
+         * if multiple requests arrive at the same time.
+         */
+        if (error.code === 11000) {
+            return res.status(200).json({
+                success: true,
+                message: "This analysis already exists.",
+                duplicate: true
+            });
+        }
 
         res.status(500).json({
             success: false,
@@ -94,7 +168,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
 /*
  * GET ALL ANALYSES
- * Returns analyses belonging to logged-in user
+ * Returns analyses belonging to logged-in user.
  */
 router.get("/", authMiddleware, async (req, res) => {
     try {
@@ -108,6 +182,7 @@ router.get("/", authMiddleware, async (req, res) => {
             success: true,
             analyses
         });
+
     } catch (error) {
         console.error(
             "Get analyses error:",
@@ -124,6 +199,8 @@ router.get("/", authMiddleware, async (req, res) => {
 
 /*
  * GET ONE ANALYSIS
+ * Returns one analysis belonging to
+ * the logged-in user.
  */
 router.get("/:id", authMiddleware, async (req, res) => {
     try {
@@ -143,6 +220,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
             success: true,
             analysis
         });
+
     } catch (error) {
         console.error(
             "Get analysis error:",
@@ -179,6 +257,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
             success: true,
             message: "Analysis deleted successfully."
         });
+
     } catch (error) {
         console.error(
             "Delete analysis error:",

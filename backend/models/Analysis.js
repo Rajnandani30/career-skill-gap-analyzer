@@ -63,6 +63,24 @@ const analysisSchema = new mongoose.Schema(
     }
 );
 
+/*
+ * Prevent duplicate analyses.
+ *
+ * The same user cannot create another analysis
+ * for the same resume, target role and job description.
+ */
+analysisSchema.index(
+    {
+        userId: 1,
+        resumeId: 1,
+        targetRole: 1,
+        jobDescription: 1
+    },
+    {
+        unique: true
+    }
+);
+
 const Analysis = mongoose.model(
     "Analysis",
     analysisSchema
