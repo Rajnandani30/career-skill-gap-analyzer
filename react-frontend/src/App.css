@@ -2616,3 +2616,632 @@ footer {
     background: #35435b;
     border: 1px solid #4a5b77;
 }
+
+/* =========================================================
+   AI INTERVIEW PREPARATION
+   ========================================================= */
+
+.interview-prep-cta {
+    margin-top: 32px;
+    padding: 28px 30px;
+    background: linear-gradient(
+        135deg,
+        #202b3d,
+        #27344a
+    );
+    border: 1px solid #3b4a63;
+    border-left: 4px solid #667eea;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.interview-prep-cta-content {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.interview-prep-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #313f59;
+    border: 1px solid #465776;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.interview-prep-cta h3 {
+    margin: 6px 0 8px;
+    color: #ffffff;
+    font-size: 21px;
+}
+
+.interview-prep-cta p {
+    margin: 0;
+    color: #b9c3d5;
+    line-height: 1.6;
+    max-width: 720px;
+}
+
+.interview-prep-cta button {
+    border: none;
+    border-radius: 12px;
+    padding: 13px 20px;
+    background: #667eea;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.interview-prep-cta button:hover {
+    transform: translateY(-2px);
+}
+
+.interview-prep-cta button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* =========================================================
+   INTERVIEW PREPARATION CONTAINER
+   ========================================================= */
+
+.interview-preparation {
+    margin-top: 36px;
+    padding: 32px;
+    background: #171f2d;
+    border: 1px solid #35435a;
+    border-top: 4px solid #8b5cf6;
+    border-radius: 20px;
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   INTERVIEW HEADER
+   ========================================================= */
+
+.interview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.interview-header h2 {
+    margin: 7px 0 8px;
+    color: #ffffff;
+    font-size: 28px;
+}
+
+.interview-header p {
+    margin: 0;
+    color: #b8c2d4;
+    line-height: 1.6;
+}
+
+.interview-header p strong {
+    color: #ffffff;
+}
+
+.interview-count-card {
+    min-width: 130px;
+    padding: 18px 20px;
+    text-align: center;
+    background: #263247;
+    border: 1px solid #40506a;
+    border-radius: 14px;
+}
+
+.interview-count-card strong {
+    display: block;
+    color: #ffffff;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 7px;
+}
+
+.interview-count-card span {
+    color: #aeb9cc;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   INTERVIEW SECTIONS
+   ========================================================= */
+
+.interview-section,
+.interview-tips-section {
+    margin-top: 28px;
+    padding: 24px;
+    background: #202b3d;
+    border: 1px solid #38475e;
+    border-radius: 16px;
+}
+
+.interview-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.interview-section-header > div {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.interview-section-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #303d54;
+    border: 1px solid #465675;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.interview-section-header h3 {
+    margin: 0 0 5px;
+    color: #ffffff;
+    font-size: 19px;
+}
+
+.interview-section-header p {
+    margin: 0;
+    color: #aeb9cc;
+    line-height: 1.5;
+    font-size: 13px;
+}
+
+.interview-section-count {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #313e56;
+    border: 1px solid #465675;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   INTERVIEW QUESTION CARDS
+   ========================================================= */
+
+.interview-question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.interview-question-card {
+    padding: 22px;
+    background: #263247;
+    border: 1px solid #3b4b63;
+    border-radius: 14px;
+}
+
+.interview-question-card:hover {
+    border-color: #51617d;
+}
+
+.interview-question-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 14px;
+}
+
+.interview-question-number {
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #35435b;
+    border: 1px solid #4a5b77;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.interview-topic {
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #303d54;
+    border: 1px solid #43536e;
+    color: #c5cede;
+    font-size: 12px;
+}
+
+.interview-difficulty {
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.interview-easy {
+    background: #263e38;
+    border: 1px solid #3d6559;
+    color: #9de2c9;
+}
+
+.interview-medium {
+    background: #403c2a;
+    border: 1px solid #685f3c;
+    color: #e7d99a;
+}
+
+.interview-hard {
+    background: #422f35;
+    border: 1px solid #69434c;
+    color: #f0aab5;
+}
+
+.interview-question-card h4 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   MODEL ANSWERS
+   ========================================================= */
+
+.interview-answer {
+    margin-top: 18px;
+    padding: 17px 18px;
+    background: #202b3d;
+    border: 1px solid #3b4a62;
+    border-left: 4px solid #667eea;
+    border-radius: 11px;
+}
+
+.interview-answer strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.interview-answer p {
+    margin: 0;
+    color: #c4ccda;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   INTERVIEW TIPS INSIDE QUESTIONS
+   ========================================================= */
+
+.interview-tip {
+    margin-top: 14px;
+    padding: 15px 17px;
+    background: #2b3548;
+    border: 1px solid #46536a;
+    border-radius: 10px;
+}
+
+.interview-tip strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.interview-tip p {
+    margin: 0;
+    color: #c3ccda;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   SCENARIO + BEHAVIORAL CARDS
+   ========================================================= */
+
+.scenario-question-card {
+    border-left: 3px solid #38bdf8;
+}
+
+.behavioral-question-card {
+    border-left: 3px solid #a78bfa;
+}
+
+
+/* =========================================================
+   PREPARATION TIPS
+   ========================================================= */
+
+.interview-tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.interview-tip-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 17px;
+    background: #263247;
+    border: 1px solid #3b4b63;
+    border-radius: 12px;
+}
+
+.interview-tip-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #35435b;
+    border: 1px solid #4a5b77;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.interview-tip-card p {
+    margin: 3px 0 0;
+    color: #c4ccda;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   INTERVIEW RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .interview-prep-cta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .interview-prep-cta button {
+        width: 100%;
+    }
+
+    .interview-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .interview-count-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .interview-tips-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .interview-preparation {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .interview-section,
+    .interview-tips-section {
+        padding: 18px;
+    }
+
+    .interview-prep-cta {
+        padding: 22px;
+    }
+
+    .interview-prep-cta-content {
+        align-items: flex-start;
+    }
+
+    .interview-prep-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 23px;
+    }
+
+    .interview-header h2 {
+        font-size: 23px;
+    }
+
+    .interview-question-card {
+        padding: 18px;
+    }
+
+    .interview-section-header {
+        align-items: flex-start;
+    }
+
+    .interview-section-header > div {
+        align-items: flex-start;
+    }
+
+}
+
+/* =========================================================
+   INTERVIEW PREPARATION - DISTINCT PURPLE THEME
+   ========================================================= */
+
+.interview-prep-cta {
+    background: linear-gradient(
+        135deg,
+        #241d35,
+        #302448
+    );
+    border-color: #4b3a6b;
+    border-left-color: #a78bfa;
+}
+
+.interview-prep-icon {
+    background: #3a2d52;
+    border-color: #594576;
+}
+
+.interview-prep-cta button {
+    background: #8b5cf6;
+}
+
+
+/* =========================================================
+   INTERVIEW MAIN CONTAINER
+   ========================================================= */
+
+.interview-preparation {
+    background: #211a30;
+    border-color: #493b61;
+    border-top-color: #a78bfa;
+}
+
+
+/* =========================================================
+   INTERVIEW HEADER
+   ========================================================= */
+
+.interview-count-card {
+    background: #302545;
+    border-color: #514269;
+}
+
+.interview-count-card strong {
+    color: #ffffff;
+}
+
+.interview-count-card span {
+    color: #c4b9d8;
+}
+
+
+/* =========================================================
+   INTERVIEW SECTIONS
+   ========================================================= */
+
+.interview-section,
+.interview-tips-section {
+    background: #2a213b;
+    border-color: #493b5d;
+}
+
+.interview-section-icon {
+    background: #382b4d;
+    border-color: #59456f;
+}
+
+.interview-section-count {
+    background: #3a2d50;
+    border-color: #59456f;
+}
+
+
+/* =========================================================
+   INTERVIEW QUESTION CARDS
+   ========================================================= */
+
+.interview-question-card {
+    background: #322744;
+    border-color: #4b3c61;
+}
+
+.interview-question-card:hover {
+    border-color: #705a8e;
+}
+
+.interview-question-number {
+    background: #45345d;
+    border-color: #625077;
+}
+
+.interview-topic {
+    background: #3d3051;
+    border-color: #5a496d;
+}
+
+
+/* =========================================================
+   MODEL ANSWERS
+   ========================================================= */
+
+.interview-answer {
+    background: #29213a;
+    border-color: #493a60;
+    border-left-color: #a78bfa;
+}
+
+
+/* =========================================================
+   INTERVIEW TIPS
+   ========================================================= */
+
+.interview-tip {
+    background: #3a2d4d;
+    border-color: #564568;
+}
+
+
+/* =========================================================
+   SCENARIO + BEHAVIORAL DIFFERENTIATION
+   ========================================================= */
+
+.scenario-question-card {
+    border-left-color: #38bdf8;
+}
+
+.behavioral-question-card {
+    border-left-color: #c084fc;
+}
+
+
+/* =========================================================
+   PREPARATION TIPS
+   ========================================================= */
+
+.interview-tip-card {
+    background: #322744;
+    border-color: #4b3c61;
+}
+
+.interview-tip-number {
+    background: #45345d;
+    border-color: #625077;
+}

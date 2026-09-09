@@ -391,13 +391,209 @@ Make sure the response is valid JSON.
     }
 };
 
+/*
+ * =========================================================
+ * GENERATE AI INTERVIEW PREPARATION
+ * =========================================================
+ */
+const generateInterviewPreparation = async ({
+    targetRole,
+    userSkills,
+    missingSkills,
+    jobDescription
+}) => {
+
+    const prompt = `
+You are CareerAI, an expert technical interviewer and career mentor.
+
+Create a personalized interview preparation plan for a student
+applying for the following role:
+
+TARGET ROLE:
+${targetRole}
+
+CANDIDATE SKILLS:
+${userSkills.join(", ")}
+
+SKILL GAPS:
+${missingSkills.join(", ")}
+
+JOB DESCRIPTION:
+${jobDescription}
+
+The interview preparation should be practical and personalized
+to the candidate and the target role.
+
+Return ONLY valid JSON.
+
+Use EXACTLY this structure:
+
+{
+    "technicalQuestions": [
+        {
+            "question": "",
+            "topic": "",
+            "difficulty": "",
+            "answer": "",
+            "tip": ""
+        }
+    ],
+    "scenarioQuestions": [
+        {
+            "question": "",
+            "answer": "",
+            "tip": ""
+        }
+    ],
+    "behavioralQuestions": [
+        {
+            "question": "",
+            "answer": "",
+            "tip": ""
+        }
+    ],
+    "preparationTips": []
+}
+
+RULES:
+
+1. TECHNICAL QUESTIONS
+
+Generate 6 technical interview questions relevant to the
+target role.
+
+Focus on technologies, concepts, and skills mentioned in
+the job description.
+
+Include questions related to the candidate's skill gaps
+where appropriate.
+
+difficulty must be exactly one of:
+
+"Easy"
+"Medium"
+"Hard"
+
+
+2. TECHNICAL ANSWERS
+
+Provide a clear and beginner-friendly model answer for
+every technical question.
+
+Explain the concept instead of giving only a one-line answer.
+
+
+3. SCENARIO QUESTIONS
+
+Generate 4 practical software-development scenario questions.
+
+Examples of scenarios include:
+
+- debugging an application
+- handling an API failure
+- database problems
+- working with an unfamiliar codebase
+- resolving a production issue
+- handling conflicting requirements
+
+Give a practical model answer for every question.
+
+
+4. BEHAVIORAL QUESTIONS
+
+Generate 4 common behavioral interview questions suitable
+for a college student or entry-level candidate.
+
+Examples:
+
+- Tell me about yourself.
+- Describe a challenging project.
+- How do you handle mistakes?
+- How do you work in a team?
+
+Provide a professional example answer for every question.
+
+
+5. PERSONALIZATION
+
+Use the candidate's actual skills and skill gaps when creating
+questions.
+
+Do not generate completely generic questions if the provided
+information allows personalization.
+
+
+6. INTERVIEW TIPS
+
+Provide 6 practical preparation tips.
+
+Include advice about:
+
+- explaining projects
+- communicating technical decisions
+- debugging
+- answering unknown questions
+- discussing Git/GitHub
+- explaining real-world development experience
+
+
+7. BEGINNER-FRIENDLY LANGUAGE
+
+The candidate is a college student preparing for internships
+or entry-level jobs.
+
+Use simple language and explain technical concepts clearly.
+
+
+8. NO MARKDOWN
+
+Return plain JSON only.
+
+Do not include markdown.
+
+Do not include explanations outside the JSON.
+
+
+9. JSON FORMAT
+
+Do not add fields other than the fields specified above.
+
+Make sure the response is valid JSON.
+`;
+
+    const response = await ai.models.generateContent({
+        model: "gemini-3.5-flash-lite",
+        contents: prompt,
+        config: {
+            responseMimeType: "application/json"
+        }
+    });
+
+    const output = response.text;
+
+    try {
+        return JSON.parse(output);
+    } catch (error) {
+        console.error(
+            "Invalid Gemini interview JSON:",
+            output
+        );
+
+        throw new Error(
+            "AI returned an invalid interview preparation format."
+        );
+    }
+};
+
 
 /*
  * =========================================================
  * EXPORT AI FUNCTIONS
  * =========================================================
  */
+
 module.exports = {
     analyzeCareerFit,
-    generateLearningRoadmap
+    generateLearningRoadmap,
+    generateInterviewPreparation
 };

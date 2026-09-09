@@ -8,6 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const analysisRoutes = require("./routes/analysisRoutes");
 const roadmapRoutes = require("./routes/roadmapRoutes");
+const interviewRoutes = require("./routes/interviewRoutes");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/analysis", analysisRoutes);
 app.use("/api/roadmap", roadmapRoutes);
+app.use("/api/interview", interviewRoutes);
 
 // Serve static website
 app.use(express.static(path.join(__dirname, "public")));
