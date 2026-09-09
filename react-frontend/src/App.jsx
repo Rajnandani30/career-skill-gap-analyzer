@@ -38,6 +38,10 @@ function App() {
     const [latestAnalysis, setLatestAnalysis] =
         useState(null);
 
+    // Overall learning roadmap progress
+    const [roadmapProgress, setRoadmapProgress] =
+        useState(0);
+
     // All saved AI analyses
     const [analyses, setAnalyses] = useState([]);
 
@@ -235,6 +239,7 @@ function App() {
         setJobDescription("");
         setLatestAnalysis(null);
         setAnalyses([]);
+        setRoadmapProgress(0);
     };
 
 
@@ -1063,7 +1068,7 @@ function App() {
 
                     <StatCard
                         title="Learning Progress"
-                        value="64%"
+                        value={`${roadmapProgress}%`}
                         description="Roadmap completed"
                         icon="📚"
                     />
@@ -1219,6 +1224,7 @@ function App() {
                 {/* AI ANALYSIS RESULTS */}
                 <AnalysisResults
                     analysis={latestAnalysis}
+                    onRoadmapProgressChange={setRoadmapProgress}
                 />
 
 
@@ -1287,7 +1293,7 @@ function App() {
                                                 ? "High"
                                                 : "Medium"
                                         }
-                                        progress={0}
+                                        progress={roadmapProgress}
                                     />
                                 )
                             )

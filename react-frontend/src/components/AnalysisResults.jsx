@@ -1,56 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function AnalysisResults({ analysis }) {
+function AnalysisResults({ analysis, onRoadmapProgressChange }) {
     const [roadmap, setRoadmap] = useState(null);
     const [roadmapLoading, setRoadmapLoading] = useState(false);
 
     const [interview, setInterview] = useState(null);
     const [interviewLoading, setInterviewLoading] = useState(false);
 
+    const [progressUpdating, setProgressUpdating] = useState(null);
+
     if (!analysis) {
         return null;
     }
 
-    const {
-        matchScore = 0,
-        matchedSkills = [],
-        missingSkills = [],
-        analysisSummary = ""
-    } = analysis;
+    const token = localStorage.getItem("careerAI_token");
+
 
     /*
      * =========================================================
-     * GENERATE AI LEARNING ROADMAP
+     * GENERATE LEARNING ROADMAP
      * =========================================================
      */
+
     const handleRoadmapClick = async () => {
-        if (roadmapLoading) {
-            return;
-        }
-
         try {
-            const token =
-                localStorage.getItem("careerAI_token");
-
-            if (!token) {
-                alert("Please log in again.");
-                return;
-            }
-
-            if (!analysis._id) {
-                alert(
-                    "Analysis information is missing. Please run the analysis again."
-                );
-                return;
-            }
-
-            if (missingSkills.length === 0) {
-                alert(
-                    "No skill gaps were found. You are already well matched for this role!"
-                );
-                return;
-            }
-
             setRoadmapLoading(true);
 
             const response = await fetch(
@@ -72,47 +45,29 @@ function AnalysisResults({ analysis }) {
             if (!response.ok) {
                 alert(
                     data.message ||
-                        "Failed to generate learning roadmap."
-                );
-                return;
-            }
-
-            if (!data.roadmap) {
-                alert(
-                    "Learning roadmap was not returned. Please try again."
+                    "Failed to generate learning roadmap."
                 );
                 return;
             }
 
             setRoadmap(data.roadmap);
 
-            console.log(
-                "AI Learning Roadmap:",
-                data.roadmap
-            );
-
             setTimeout(() => {
-                const roadmapSection =
-                    document.getElementById(
-                        "learning-roadmap"
-                    );
-
-                if (roadmapSection) {
-                    roadmapSection.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
+                document
+                    .getElementById("learning-roadmap")
+                    ?.scrollIntoView({
+                        behavior: "smooth"
                     });
-                }
             }, 100);
 
         } catch (error) {
             console.error(
-                "Learning roadmap error:",
+                "Roadmap generation error:",
                 error
             );
 
             alert(
-                "Unable to connect to the CareerAI server. Please make sure the backend is running."
+                "Unable to generate the learning roadmap."
             );
         } finally {
             setRoadmapLoading(false);
@@ -122,57 +77,157 @@ function AnalysisResults({ analysis }) {
 
     /*
      * =========================================================
-     * GENERATE AI INTERVIEW PREPARATION
+     * UPDATE ROADMAP STEP
      * =========================================================
      */
-    const handleInterviewClick = async () => {
-        if (interviewLoading) {
+
+    const handleStepToggle = async (
+        skillIndex,
+        stepIndex
+    ) => {
+        if (!roadmap?._id) {
             return;
         }
 
+        const currentStep =
+            roadmap.roadmap?.[skillIndex]?.steps?.[
+                stepIndex
+            ];
+
+        if (!currentStep) {
+            return;
+        }
+
+        const newCompleted =
+            !currentStep.completed;
+
+        const progressKey =
+            `${skillIndex}-${stepIndex}`;
+
+        setProgressUpdating(progressKey);
+
         try {
-            const token =
-                localStorage.getItem("careerAI_token");
+            const response = await fetch(
+                `http://localhost:5000/api/roadmap/${roadmap._id}/step`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        skillIndex,
+                        stepIndex,
+                        completed: newCompleted
+                    })
+                }
+            );
 
-            if (!token) {
+            const data = await response.json();
+
+            if (!response.ok) {
                 alert(
-                    "Your session has expired. Please log in again."
+                    data.message ||
+                    "Failed to update progress."
                 );
                 return;
             }
 
-            if (!analysis || !analysis._id) {
-                alert(
-                    "Analysis information is missing. Please run the career analysis again."
-                );
-                return;
-            }
+            setRoadmap(data.roadmap);
 
-            if (
-                !analysis.targetRole ||
-                analysis.targetRole.trim() === ""
-            ) {
-                alert(
-                    "Target job role is missing. Please run the career analysis again."
-                );
-                return;
-            }
+        } catch (error) {
+            console.error(
+                "Progress update error:",
+                error
+            );
 
+            alert(
+                "Unable to update learning progress."
+            );
+        } finally {
+            setProgressUpdating(null);
+        }
+    };
+
+
+    /*
+     * =========================================================
+     * CALCULATE SKILL PROGRESS
+     * =========================================================
+     */
+
+    const calculateSkillProgress = (skill) => {
+        const steps = skill?.steps || [];
+
+        if (steps.length === 0) {
+            return 0;
+        }
+
+        const completedSteps =
+            steps.filter(
+                (step) => step.completed
+            ).length;
+
+        return Math.round(
+            (completedSteps / steps.length) * 100
+        );
+    };
+
+
+    /*
+     * =========================================================
+     * CALCULATE OVERALL ROADMAP PROGRESS
+     * =========================================================
+     */
+
+    const calculateOverallProgress = (currentRoadmap) => {
+        const skillPlans = currentRoadmap?.roadmap || [];
+
+        const allSteps = skillPlans.flatMap(
+            (skillPlan) => skillPlan.steps || []
+        );
+
+        if (allSteps.length === 0) {
+            return 0;
+        }
+
+        const completedSteps = allSteps.filter(
+            (step) => step.completed
+        ).length;
+
+        return Math.round(
+            (completedSteps / allSteps.length) * 100
+        );
+    };
+
+
+    /*
+     * =========================================================
+     * SYNC ROADMAP PROGRESS WITH MAIN DASHBOARD
+     * =========================================================
+     */
+
+    useEffect(() => {
+        if (!onRoadmapProgressChange) {
+            return;
+        }
+
+        const overallProgress =
+            calculateOverallProgress(roadmap);
+
+        onRoadmapProgressChange(overallProgress);
+    }, [roadmap, onRoadmapProgressChange]);
+
+
+    /*
+     * =========================================================
+     * GENERATE INTERVIEW PREPARATION
+     * =========================================================
+     */
+
+    const handleInterviewClick = async () => {
+        try {
             setInterviewLoading(true);
-
-            console.log(
-                "Starting AI Interview Preparation..."
-            );
-
-            console.log(
-                "Analysis ID:",
-                analysis._id
-            );
-
-            console.log(
-                "Target Role:",
-                analysis.targetRole
-            );
 
             const response = await fetch(
                 "http://localhost:5000/api/interview",
@@ -190,45 +245,24 @@ function AnalysisResults({ analysis }) {
 
             const data = await response.json();
 
-            console.log(
-                "Interview API Response:",
-                data
-            );
-
             if (!response.ok) {
                 alert(
                     data.message ||
-                        "Failed to generate interview preparation."
-                );
-                return;
-            }
-
-            if (!data.interview) {
-                alert(
-                    "The AI interview preparation was not returned. Please try again."
+                    "Failed to generate interview preparation."
                 );
                 return;
             }
 
             setInterview(data.interview);
 
-            console.log(
-                "AI Interview Preparation generated successfully:",
-                data.interview
-            );
-
             setTimeout(() => {
-                const interviewSection =
-                    document.getElementById(
+                document
+                    .getElementById(
                         "interview-preparation"
-                    );
-
-                if (interviewSection) {
-                    interviewSection.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
+                    )
+                    ?.scrollIntoView({
+                        behavior: "smooth"
                     });
-                }
             }, 100);
 
         } catch (error) {
@@ -238,7 +272,7 @@ function AnalysisResults({ analysis }) {
             );
 
             alert(
-                "Unable to connect to the CareerAI server. Please make sure the backend is running."
+                "Unable to generate interview preparation."
             );
         } finally {
             setInterviewLoading(false);
@@ -247,547 +281,567 @@ function AnalysisResults({ analysis }) {
 
 
     return (
-        <section
-            className="analysis-results"
-            id="analysis-results"
-        >
+        <>
 
             {/* =================================================
-                CAREER ANALYSIS HEADER
+                CAREER ANALYSIS
             ================================================= */}
-            <div className="analysis-results-header">
-                <div>
-                    <span className="analysis-eyebrow">
-                        ✦ AI Career Intelligence
-                    </span>
 
-                    <h2>
-                        Career Analysis Results
-                    </h2>
+            <section className="analysis-results">
 
-                    <p>
-                        AI-powered comparison of your resume
-                        against the selected job requirements.
-                    </p>
-                </div>
+                <div className="analysis-header">
 
-                <div className="analysis-score">
-                    <span>
-                        Career Match
-                    </span>
+                    <div>
+                        <span className="analysis-eyebrow">
+                            ✦ AI Career Intelligence
+                        </span>
 
-                    <strong>
-                        {matchScore}%
-                    </strong>
-                </div>
-            </div>
+                        <h2>
+                            Career Analysis Results
+                        </h2>
 
-
-            {/* =================================================
-                AI SUMMARY
-            ================================================= */}
-            <div className="analysis-summary-card">
-                <div className="analysis-section-icon">
-                    🤖
-                </div>
-
-                <div>
-                    <h3>
-                        AI Career Summary
-                    </h3>
-
-                    <p>
-                        {analysisSummary ||
-                            "No summary available."}
-                    </p>
-                </div>
-            </div>
-
-
-            {/* =================================================
-                MATCHED + MISSING SKILLS
-            ================================================= */}
-            <div className="analysis-skills-grid">
-
-                {/* MATCHED SKILLS */}
-                <div className="analysis-skill-card matched-card">
-
-                    <div className="analysis-card-header">
-                        <div>
-                            <span className="analysis-card-icon">
-                                ✓
-                            </span>
-
-                            <h3>
-                                Matched Skills
-                            </h3>
-                        </div>
-
-                        <strong>
-                            {matchedSkills.length}
-                        </strong>
+                        <p>
+                            Personalized analysis for{" "}
+                            <strong>
+                                {analysis.targetRole}
+                            </strong>
+                        </p>
                     </div>
 
-                    {matchedSkills.length > 0 ? (
-                        <div className="skill-tags">
-                            {matchedSkills.map(
-                                (skill, index) => (
-                                    <span
-                                        className="skill-tag matched-tag"
-                                        key={`${skill}-${index}`}
-                                    >
-                                        ✓ {skill}
-                                    </span>
-                                )
-                            )}
-                        </div>
-                    ) : (
-                        <p className="no-skills">
-                            No matched skills found.
+                    <div className="analysis-score-card">
+
+                        <span>
+                            Career Match
+                        </span>
+
+                        <strong>
+                            {analysis.matchScore}%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                {/* AI SUMMARY */}
+
+                <div className="analysis-summary">
+
+                    <div className="analysis-summary-icon">
+                        🤖
+                    </div>
+
+                    <div>
+                        <h3>
+                            AI Career Summary
+                        </h3>
+
+                        <p>
+                            {analysis.analysisSummary}
                         </p>
-                    )}
+                    </div>
+
+                </div>
+
+
+                {/* MATCHED SKILLS */}
+
+                <div className="analysis-skills-section">
+
+                    <div className="analysis-section-header">
+
+                        <div>
+                            <h3>
+                                ✓ Matched Skills
+                            </h3>
+
+                            <p>
+                                Skills from your resume
+                                that match the job
+                                requirements.
+                            </p>
+                        </div>
+
+                        <span className="analysis-count-badge">
+                            {
+                                analysis.matchedSkills?.length ||
+                                0
+                            }
+                        </span>
+
+                    </div>
+
+
+                    <div className="analysis-skill-list">
+
+                        {analysis.matchedSkills?.map(
+                            (skill, index) => (
+                                <span
+                                    className="matched-skill"
+                                    key={`${skill}-${index}`}
+                                >
+                                    ✓ {skill}
+                                </span>
+                            )
+                        )}
+
+                    </div>
+
                 </div>
 
 
                 {/* SKILL GAPS */}
-                <div className="analysis-skill-card missing-card">
 
-                    <div className="analysis-card-header">
+                <div className="analysis-skills-section">
+
+                    <div className="analysis-section-header">
+
                         <div>
-                            <span className="analysis-card-icon">
-                                !
-                            </span>
-
                             <h3>
-                                Skill Gaps
+                                ⚠️ Skill Gaps
                             </h3>
+
+                            <p>
+                                Skills you should
+                                develop to improve
+                                your career readiness.
+                            </p>
                         </div>
 
-                        <strong>
-                            {missingSkills.length}
-                        </strong>
+                        <span className="analysis-count-badge gap-badge">
+                            {
+                                analysis.missingSkills?.length ||
+                                0
+                            }
+                        </span>
+
                     </div>
 
-                    {missingSkills.length > 0 ? (
-                        <div className="skill-tags">
-                            {missingSkills.map(
+
+                    <div className="analysis-skill-list">
+
+                        {analysis.missingSkills?.length >
+                        0 ? (
+
+                            analysis.missingSkills.map(
                                 (skill, index) => (
                                     <span
-                                        className="skill-tag missing-tag"
+                                        className="missing-skill"
                                         key={`${skill}-${index}`}
                                     >
-                                        ! {skill}
+                                        ⚠ {skill}
                                     </span>
                                 )
-                            )}
-                        </div>
-                    ) : (
-                        <p className="no-skills">
-                            No major skill gaps found.
-                        </p>
-                    )}
-                </div>
+                            )
 
-            </div>
+                        ) : (
 
+                            <p className="no-gaps-message">
+                                🎉 No major skill gaps
+                                were identified.
+                            </p>
 
-            {/* =================================================
-                NEXT ACTIONS
-            ================================================= */}
-            <div className="analysis-next-step">
+                        )}
 
-                <div>
-                    <span>
-                        🚀
-                    </span>
-
-                    <div>
-                        <h3>
-                            Ready for your next step?
-                        </h3>
-
-                        <p>
-                            Use your skill gaps to build
-                            a personalized learning roadmap
-                            and prepare for interviews.
-                        </p>
                     </div>
+
                 </div>
 
-                <button
-                    type="button"
-                    onClick={handleRoadmapClick}
-                    disabled={roadmapLoading}
-                >
-                    {roadmapLoading
-                        ? "Generating Roadmap..."
-                        : "View Learning Roadmap →"}
-                </button>
 
-            </div>
+                {/* ROADMAP CTA */}
+
+                {analysis.missingSkills?.length > 0 && (
+
+                    <div className="roadmap-cta">
+
+                        <div className="roadmap-cta-icon">
+                            📚
+                        </div>
+
+                        <div className="roadmap-cta-content">
+
+                            <h3>
+                                Build Your Learning Roadmap
+                            </h3>
+
+                            <p>
+                                Get a personalized,
+                                step-by-step plan to
+                                improve the skills you
+                                are missing.
+                            </p>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={handleRoadmapClick}
+                            disabled={roadmapLoading}
+                        >
+                            {roadmapLoading
+                                ? "Generating..."
+                                : roadmap
+                                ? "View Learning Roadmap"
+                                : "Generate Learning Roadmap"}
+                        </button>
+
+                    </div>
+
+                )}
 
 
-            {/* =================================================
-                LEARNING ROADMAP
-            ================================================= */}
-            {roadmap &&
-                roadmap.roadmap &&
-                roadmap.roadmap.length > 0 && (
+                {/* =================================================
+                    LEARNING ROADMAP
+                ================================================= */}
 
-                    <div
+                {roadmap && (
+
+                    <section
                         className="learning-roadmap"
                         id="learning-roadmap"
                     >
 
-                        <div className="learning-roadmap-header">
+                        {/* ROADMAP HEADER */}
+
+                        <div className="roadmap-header">
 
                             <div>
-                                <span className="analysis-eyebrow">
-                                    ✦ Personalized AI Plan
+                                <span className="roadmap-eyebrow">
+                                    ✦ Personalized Learning Plan
                                 </span>
 
                                 <h2>
-                                    📚 Your Learning Roadmap
+                                    📚 AI Learning Roadmap
                                 </h2>
 
                                 <p>
-                                    A detailed learning plan created
-                                    specifically for your{" "}
-                                    <strong>
-                                        {roadmap.targetRole}
-                                    </strong>{" "}
-                                    career goal.
+                                    A complete step-by-step learning plan
+                                    created specifically for your identified
+                                    skill gaps.
                                 </p>
                             </div>
 
-                            <div className="roadmap-skill-count">
+                            <div className="roadmap-total-card">
+
                                 <strong>
-                                    {roadmap.roadmap.length}
+                                    {roadmap.roadmap?.length || 0}
                                 </strong>
 
                                 <span>
-                                    Skill
-                                    {roadmap.roadmap.length !== 1
-                                        ? "s"
-                                        : ""}{" "}
-                                    to Learn
+                                    {"Skill Gaps"}
                                 </span>
+
                             </div>
 
                         </div>
 
 
-                        <div className="roadmap-list">
+                        {/* ROADMAP SKILLS */}
 
-                            {roadmap.roadmap.map(
-                                (item, index) => (
+                        <div className="roadmap-skill-list">
 
-                                    <div
-                                        className="roadmap-item"
-                                        key={`${item.skill}-${index}`}
-                                    >
+                            {roadmap.roadmap?.map(
+                                (skillPlan, skillIndex) => {
 
-                                        <div className="roadmap-number">
-                                            {index + 1}
-                                        </div>
+                                    const progress =
+                                        calculateSkillProgress(
+                                            skillPlan
+                                        );
 
+                                    const completedSteps =
+                                        (
+                                            skillPlan.steps || []
+                                        ).filter(
+                                            (step) =>
+                                                step.completed
+                                        ).length;
 
-                                        <div className="roadmap-content">
+                                    const totalSteps =
+                                        skillPlan.steps?.length || 0;
 
-                                            <div className="roadmap-item-header">
+                                    return (
+
+                                        <div
+                                            className="roadmap-skill-card"
+                                            key={`${skillPlan.skill}-${skillIndex}`}
+                                        >
+
+                                            {/* SKILL OVERVIEW */}
+
+                                            <div className="roadmap-skill-header">
 
                                                 <div>
-                                                    <h3>
-                                                        {item.skill}
-                                                    </h3>
 
-                                                    <span
-                                                        className={`roadmap-priority roadmap-${(
-                                                            item.priority ||
-                                                            "Medium"
-                                                        ).toLowerCase()}`}
-                                                    >
-                                                        {item.priority ||
-                                                            "Medium"}{" "}
-                                                        Priority
-                                                    </span>
+                                                    <div className="roadmap-skill-title-row">
+
+                                                        <h3>
+                                                            🎯 {skillPlan.skill}
+                                                        </h3>
+
+                                                        <span
+                                                            className={`roadmap-priority roadmap-priority-${String(
+                                                                skillPlan.priority ||
+                                                                    "Medium"
+                                                            ).toLowerCase()}`}
+                                                        >
+                                                            {skillPlan.priority ||
+                                                                "Medium"}{" "}
+                                                            Priority
+                                                        </span>
+
+                                                    </div>
+
                                                 </div>
-
-                                                <span className="roadmap-time">
-                                                    ⏱{" "}
-                                                    {item.estimatedTime ||
-                                                        "Flexible"}
-                                                </span>
 
                                             </div>
 
 
+                                            {/* WHY THIS SKILL MATTERS */}
+
+                                            {skillPlan.whyItMatters && (
+                                                <div className="roadmap-info-box">
+
+                                                    <h4>
+                                                        💡 Why This Skill Matters
+                                                    </h4>
+
+                                                    <p>
+                                                        {skillPlan.whyItMatters}
+                                                    </p>
+
+                                                </div>
+                                            )}
+
+
                                             {/* BEGINNER EXPLANATION */}
-                                            {item.beginnerExplanation && (
-                                                <div className="roadmap-beginner-box">
+
+                                            {skillPlan.beginnerExplanation && (
+
+                                                <div className="roadmap-explanation">
 
                                                     <h4>
-                                                        👋 What is{" "}
-                                                        {item.skill}?
+                                                        📖 Understand the Skill
                                                     </h4>
 
                                                     <p>
-                                                        {item.beginnerExplanation}
+                                                        {
+                                                            skillPlan.beginnerExplanation
+                                                        }
                                                     </p>
 
                                                 </div>
+
                                             )}
 
 
-                                            {/* WHY IT MATTERS */}
-                                            {item.whyItMatters && (
-                                                <div className="roadmap-why-box">
+                                            {/* ESTIMATED LEARNING TIME */}
 
+                                            {skillPlan.estimatedTime && (
+
+                                                <div className="roadmap-time-box">
+
+                                                    <span>
+                                                        ⏱️ Estimated Learning Time
+                                                    </span>
+
+                                                    <strong>
+                                                        {skillPlan.estimatedTime}
+                                                    </strong>
+
+                                                </div>
+
+                                            )}
+
+
+                                            {/* STEP-BY-STEP LEARNING PLAN */}
+
+                                            <div className="roadmap-steps-section">
+
+                                                <div className="roadmap-section-heading">
                                                     <h4>
-                                                        🎯 Why this skill matters
+                                                        📝 Step-by-Step Learning Plan
                                                     </h4>
 
                                                     <p>
-                                                        {item.whyItMatters}
+                                                        Follow these steps in order. Each step explains
+                                                        what you need to learn, how to learn it, and
+                                                        what you should practice.
                                                     </p>
-
                                                 </div>
-                                            )}
 
+                                                <div className="roadmap-steps">
 
-                                            {/* STEP BY STEP PLAN */}
-                                            {item.steps &&
-                                                item.steps.length > 0 && (
+                                                    {skillPlan.steps?.map(
+                                                        (step, stepIndex) => {
 
-                                                    <div className="roadmap-steps">
+                                                            const progressKey =
+                                                                `${skillIndex}-${stepIndex}`;
 
-                                                        <div className="roadmap-subsection-title">
+                                                            return (
+                                                                <div
+                                                                    className={`roadmap-step ${
+                                                                        step.completed
+                                                                            ? "roadmap-step-completed"
+                                                                            : ""
+                                                                    }`}
+                                                                    key={`${step.stepNumber}-${stepIndex}`}
+                                                                >
 
-                                                            <span>
-                                                                📖
-                                                            </span>
+                                                                    {/* STEP */}
 
-                                                            <div>
-                                                                <h4>
-                                                                    Step-by-Step Learning Plan
-                                                                </h4>
+                                                                    <div className="roadmap-step-info">
 
-                                                                <p>
-                                                                    Follow these steps
-                                                                    in order.
-                                                                </p>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div className="roadmap-step-list">
-
-                                                            {item.steps.map(
-                                                                (
-                                                                    step,
-                                                                    stepIndex
-                                                                ) => (
-
-                                                                    <div
-                                                                        className="roadmap-step"
-                                                                        key={stepIndex}
-                                                                    >
-
-                                                                        <div className="roadmap-step-number">
+                                                                        <div className="roadmap-step-number-box">
+                                                                            STEP{" "}
                                                                             {step.stepNumber ||
-                                                                                stepIndex +
-                                                                                    1}
+                                                                                stepIndex + 1}
                                                                         </div>
 
-
-                                                                        <div className="roadmap-step-content">
-
-                                                                            <h4>
-                                                                                {step.title}
-                                                                            </h4>
-
-
-                                                                            {step.whatToLearn && (
-                                                                                <div className="roadmap-detail-block">
-
-                                                                                    <strong>
-                                                                                        📘 What to learn
-                                                                                    </strong>
-
-                                                                                    <p>
-                                                                                        {step.whatToLearn}
-                                                                                    </p>
-
-                                                                                </div>
-                                                                            )}
-
-
-                                                                            {step.howToLearn && (
-                                                                                <div className="roadmap-detail-block">
-
-                                                                                    <strong>
-                                                                                        🧭 How to learn
-                                                                                    </strong>
-
-                                                                                    <p>
-                                                                                        {step.howToLearn}
-                                                                                    </p>
-
-                                                                                </div>
-                                                                            )}
-
-
-                                                                            {step.practiceTask && (
-                                                                                <div className="roadmap-practice-task">
-
-                                                                                    <strong>
-                                                                                        🧪 Practice Task
-                                                                                    </strong>
-
-                                                                                    <p>
-                                                                                        {step.practiceTask}
-                                                                                    </p>
-
-                                                                                </div>
-                                                                            )}
-
-                                                                        </div>
+                                                                        <h5>
+                                                                            {step.title ||
+                                                                                `Learning Step ${
+                                                                                    stepIndex + 1
+                                                                                }`}
+                                                                        </h5>
 
                                                                     </div>
 
-                                                                )
-                                                            )}
 
-                                                        </div>
+                                                                    {/* WHAT TO LEARN */}
 
-                                                    </div>
-                                                )}
+                                                                    {step.whatToLearn && (
+                                                                        <div className="roadmap-step-box roadmap-what-box">
+
+                                                                            <h5>
+                                                                                📘 What to Learn
+                                                                            </h5>
+
+                                                                            <p>
+                                                                                {step.whatToLearn}
+                                                                            </p>
+
+                                                                        </div>
+                                                                    )}
+
+
+                                                                    {/* HOW TO LEARN */}
+
+                                                                    {step.howToLearn && (
+                                                                        <div className="roadmap-step-box roadmap-how-box">
+
+                                                                            <h5>
+                                                                                🛠️ How to Learn
+                                                                            </h5>
+
+                                                                            <p>
+                                                                                {step.howToLearn}
+                                                                            </p>
+
+                                                                        </div>
+                                                                    )}
+
+
+                                                                    {/* PRACTICE TASK */}
+
+                                                                    {step.practiceTask && (
+                                                                        <div className="roadmap-step-box roadmap-practice-box">
+
+                                                                            <h5>
+                                                                                💻 Practice Task
+                                                                            </h5>
+
+                                                                            <p>
+                                                                                {step.practiceTask}
+                                                                            </p>
+
+                                                                        </div>
+                                                                    )}
+
+                                                                </div>
+                                                            );
+                                                        }
+                                                    )}
+
+                                                </div>
+
+                                            </div>
 
 
                                             {/* PRACTICE EXERCISES */}
-                                            {item.practiceExercises &&
-                                                item.practiceExercises.length >
-                                                    0 && (
 
-                                                    <div className="roadmap-exercises">
+                                            {skillPlan.practiceExercises?.length >
+                                                0 && (
 
-                                                        <div className="roadmap-subsection-title">
+                                                <div className="roadmap-exercises">
 
-                                                            <span>
-                                                                🧪
-                                                            </span>
+                                                    <h4>
+                                                        🧩 Practice Exercises
+                                                    </h4>
 
-                                                            <div>
-                                                                <h4>
-                                                                    Practice Exercises
-                                                                </h4>
+                                                    <p className="roadmap-section-description">
+                                                        Use these exercises to
+                                                        strengthen your understanding
+                                                        before moving to a real project.
+                                                    </p>
 
-                                                                <p>
-                                                                    Complete these
-                                                                    exercises to
-                                                                    strengthen your
-                                                                    understanding.
-                                                                </p>
-                                                            </div>
+                                                    <ul>
 
-                                                        </div>
+                                                        {skillPlan.practiceExercises.map(
+                                                            (
+                                                                exercise,
+                                                                index
+                                                            ) => (
 
+                                                                <li
+                                                                    key={index}
+                                                                >
+                                                                    {exercise}
+                                                                </li>
 
-                                                        <ol>
+                                                            )
+                                                        )}
 
-                                                            {item.practiceExercises.map(
-                                                                (
-                                                                    exercise,
-                                                                    exerciseIndex
-                                                                ) => (
+                                                    </ul>
 
-                                                                    <li
-                                                                        key={
-                                                                            exerciseIndex
-                                                                        }
-                                                                    >
-                                                                        <span>
-                                                                            {exercise}
-                                                                        </span>
-                                                                    </li>
+                                                </div>
 
-                                                                )
-                                                            )}
-
-                                                        </ol>
-
-                                                    </div>
-                                                )}
+                                            )}
 
 
                                             {/* PORTFOLIO PROJECT */}
-                                            {item.project && (
+
+                                            {skillPlan.project && (
+
                                                 <div className="roadmap-project">
 
-                                                    <strong>
-                                                        🛠 Portfolio Project
-                                                    </strong>
+                                                    <h4>
+                                                        🚀 Portfolio Project
+                                                    </h4>
 
                                                     <p>
-                                                        {item.project}
+                                                        {
+                                                            skillPlan.project
+                                                        }
                                                     </p>
 
-                                                </div>
-                                            )}
 
-
-                                            {/* PROJECT STEPS */}
-                                            {item.projectSteps &&
-                                                item.projectSteps.length >
-                                                    0 && (
-
-                                                    <div className="roadmap-project-steps">
-
-                                                        <div className="roadmap-subsection-title">
-
-                                                            <span>
-                                                                🚀
-                                                            </span>
-
-                                                            <div>
-                                                                <h4>
-                                                                    How to Build the Project
-                                                                </h4>
-
-                                                                <p>
-                                                                    Follow these steps
-                                                                    to turn your learning
-                                                                    into a real project.
-                                                                </p>
-                                                            </div>
-
-                                                        </div>
-
+                                                    {skillPlan.projectSteps?.length >
+                                                        0 && (
 
                                                         <ol>
 
-                                                            {item.projectSteps.map(
+                                                            {skillPlan.projectSteps.map(
                                                                 (
                                                                     projectStep,
-                                                                    projectIndex
+                                                                    index
                                                                 ) => (
 
                                                                     <li
-                                                                        key={
-                                                                            projectIndex
-                                                                        }
+                                                                        key={index}
                                                                     >
-
-                                                                        <span className="project-step-number">
-                                                                            {projectIndex +
-                                                                                1}
-                                                                        </span>
-
-                                                                        <span>
-                                                                            {projectStep}
-                                                                        </span>
-
+                                                                        {
+                                                                            projectStep
+                                                                        }
                                                                     </li>
 
                                                                 )
@@ -795,53 +849,243 @@ function AnalysisResults({ analysis }) {
 
                                                         </ol>
 
-                                                    </div>
-                                                )}
+                                                    )}
+
+                                                </div>
+
+                                            )}
 
 
                                             {/* EXPECTED OUTCOME */}
-                                            {item.expectedOutcome && (
+
+                                            {skillPlan.expectedOutcome && (
+
                                                 <div className="roadmap-outcome">
 
-                                                    <strong>
-                                                        🎓 Expected Outcome
-                                                    </strong>
+                                                    <h4>
+                                                        🎯 Expected Outcome
+                                                    </h4>
 
                                                     <p>
-                                                        {item.expectedOutcome}
+                                                        {
+                                                            skillPlan.expectedOutcome
+                                                        }
                                                     </p>
 
                                                 </div>
+
                                             )}
+
+
+                                            {/* COMPLETION TRACKING */}
+
+                                            <div className="roadmap-progress-card">
+
+                                                <div className="roadmap-progress-header">
+
+                                                    <div>
+
+                                                        <span className="roadmap-progress-eyebrow">
+                                                            ✦ Learning Progress
+                                                        </span>
+
+                                                        <h4>
+                                                            ☑️ Track Your Progress
+                                                        </h4>
+
+                                                        <p>
+                                                            Complete each learning
+                                                            step above. Your progress
+                                                            is automatically saved.
+                                                        </p>
+
+                                                    </div>
+
+                                                    <div
+                                                        className={
+                                                            progress === 100
+                                                                ? "roadmap-progress-complete"
+                                                                : "roadmap-progress-percentage"
+                                                        }
+                                                    >
+                                                        {progress}%
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div className="roadmap-progress-container">
+
+                                                    <div className="roadmap-progress-top">
+
+                                                        <span>
+                                                            Completion Progress
+                                                        </span>
+
+                                                        <strong>
+                                                            {completedSteps}{" "}
+                                                            of{" "}
+                                                            {totalSteps}{" "}
+                                                            steps completed
+                                                        </strong>
+
+                                                    </div>
+
+
+                                                    <div className="roadmap-progress-bar">
+
+                                                        <div
+                                                            className="roadmap-progress-fill"
+                                                            style={{
+                                                                width: `${progress}%`
+                                                            }}
+                                                        ></div>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                {/* CHECKBOX LIST */}
+
+                                                <div className="roadmap-completion-section">
+
+                                                    <h5>
+                                                        ✅ Mark Learning Steps as Completed
+                                                    </h5>
+
+                                                    <p>
+                                                        Tick a box when you have
+                                                        completed that learning step.
+                                                    </p>
+
+
+                                                    <div className="roadmap-completion-list">
+
+                                                        {skillPlan.steps?.map(
+                                                            (
+                                                                step,
+                                                                stepIndex
+                                                            ) => {
+
+                                                                const progressKey =
+                                                                    `${skillIndex}-${stepIndex}`;
+
+                                                                return (
+
+                                                                    <label
+                                                                        className={`roadmap-completion-item ${
+                                                                            step.completed
+                                                                                ? "roadmap-step-completed"
+                                                                                : ""
+                                                                        }`}
+                                                                        key={`${step.stepNumber}-completion-${stepIndex}`}
+                                                                    >
+
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={Boolean(
+                                                                                step.completed
+                                                                            )}
+                                                                            disabled={
+                                                                                progressUpdating ===
+                                                                                progressKey
+                                                                            }
+                                                                            onChange={() =>
+                                                                                handleStepToggle(
+                                                                                    skillIndex,
+                                                                                    stepIndex
+                                                                                )
+                                                                            }
+                                                                        />
+
+                                                                        <span className="roadmap-custom-checkbox">
+                                                                            {step.completed
+                                                                                ? "✓"
+                                                                                : ""}
+                                                                        </span>
+
+                                                                        <span className="roadmap-completion-text">
+
+                                                                            <strong>
+                                                                                Step{" "}
+                                                                                {
+                                                                                    step.stepNumber ||
+                                                                                    stepIndex +
+                                                                                        1
+                                                                                }
+                                                                            </strong>
+
+                                                                            {" — "}
+
+                                                                            {
+                                                                                step.title ||
+                                                                                `Learning Step ${
+                                                                                    stepIndex +
+                                                                                    1
+                                                                                }`
+                                                                            }
+
+                                                                        </span>
+
+                                                                    </label>
+
+                                                                );
+
+                                                            }
+                                                        )}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                {progress === 100 && (
+
+                                                    <div className="roadmap-completed-message">
+
+                                                        🎉 Skill completed!
+
+                                                        <p>
+                                                            Excellent work! You have
+                                                            completed all the learning
+                                                            steps for{" "}
+                                                            <strong>
+                                                                {skillPlan.skill}
+                                                            </strong>.
+                                                        </p>
+
+                                                    </div>
+
+                                                )}
+
+                                            </div>
 
                                         </div>
 
-                                    </div>
+                                    );
 
-                                )
+                                }
                             )}
 
                         </div>
 
-                    </div>
+                    </section>
+
                 )}
 
 
-            {/* =================================================
-                INTERVIEW PREPARATION CTA
-            ================================================= */}
-            <div className="interview-prep-cta">
+                {/* =================================================
+                    INTERVIEW PREPARATION CTA
+                ================================================= */}
 
-                <div className="interview-prep-cta-content">
+                <div className="interview-prep-cta">
 
                     <div className="interview-prep-icon">
                         🎤
                     </div>
 
                     <div>
-                        <span className="analysis-eyebrow">
-                            ✦ AI Interview Coach
-                        </span>
 
                         <h3>
                             Prepare for Your Interview
@@ -849,113 +1093,115 @@ function AnalysisResults({ analysis }) {
 
                         <p>
                             Get personalized technical,
-                            scenario-based, and behavioral
-                            interview questions based on
-                            your target role, skills, and
-                            identified skill gaps.
+                            scenario, and behavioral
+                            interview questions based
+                            on this analysis.
                         </p>
+
                     </div>
+
+                    <button
+                        type="button"
+                        onClick={handleInterviewClick}
+                        disabled={interviewLoading}
+                    >
+                        {interviewLoading
+                            ? "Preparing..."
+                            : interview
+                            ? "View Interview Prep"
+                            : "Start Interview Prep"}
+                    </button>
 
                 </div>
 
-                <button
-                    type="button"
-                    onClick={handleInterviewClick}
-                    disabled={interviewLoading}
-                >
-                    {interviewLoading
-                        ? "Generating Interview Prep..."
-                        : "🎤 Start Interview Prep →"}
-                </button>
 
-            </div>
+                {/* =================================================
+                    INTERVIEW PREPARATION
+                ================================================= */}
 
+                {interview && (
 
-            {/* =================================================
-                INTERVIEW PREPARATION RESULTS
-            ================================================= */}
-            {interview && (
+                    <section
+                        className="interview-preparation"
+                        id="interview-preparation"
+                    >
 
-                <section
-                    className="interview-preparation"
-                    id="interview-preparation"
-                >
+                        <div className="interview-header">
 
-                    {/* HEADER */}
-                    <div className="interview-header">
+                            <div>
 
-                        <div>
-                            <span className="analysis-eyebrow">
-                                ✦ Personalized AI Interview Coach
-                            </span>
+                                <span className="interview-eyebrow">
+                                    ✦ AI Interview Coach
+                                </span>
 
-                            <h2>
-                                🎤 Interview Preparation
-                            </h2>
+                                <h2>
+                                    🎤 Interview Preparation
+                                </h2>
 
-                            <p>
-                                Practice questions personalized
-                                for your{" "}
+                                <p>
+                                    Personalized questions
+                                    based on your target
+                                    role, skills, and
+                                    identified skill gaps.
+                                </p>
+
+                            </div>
+
+                            <div className="interview-count-card">
+
                                 <strong>
-                                    {analysis.targetRole}
-                                </strong>{" "}
-                                role.
-                            </p>
+                                    {
+                                        (interview.technicalQuestions?.length ||
+                                            0) +
+                                        (interview.scenarioQuestions?.length ||
+                                            0) +
+                                        (interview.behavioralQuestions?.length ||
+                                            0)
+                                    }
+                                </strong>
+
+                                <span>
+                                    Questions
+                                </span>
+
+                            </div>
+
                         </div>
 
-                        <div className="interview-count-card">
-                            <strong>
-                                {(
-                                    interview.technicalQuestions?.length ||
-                                    0
-                                ) +
-                                    (
-                                        interview.scenarioQuestions?.length ||
-                                        0
-                                    ) +
-                                    (
-                                        interview.behavioralQuestions?.length ||
-                                        0
-                                    )}
-                            </strong>
 
-                            <span>
-                                Practice Questions
-                            </span>
-                        </div>
+                        {/* TECHNICAL QUESTIONS */}
 
-                    </div>
-
-
-                    {/* TECHNICAL QUESTIONS */}
-                    {interview.technicalQuestions &&
-                        interview.technicalQuestions.length > 0 && (
+                        {interview.technicalQuestions?.length >
+                            0 && (
 
                             <div className="interview-section">
 
                                 <div className="interview-section-header">
 
+                                    <div className="interview-section-icon">
+                                        💻
+                                    </div>
+
                                     <div>
-                                        <span className="interview-section-icon">
-                                            💻
-                                        </span>
+                                        <h3>
+                                            Technical Questions
+                                        </h3>
 
-                                        <div>
-                                            <h3>
-                                                Technical Questions
-                                            </h3>
-
-                                            <p>
-                                                Test your understanding
-                                                of the technologies and
-                                                concepts required for
-                                                the role.
-                                            </p>
-                                        </div>
+                                        <p>
+                                            Questions focused
+                                            on the technologies
+                                            and concepts
+                                            required for the
+                                            role.
+                                        </p>
                                     </div>
 
                                     <span className="interview-section-count">
-                                        {interview.technicalQuestions.length}
+                                        {
+                                            interview
+                                                .technicalQuestions
+                                                .length
+                                        }
                                     </span>
 
                                 </div>
@@ -964,7 +1210,10 @@ function AnalysisResults({ analysis }) {
                                 <div className="interview-question-list">
 
                                     {interview.technicalQuestions.map(
-                                        (item, index) => (
+                                        (
+                                            question,
+                                            index
+                                        ) => (
 
                                             <div
                                                 className="interview-question-card"
@@ -978,56 +1227,52 @@ function AnalysisResults({ analysis }) {
                                                     </span>
 
                                                     <span className="interview-topic">
-                                                        {item.topic ||
-                                                            "Technical"}
+                                                        {
+                                                            question.topic
+                                                        }
                                                     </span>
 
-                                                    <span
-                                                        className={`interview-difficulty interview-${(
-                                                            item.difficulty ||
-                                                            "Medium"
-                                                        ).toLowerCase()}`}
-                                                    >
-                                                        {item.difficulty ||
-                                                            "Medium"}
+                                                    <span className="interview-difficulty">
+                                                        {
+                                                            question.difficulty
+                                                        }
                                                     </span>
 
                                                 </div>
 
-
                                                 <h4>
-                                                    {item.question}
+                                                    {
+                                                        question.question
+                                                    }
                                                 </h4>
 
+                                                <div className="interview-answer">
 
-                                                {item.answer && (
-                                                    <div className="interview-answer">
+                                                    <strong>
+                                                        💡 Model Answer
+                                                    </strong>
 
-                                                        <strong>
-                                                            💡 Model Answer
-                                                        </strong>
+                                                    <p>
+                                                        {
+                                                            question.answer
+                                                        }
+                                                    </p>
 
-                                                        <p>
-                                                            {item.answer}
-                                                        </p>
+                                                </div>
 
-                                                    </div>
-                                                )}
+                                                <div className="interview-tip">
 
+                                                    <strong>
+                                                        🎯 Interview Tip
+                                                    </strong>
 
-                                                {item.tip && (
-                                                    <div className="interview-tip">
+                                                    <p>
+                                                        {
+                                                            question.tip
+                                                        }
+                                                    </p>
 
-                                                        <strong>
-                                                            🎯 Interview Tip
-                                                        </strong>
-
-                                                        <p>
-                                                            {item.tip}
-                                                        </p>
-
-                                                    </div>
-                                                )}
+                                                </div>
 
                                             </div>
 
@@ -1037,37 +1282,42 @@ function AnalysisResults({ analysis }) {
                                 </div>
 
                             </div>
+
                         )}
 
 
-                    {/* SCENARIO QUESTIONS */}
-                    {interview.scenarioQuestions &&
-                        interview.scenarioQuestions.length > 0 && (
+                        {/* SCENARIO QUESTIONS */}
 
-                            <div className="interview-section">
+                        {interview.scenarioQuestions?.length >
+                            0 && (
+
+                            <div className="interview-section scenario-section">
 
                                 <div className="interview-section-header">
 
+                                    <div className="interview-section-icon">
+                                        🧩
+                                    </div>
+
                                     <div>
-                                        <span className="interview-section-icon">
-                                            🧩
-                                        </span>
+                                        <h3>
+                                            Scenario Questions
+                                        </h3>
 
-                                        <div>
-                                            <h3>
-                                                Scenario Questions
-                                            </h3>
-
-                                            <p>
-                                                Practice solving
-                                                realistic software
-                                                development situations.
-                                            </p>
-                                        </div>
+                                        <p>
+                                            Practice solving
+                                            realistic software
+                                            development
+                                            situations.
+                                        </p>
                                     </div>
 
                                     <span className="interview-section-count">
-                                        {interview.scenarioQuestions.length}
+                                        {
+                                            interview
+                                                .scenarioQuestions
+                                                .length
+                                        }
                                     </span>
 
                                 </div>
@@ -1076,7 +1326,10 @@ function AnalysisResults({ analysis }) {
                                 <div className="interview-question-list">
 
                                     {interview.scenarioQuestions.map(
-                                        (item, index) => (
+                                        (
+                                            question,
+                                            index
+                                        ) => (
 
                                             <div
                                                 className="interview-question-card scenario-question-card"
@@ -1090,45 +1343,44 @@ function AnalysisResults({ analysis }) {
                                                     </span>
 
                                                     <span className="interview-topic">
-                                                        Real-World Scenario
+                                                        Scenario
                                                     </span>
 
                                                 </div>
 
-
                                                 <h4>
-                                                    {item.question}
+                                                    {
+                                                        question.question
+                                                    }
                                                 </h4>
 
+                                                <div className="interview-answer">
 
-                                                {item.answer && (
-                                                    <div className="interview-answer">
+                                                    <strong>
+                                                        💡 Model Approach
+                                                    </strong>
 
-                                                        <strong>
-                                                            💡 Model Approach
-                                                        </strong>
+                                                    <p>
+                                                        {
+                                                            question.answer
+                                                        }
+                                                    </p>
 
-                                                        <p>
-                                                            {item.answer}
-                                                        </p>
+                                                </div>
 
-                                                    </div>
-                                                )}
+                                                <div className="interview-tip">
 
+                                                    <strong>
+                                                        🎯 Interview Tip
+                                                    </strong>
 
-                                                {item.tip && (
-                                                    <div className="interview-tip">
+                                                    <p>
+                                                        {
+                                                            question.tip
+                                                        }
+                                                    </p>
 
-                                                        <strong>
-                                                            🎯 Interview Tip
-                                                        </strong>
-
-                                                        <p>
-                                                            {item.tip}
-                                                        </p>
-
-                                                    </div>
-                                                )}
+                                                </div>
 
                                             </div>
 
@@ -1138,38 +1390,42 @@ function AnalysisResults({ analysis }) {
                                 </div>
 
                             </div>
+
                         )}
 
 
-                    {/* BEHAVIORAL QUESTIONS */}
-                    {interview.behavioralQuestions &&
-                        interview.behavioralQuestions.length > 0 && (
+                        {/* BEHAVIORAL QUESTIONS */}
 
-                            <div className="interview-section">
+                        {interview.behavioralQuestions?.length >
+                            0 && (
+
+                            <div className="interview-section behavioral-section">
 
                                 <div className="interview-section-header">
 
+                                    <div className="interview-section-icon">
+                                        🗣️
+                                    </div>
+
                                     <div>
-                                        <span className="interview-section-icon">
-                                            👤
-                                        </span>
+                                        <h3>
+                                            Behavioral Questions
+                                        </h3>
 
-                                        <div>
-                                            <h3>
-                                                Behavioral Questions
-                                            </h3>
-
-                                            <p>
-                                                Prepare professional
-                                                answers for common
-                                                HR and behavioral
-                                                interview questions.
-                                            </p>
-                                        </div>
+                                        <p>
+                                            Prepare professional
+                                            answers for common
+                                            entry-level
+                                            interview questions.
+                                        </p>
                                     </div>
 
                                     <span className="interview-section-count">
-                                        {interview.behavioralQuestions.length}
+                                        {
+                                            interview
+                                                .behavioralQuestions
+                                                .length
+                                        }
                                     </span>
 
                                 </div>
@@ -1178,7 +1434,10 @@ function AnalysisResults({ analysis }) {
                                 <div className="interview-question-list">
 
                                     {interview.behavioralQuestions.map(
-                                        (item, index) => (
+                                        (
+                                            question,
+                                            index
+                                        ) => (
 
                                             <div
                                                 className="interview-question-card behavioral-question-card"
@@ -1197,40 +1456,39 @@ function AnalysisResults({ analysis }) {
 
                                                 </div>
 
-
                                                 <h4>
-                                                    {item.question}
+                                                    {
+                                                        question.question
+                                                    }
                                                 </h4>
 
+                                                <div className="interview-answer">
 
-                                                {item.answer && (
-                                                    <div className="interview-answer">
+                                                    <strong>
+                                                        💡 Example Answer
+                                                    </strong>
 
-                                                        <strong>
-                                                            💡 Example Answer
-                                                        </strong>
+                                                    <p>
+                                                        {
+                                                            question.answer
+                                                        }
+                                                    </p>
 
-                                                        <p>
-                                                            {item.answer}
-                                                        </p>
+                                                </div>
 
-                                                    </div>
-                                                )}
+                                                <div className="interview-tip">
 
+                                                    <strong>
+                                                        🎯 Interview Tip
+                                                    </strong>
 
-                                                {item.tip && (
-                                                    <div className="interview-tip">
+                                                    <p>
+                                                        {
+                                                            question.tip
+                                                        }
+                                                    </p>
 
-                                                        <strong>
-                                                            🎯 Interview Tip
-                                                        </strong>
-
-                                                        <p>
-                                                            {item.tip}
-                                                        </p>
-
-                                                    </div>
-                                                )}
+                                                </div>
 
                                             </div>
 
@@ -1240,38 +1498,34 @@ function AnalysisResults({ analysis }) {
                                 </div>
 
                             </div>
+
                         )}
 
 
-                    {/* PREPARATION TIPS */}
-                    {interview.preparationTips &&
-                        interview.preparationTips.length > 0 && (
+                        {/* PREPARATION TIPS */}
+
+                        {interview.preparationTips?.length >
+                            0 && (
 
                             <div className="interview-tips-section">
 
                                 <div className="interview-section-header">
 
-                                    <div>
-                                        <span className="interview-section-icon">
-                                            💡
-                                        </span>
-
-                                        <div>
-                                            <h3>
-                                                Interview Preparation Tips
-                                            </h3>
-
-                                            <p>
-                                                Practical advice to
-                                                improve your interview
-                                                performance.
-                                            </p>
-                                        </div>
+                                    <div className="interview-section-icon">
+                                        ⭐
                                     </div>
 
-                                    <span className="interview-section-count">
-                                        {interview.preparationTips.length}
-                                    </span>
+                                    <div>
+                                        <h3>
+                                            Interview Preparation Tips
+                                        </h3>
+
+                                        <p>
+                                            Practical advice
+                                            to help you perform
+                                            confidently.
+                                        </p>
+                                    </div>
 
                                 </div>
 
@@ -1279,16 +1533,19 @@ function AnalysisResults({ analysis }) {
                                 <div className="interview-tips-grid">
 
                                     {interview.preparationTips.map(
-                                        (tip, index) => (
+                                        (
+                                            tip,
+                                            index
+                                        ) => (
 
                                             <div
                                                 className="interview-tip-card"
                                                 key={index}
                                             >
 
-                                                <div className="interview-tip-number">
+                                                <span className="interview-tip-number">
                                                     {index + 1}
-                                                </div>
+                                                </span>
 
                                                 <p>
                                                     {tip}
@@ -1302,13 +1559,17 @@ function AnalysisResults({ analysis }) {
                                 </div>
 
                             </div>
+
                         )}
 
-                </section>
-            )}
+                    </section>
 
-        </section>
+                )}
+
+            </section>
+        </>
     );
 }
 
 export default AnalysisResults;
+

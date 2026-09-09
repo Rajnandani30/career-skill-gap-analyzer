@@ -2,22 +2,24 @@ const express = require("express");
 const Roadmap = require("../models/Roadmap");
 const Analysis = require("../models/Analysis");
 const authMiddleware = require("../middleware/authMiddleware");
+
 const {
     generateLearningRoadmap
 } = require("../services/aiService");
 
 const router = express.Router();
 
+
 /*
- * Generate and save a personalized AI learning roadmap.
+ * =========================================================
+ * GENERATE LEARNING ROADMAP
+ * =========================================================
  *
  * POST /api/roadmap
  */
 router.post("/", authMiddleware, async (req, res) => {
     try {
-        const {
-            analysisId
-        } = req.body;
+        const { analysisId } = req.body;
 
         if (!analysisId) {
             return res.status(400).json({
@@ -26,10 +28,6 @@ router.post("/", authMiddleware, async (req, res) => {
             });
         }
 
-        /*
-         * Find the analysis and make sure it
-         * belongs to the logged-in user.
-         */
         const analysis = await Analysis.findOne({
             _id: analysisId,
             userId: req.userId
@@ -42,10 +40,6 @@ router.post("/", authMiddleware, async (req, res) => {
             });
         }
 
-        /*
-         * If a roadmap already exists for this
-         * analysis, return the saved roadmap.
-         */
         const existingRoadmap = await Roadmap.findOne({
             analysisId,
             userId: req.userId
@@ -54,63 +48,44 @@ router.post("/", authMiddleware, async (req, res) => {
         if (existingRoadmap) {
             return res.status(200).json({
                 success: true,
-                message:
-                    "This learning roadmap already exists.",
+                message: "Learning roadmap already exists.",
                 roadmap: existingRoadmap
             });
         }
 
-        /*
-         * Make sure there are skill gaps to work on.
-         */
-        const missingSkills =
-            analysis.missingSkills || [];
-
-        if (missingSkills.length === 0) {
+        if (
+            !analysis.missingSkills ||
+            analysis.missingSkills.length === 0
+        ) {
             return res.status(400).json({
                 success: false,
                 message:
-                    "No skill gaps were found. You are already well matched for this role."
+                    "No skill gaps were found for this analysis."
             });
         }
 
-        /*
-         * Ask Gemini to create the personalized
-         * learning roadmap.
-         */
-        const aiRoadmap =
+        const generatedRoadmap =
             await generateLearningRoadmap({
-                targetRole:
-                    analysis.targetRole,
-
-                missingSkills
+                targetRole: analysis.targetRole,
+                missingSkills: analysis.missingSkills
             });
 
-        /*
-         * Save the AI-generated roadmap
-         * in MongoDB.
-         */
-        const roadmap = await Roadmap.create({
+        const roadmapDocument = new Roadmap({
             userId: req.userId,
-
-            analysisId:
-                analysis._id,
-
-            targetRole:
-                analysis.targetRole,
-
-            skills:
-                missingSkills,
-
-            roadmap:
-                aiRoadmap.roadmap || []
+            analysisId: analysis._id,
+            targetRole: analysis.targetRole,
+            skills: analysis.missingSkills,
+            roadmap: generatedRoadmap.roadmap || []
         });
+
+        const savedRoadmap =
+            await roadmapDocument.save();
 
         res.status(201).json({
             success: true,
             message:
-                "AI learning roadmap generated and saved successfully.",
-            roadmap
+                "AI learning roadmap generated successfully.",
+            roadmap: savedRoadmap
         });
 
     } catch (error) {
@@ -130,46 +105,139 @@ router.post("/", authMiddleware, async (req, res) => {
 
 
 /*
- * Get all saved roadmaps for the logged-in user.
+ * =========================================================
+ * UPDATE ROADMAP STEP PROGRESS
+ * =========================================================
  *
- * GET /api/roadmap
+ * PATCH /api/roadmap/:roadmapId/step
  */
-router.get("/", authMiddleware, async (req, res) => {
-    try {
-        const roadmaps = await Roadmap.find({
-            userId: req.userId
-        })
-            .populate(
-                "analysisId",
-                "targetRole matchScore"
-            )
-            .sort({
-                createdAt: -1
+router.patch(
+    "/:roadmapId/step",
+    authMiddleware,
+    async (req, res) => {
+        try {
+            const {
+                skillIndex,
+                stepIndex,
+                completed
+            } = req.body;
+
+            if (
+                skillIndex === undefined ||
+                stepIndex === undefined ||
+                completed === undefined
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Skill index, step index and completion status are required."
+                });
+            }
+
+            const roadmap = await Roadmap.findOne({
+                _id: req.params.roadmapId,
+                userId: req.userId
             });
 
-        res.json({
-            success: true,
-            roadmaps
-        });
+            if (!roadmap) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Roadmap not found."
+                });
+            }
 
-    } catch (error) {
-        console.error(
-            "Get roadmaps error:",
-            error
-        );
+            if (
+                !roadmap.roadmap[skillIndex] ||
+                !roadmap.roadmap[skillIndex].steps[stepIndex]
+            ) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Roadmap step not found."
+                });
+            }
 
-        res.status(500).json({
-            success: false,
-            message:
-                "Failed to fetch learning roadmaps.",
-            error: error.message
-        });
+            roadmap.roadmap[
+                skillIndex
+            ].steps[
+                stepIndex
+            ].completed = Boolean(completed);
+
+            await roadmap.save();
+
+            res.status(200).json({
+                success: true,
+                message:
+                    "Roadmap progress updated successfully.",
+                roadmap
+            });
+
+        } catch (error) {
+            console.error(
+                "Update roadmap progress error:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "Failed to update roadmap progress.",
+                error: error.message
+            });
+        }
     }
-});
+);
 
 
 /*
- * Get one roadmap.
+ * =========================================================
+ * GET ALL ROADMAPS
+ * =========================================================
+ *
+ * GET /api/roadmap
+ */
+router.get(
+    "/",
+    authMiddleware,
+    async (req, res) => {
+        try {
+            const roadmaps =
+                await Roadmap.find({
+                    userId: req.userId
+                })
+                    .populate(
+                        "analysisId",
+                        "targetRole matchScore"
+                    )
+                    .sort({
+                        createdAt: -1
+                    });
+
+            res.status(200).json({
+                success: true,
+                roadmaps
+            });
+
+        } catch (error) {
+            console.error(
+                "Get roadmaps error:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "Failed to fetch learning roadmaps.",
+                error: error.message
+            });
+        }
+    }
+);
+
+
+/*
+ * =========================================================
+ * GET SINGLE ROADMAP
+ * =========================================================
  *
  * GET /api/roadmap/:id
  */
@@ -190,12 +258,11 @@ router.get(
             if (!roadmap) {
                 return res.status(404).json({
                     success: false,
-                    message:
-                        "Learning roadmap not found."
+                    message: "Roadmap not found."
                 });
             }
 
-            res.json({
+            res.status(200).json({
                 success: true,
                 roadmap
             });
@@ -209,7 +276,7 @@ router.get(
             res.status(500).json({
                 success: false,
                 message:
-                    "Failed to fetch learning roadmap.",
+                    "Failed to fetch roadmap.",
                 error: error.message
             });
         }
