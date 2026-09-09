@@ -12,6 +12,7 @@ import ResumeForm from "./components/ResumeForm";
 import JobDescriptionForm from "./components/JobDescriptionForm";
 import ResumeList from "./components/ResumeList";
 import AnalysisResults from "./components/AnalysisResults";
+import AnalysisHistory from "./components/AnalysisHistory";
 
 function App() {
     const [targetRole, setTargetRole] = useState(
@@ -37,6 +38,9 @@ function App() {
     const [latestAnalysis, setLatestAnalysis] =
         useState(null);
 
+    // All saved AI analyses
+    const [analyses, setAnalyses] = useState([]);
+
     // Login state
     const [isLoggedIn, setIsLoggedIn] = useState(
         Boolean(localStorage.getItem("careerAI_token"))
@@ -49,12 +53,16 @@ function App() {
     const [registrationSuccess, setRegistrationSuccess] =
         useState(false);
 
+
     /*
+     * =========================================================
      * LOAD USER DATA
+     * =========================================================
      *
      * Loads:
      * 1. Saved resumes
-     * 2. Latest analysis
+     * 2. All saved analyses
+     * 3. Latest analysis
      */
     useEffect(() => {
         if (!isLoggedIn) {
@@ -70,8 +78,11 @@ function App() {
                     return;
                 }
 
+
                 /*
+                 * =================================================
                  * LOAD SAVED RESUMES
+                 * =================================================
                  */
                 const resumeResponse = await fetch(
                     "http://localhost:5000/api/resumes",
@@ -122,8 +133,11 @@ function App() {
                     }
                 }
 
+
                 /*
+                 * =================================================
                  * LOAD SAVED ANALYSES
+                 * =================================================
                  */
                 const analysisResponse = await fetch(
                     "http://localhost:5000/api/analysis",
@@ -149,6 +163,11 @@ function App() {
 
                 const savedAnalyses =
                     analysisData.analyses || [];
+
+                /*
+                 * Store ALL analyses for History
+                 */
+                setAnalyses(savedAnalyses);
 
                 /*
                  * The backend returns newest analyses first.
@@ -183,8 +202,11 @@ function App() {
         loadUserData();
     }, [isLoggedIn]);
 
+
     /*
+     * =========================================================
      * LOGIN
+     * =========================================================
      */
     const handleLogin = () => {
         setIsLoggedIn(true);
@@ -192,8 +214,11 @@ function App() {
         setRegistrationSuccess(false);
     };
 
+
     /*
+     * =========================================================
      * LOGOUT
+     * =========================================================
      */
     const handleLogout = () => {
         localStorage.removeItem("careerAI_token");
@@ -209,18 +234,25 @@ function App() {
         setResumeText("");
         setJobDescription("");
         setLatestAnalysis(null);
+        setAnalyses([]);
     };
 
+
     /*
+     * =========================================================
      * REGISTRATION SUCCESS
+     * =========================================================
      */
     const handleRegisterSuccess = () => {
         setShowRegister(false);
         setRegistrationSuccess(true);
     };
 
+
     /*
+     * =========================================================
      * QUICK ACTIONS
+     * =========================================================
      */
     const handleAction = (action) => {
         if (action === "resume") {
@@ -240,20 +272,27 @@ function App() {
         }
 
         if (action === "roadmap") {
-            alert(
-                "Learning Roadmap will be connected to AI soon."
-            );
+            document
+                .getElementById("learning-roadmap")
+                ?.scrollIntoView({
+                    behavior: "smooth"
+                });
         }
 
         if (action === "interview") {
-            alert(
-                "Interview Preparation will be connected to AI soon."
-            );
+            document
+                .getElementById("interview-preparation")
+                ?.scrollIntoView({
+                    behavior: "smooth"
+                });
         }
     };
 
+
     /*
+     * =========================================================
      * ADD NEW RESUME
+     * =========================================================
      */
     const handleAddResume = () => {
         setSelectedResumeId(null);
@@ -268,8 +307,11 @@ function App() {
             });
     };
 
+
     /*
+     * =========================================================
      * SELECT EXISTING RESUME
+     * =========================================================
      */
     const handleSelectResume = (resume) => {
         setSelectedResumeId(resume._id);
@@ -284,8 +326,11 @@ function App() {
             });
     };
 
+
     /*
+     * =========================================================
      * DELETE RESUME
+     * =========================================================
      */
     const handleDeleteResume = async (resumeId) => {
         const confirmed = window.confirm(
@@ -371,8 +416,11 @@ function App() {
         }
     };
 
+
     /*
+     * =========================================================
      * SAVE OR UPDATE RESUME
+     * =========================================================
      */
     const handleSaveResume = async () => {
         try {
@@ -530,8 +578,11 @@ function App() {
         }
     };
 
+
     /*
+     * =========================================================
      * ANALYZE JOB DESCRIPTION
+     * =========================================================
      */
     const handleAnalyzeJob = async () => {
         try {
@@ -580,13 +631,6 @@ function App() {
                             `Bearer ${token}`
                     },
 
-                    /*
-                     * Only send the information
-                     * actually needed by the backend.
-                     *
-                     * Gemini generates the skills,
-                     * gaps, score and summary.
-                     */
                     body: JSON.stringify({
                         resumeId:
                             selectedResumeId,
@@ -613,16 +657,48 @@ function App() {
             }
 
             /*
-             * Store the returned analysis
-             * so the dashboard can use it.
+             * Store returned analysis
              */
             setLatestAnalysis(
                 data.analysis
             );
 
             /*
-             * Keep the returned values in
-             * the form as well.
+             * Add/update analysis in history
+             */
+            setAnalyses((currentAnalyses) => {
+                const returnedAnalysis =
+                    data.analysis;
+
+                if (!returnedAnalysis) {
+                    return currentAnalyses;
+                }
+
+                const alreadyExists =
+                    currentAnalyses.some(
+                        (item) =>
+                            item._id ===
+                            returnedAnalysis._id
+                    );
+
+                if (alreadyExists) {
+                    return currentAnalyses.map(
+                        (item) =>
+                            item._id ===
+                            returnedAnalysis._id
+                                ? returnedAnalysis
+                                : item
+                    );
+                }
+
+                return [
+                    returnedAnalysis,
+                    ...currentAnalyses
+                ];
+            });
+
+            /*
+             * Keep returned values in the form
              */
             setTargetRole(
                 data.analysis?.targetRole ||
@@ -653,12 +729,14 @@ function App() {
             }
 
             /*
-             * Automatically move the user
-             * to the AI results section.
+             * Automatically move user
+             * to AI results
              */
             setTimeout(() => {
                 document
-                    .getElementById("analysis-results")
+                    .getElementById(
+                        "analysis-results"
+                    )
                     ?.scrollIntoView({
                         behavior: "smooth",
                         block: "start"
@@ -676,8 +754,177 @@ function App() {
         }
     };
 
+
     /*
+     * =========================================================
+     * VIEW PREVIOUS ANALYSIS
+     * =========================================================
+     */
+    const handleViewAnalysis = (analysis) => {
+        if (!analysis) {
+            return;
+        }
+
+        /*
+         * Restore selected analysis
+         */
+        setLatestAnalysis(analysis);
+
+        /*
+         * Restore target role
+         */
+        setTargetRole(
+            analysis.targetRole ||
+                "Full Stack Developer"
+        );
+
+        /*
+         * Restore job description
+         */
+        setJobDescription(
+            analysis.jobDescription || ""
+        );
+
+        /*
+         * Restore resume information
+         */
+        if (analysis.resumeId) {
+            const resumeId =
+                typeof analysis.resumeId ===
+                "object"
+                    ? analysis.resumeId._id
+                    : analysis.resumeId;
+
+            const matchingResume =
+                resumes.find(
+                    (resume) =>
+                        resume._id ===
+                        resumeId
+                );
+
+            if (matchingResume) {
+                setSelectedResumeId(
+                    matchingResume._id
+                );
+
+                setResumeTitle(
+                    matchingResume.title || ""
+                );
+
+                setResumeText(
+                    matchingResume.resumeText
+                );
+
+                setIsCreatingNewResume(false);
+            }
+        }
+
+        /*
+         * Move back to analysis results
+         */
+        setTimeout(() => {
+            document
+                .getElementById(
+                    "analysis-results"
+                )
+                ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+        }, 100);
+    };
+
+
+    /*
+     * =========================================================
+     * DELETE ANALYSIS
+     * =========================================================
+     */
+    const handleDeleteAnalysis = async (
+        analysisId
+    ) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this analysis?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const token =
+                localStorage.getItem("careerAI_token");
+
+            if (!token) {
+                alert("Please log in again.");
+                return;
+            }
+
+            const response = await fetch(
+                `http://localhost:5000/api/analysis/${analysisId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+                alert(
+                    data.message ||
+                        "Failed to delete analysis."
+                );
+
+                return;
+            }
+
+            /*
+             * Remove analysis from history
+             */
+            setAnalyses((currentAnalyses) =>
+                currentAnalyses.filter(
+                    (analysis) =>
+                        analysis._id !==
+                        analysisId
+                )
+            );
+
+            /*
+             * If the deleted analysis is
+             * currently displayed, clear it.
+             */
+            if (
+                latestAnalysis?._id ===
+                analysisId
+            ) {
+                setLatestAnalysis(null);
+            }
+
+            alert(
+                "Analysis deleted successfully!"
+            );
+        } catch (error) {
+            console.error(
+                "Analysis delete error:",
+                error
+            );
+
+            alert(
+                "Unable to connect to the CareerAI server."
+            );
+        }
+    };
+
+
+    /*
+     * =========================================================
      * AUTHENTICATION SCREENS
+     * =========================================================
      */
     if (!isLoggedIn) {
         if (showRegister) {
@@ -707,8 +954,11 @@ function App() {
         );
     }
 
+
     /*
+     * =========================================================
      * MAIN DASHBOARD
+     * =========================================================
      */
     return (
         <div className="app">
@@ -718,11 +968,13 @@ function App() {
                 onLogout={handleLogout}
             />
 
+
             {/* Main Content */}
             <main className="main-content">
 
                 {/* Header */}
                 <Header />
+
 
                 {/* Target Career */}
                 <div className="target-career">
@@ -763,6 +1015,7 @@ function App() {
                     </button>
 
                 </div>
+
 
                 {/* Statistics */}
                 <div className="stats-grid">
@@ -817,6 +1070,7 @@ function App() {
 
                 </div>
 
+
                 {/* Dashboard Grid */}
                 <div className="dashboard-grid">
 
@@ -844,6 +1098,7 @@ function App() {
 
                         </div>
 
+
                         <div className="progress">
 
                             <div
@@ -859,12 +1114,14 @@ function App() {
 
                         </div>
 
+
                         <div className="progress-labels">
                             <span>Beginner</span>
                             <span>Job Ready</span>
                         </div>
 
                     </div>
+
 
                     {/* Quick Actions */}
                     <div className="dashboard-card">
@@ -876,6 +1133,7 @@ function App() {
                     </div>
 
                 </div>
+
 
                 {/* My Resumes */}
                 <div className="dashboard-card">
@@ -902,6 +1160,7 @@ function App() {
 
                 </div>
 
+
                 {/* Resume Analysis / Editor */}
                 <div
                     className="dashboard-card"
@@ -927,6 +1186,7 @@ function App() {
                     />
 
                 </div>
+
 
                 {/* Job Description Analysis */}
                 <div className="dashboard-card">
@@ -955,10 +1215,24 @@ function App() {
 
                 </div>
 
+
                 {/* AI ANALYSIS RESULTS */}
                 <AnalysisResults
                     analysis={latestAnalysis}
                 />
+
+
+                {/* ANALYSIS HISTORY */}
+                <AnalysisHistory
+                    analyses={analyses}
+                    onViewAnalysis={
+                        handleViewAnalysis
+                    }
+                    onDeleteAnalysis={
+                        handleDeleteAnalysis
+                    }
+                />
+
 
                 {/* Skill Gaps */}
                 <div
@@ -995,6 +1269,7 @@ function App() {
                         </button>
 
                     </div>
+
 
                     <div className="skill-grid">
 
@@ -1041,6 +1316,7 @@ function App() {
                     </div>
 
                 </div>
+
 
                 {/* Footer */}
                 <footer>

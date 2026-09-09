@@ -33,15 +33,15 @@ function Sidebar({ onLogout }) {
                     🎯 Skill Gap
                 </a>
 
-                <a href="#">
+                <a href="#learning-roadmap">
                     📚 Learning Roadmap
                 </a>
 
-                <a href="#">
+                <a href="#interview-preparation">
                     🎤 Interview Prep
                 </a>
 
-                <a href="#">
+                <a href="#analysis-history">
                     🕘 Analysis History
                 </a>
 

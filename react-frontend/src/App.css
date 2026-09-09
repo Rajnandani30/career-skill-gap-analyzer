@@ -3245,3 +3245,537 @@ footer {
     background: #45345d;
     border-color: #625077;
 }
+
+/* =========================================================
+   ANALYSIS HISTORY
+   ========================================================= */
+
+.analysis-history {
+    margin-top: 36px;
+    padding: 32px;
+    background: #181f2c;
+    border: 1px solid #364258;
+    border-top: 4px solid #38bdf8;
+    border-radius: 20px;
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.26);
+}
+
+
+/* =========================================================
+   HISTORY HEADER
+   ========================================================= */
+
+.analysis-history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.analysis-history-header h2 {
+    margin: 7px 0 8px;
+    color: #ffffff;
+    font-size: 28px;
+}
+
+.analysis-history-header p {
+    margin: 0;
+    color: #aeb9cc;
+    line-height: 1.6;
+}
+
+.history-count-card {
+    min-width: 110px;
+    padding: 17px 20px;
+    text-align: center;
+    background: #253247;
+    border: 1px solid #3d4d66;
+    border-radius: 14px;
+}
+
+.history-count-card strong {
+    display: block;
+    color: #ffffff;
+    font-size: 27px;
+    line-height: 1;
+    margin-bottom: 7px;
+}
+
+.history-count-card span {
+    color: #aeb9cc;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   HISTORY LIST
+   ========================================================= */
+
+.analysis-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/* =========================================================
+   HISTORY CARD
+   ========================================================= */
+
+.analysis-history-card {
+    padding: 22px;
+    background: #222d3f;
+    border: 1px solid #3a4960;
+    border-radius: 15px;
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.analysis-history-card:hover {
+    border-color: #52637e;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   HISTORY CARD TOP
+   ========================================================= */
+
+.history-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.history-card-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.history-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #29384d;
+    border: 1px solid #43546d;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.history-card-title h3 {
+    margin: 0 0 5px;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.history-card-title p {
+    margin: 0;
+    color: #9eabbf;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   HISTORY SCORE
+   ========================================================= */
+
+.history-score {
+    min-width: 72px;
+    padding: 11px 14px;
+    text-align: center;
+    border-radius: 11px;
+}
+
+.history-score strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.history-score span {
+    font-size: 11px;
+}
+
+.history-score-high {
+    background: #263d39;
+    border: 1px solid #3e625b;
+}
+
+.history-score-high strong {
+    color: #9de2c9;
+}
+
+.history-score-high span {
+    color: #8fc8ba;
+}
+
+.history-score-medium {
+    background: #403c2b;
+    border: 1px solid #665f3e;
+}
+
+.history-score-medium strong {
+    color: #e8d99a;
+}
+
+.history-score-medium span {
+    color: #c9bc83;
+}
+
+.history-score-low {
+    background: #412f35;
+    border: 1px solid #67434d;
+}
+
+.history-score-low strong {
+    color: #f0aab5;
+}
+
+.history-score-low span {
+    color: #d895a1;
+}
+
+
+/* =========================================================
+   HISTORY INFORMATION
+   ========================================================= */
+
+.history-card-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.history-info-item {
+    padding: 14px 16px;
+    background: #29364a;
+    border: 1px solid #3c4b63;
+    border-radius: 10px;
+}
+
+.history-info-item span {
+    display: block;
+    margin-bottom: 6px;
+    color: #99a7bc;
+    font-size: 12px;
+}
+
+.history-info-item strong {
+    display: block;
+    color: #f3f6fc;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   HISTORY SUMMARY
+   ========================================================= */
+
+.history-summary {
+    margin-top: 14px;
+    padding: 16px 18px;
+    background: #263247;
+    border-left: 4px solid #38bdf8;
+    border-radius: 10px;
+}
+
+.history-summary strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.history-summary p {
+    margin: 0;
+    color: #bdc7d7;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   HISTORY ACTIONS
+   ========================================================= */
+
+.history-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.history-view-button,
+.history-delete-button {
+    border-radius: 9px;
+    padding: 10px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.history-view-button {
+    border: 1px solid #52627c;
+    background: #35445c;
+    color: #ffffff;
+}
+
+.history-delete-button {
+    border: 1px solid #60434b;
+    background: #392d35;
+    color: #e8aeb8;
+}
+
+.history-view-button:hover,
+.history-delete-button:hover {
+    transform: translateY(-1px);
+}
+
+.history-view-button:hover {
+    opacity: 0.9;
+}
+
+.history-delete-button:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   EMPTY HISTORY
+   ========================================================= */
+
+.analysis-history-empty {
+    padding: 50px 25px;
+    text-align: center;
+    background: #222d3f;
+    border: 1px dashed #46566f;
+    border-radius: 15px;
+}
+
+.analysis-history-empty-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.analysis-history-empty h3 {
+    margin: 0 0 8px;
+    color: #ffffff;
+    font-size: 19px;
+}
+
+.analysis-history-empty p {
+    margin: 0 auto;
+    max-width: 520px;
+    color: #aeb9cc;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ANALYSIS HISTORY RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .analysis-history-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .history-count-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .history-card-top {
+        align-items: flex-start;
+    }
+
+    .history-card-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .analysis-history {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .analysis-history-header h2 {
+        font-size: 23px;
+    }
+
+    .analysis-history-card {
+        padding: 18px;
+    }
+
+    .history-card-top {
+        flex-direction: column;
+    }
+
+    .history-score {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .history-card-actions {
+        flex-direction: column;
+    }
+
+    .history-view-button,
+    .history-delete-button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   ANALYSIS HISTORY — AMBER THEME
+   ========================================================= */
+
+.analysis-history {
+    background: #241f18;
+    border-color: #55452d;
+    border-top-color: #f59e0b;
+}
+
+.analysis-history-header h2 {
+    color: #ffffff;
+}
+
+.analysis-history-header p {
+    color: #c8bda9;
+}
+
+.analysis-eyebrow {
+    color: #fbbf24;
+}
+
+.history-count-card {
+    background: #382d1d;
+    border-color: #665331;
+}
+
+.history-count-card strong {
+    color: #fcd34d;
+}
+
+.history-count-card span {
+    color: #c9b98e;
+}
+
+
+/* History card */
+
+.analysis-history-card {
+    background: #30281d;
+    border-color: #594a32;
+}
+
+.analysis-history-card:hover {
+    border-color: #80683f;
+}
+
+.history-card-icon {
+    background: #3d321f;
+    border-color: #6c5934;
+}
+
+
+/* History title */
+
+.history-card-title h3 {
+    color: #ffffff;
+}
+
+.history-card-title p {
+    color: #b9ae9b;
+}
+
+
+/* History information */
+
+.history-info-item {
+    background: #392f20;
+    border-color: #5b4b31;
+}
+
+.history-info-item span {
+    color: #bcae96;
+}
+
+.history-info-item strong {
+    color: #f5f1e8;
+}
+
+
+/* AI summary */
+
+.history-summary {
+    background: #392f20;
+    border-left-color: #f59e0b;
+}
+
+.history-summary strong {
+    color: #ffffff;
+}
+
+.history-summary p {
+    color: #cfc3ae;
+}
+
+
+/* Buttons */
+
+.history-view-button {
+    background: #4a3a22;
+    border-color: #756039;
+    color: #ffffff;
+}
+
+.history-view-button:hover {
+    background: #574525;
+}
+
+.history-delete-button {
+    background: #3e2d31;
+    border-color: #67434b;
+    color: #e8aeb8;
+}
+
+
+/* Empty state */
+
+.analysis-history-empty {
+    background: #30281d;
+    border-color: #675536;
+}
+
+.analysis-history-empty h3 {
+    color: #ffffff;
+}
+
+.analysis-history-empty p {
+    color: #c8bda9;
+}
+
+/* Space between Analysis History and Top Skill Gaps */
+.analysis-history {
+    margin-bottom: 36px;
+}
