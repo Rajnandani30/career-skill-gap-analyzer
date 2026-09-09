@@ -11,6 +11,7 @@ import SkillGap from "./components/SkillGap";
 import ResumeForm from "./components/ResumeForm";
 import JobDescriptionForm from "./components/JobDescriptionForm";
 import ResumeList from "./components/ResumeList";
+import AnalysisResults from "./components/AnalysisResults";
 
 function App() {
     const [targetRole, setTargetRole] = useState(
@@ -321,6 +322,7 @@ function App() {
                     data.message ||
                         "Failed to delete resume."
                 );
+
                 return;
             }
 
@@ -386,6 +388,7 @@ function App() {
                 alert(
                     "Please enter a title for your resume."
                 );
+
                 return;
             }
 
@@ -393,6 +396,7 @@ function App() {
                 alert(
                     "Please enter your resume before saving."
                 );
+
                 return;
             }
 
@@ -460,6 +464,7 @@ function App() {
                     data.message ||
                         "Failed to save resume."
                 );
+
                 return;
             }
 
@@ -542,6 +547,7 @@ function App() {
                 alert(
                     "Please select a resume before analyzing the job."
                 );
+
                 return;
             }
 
@@ -549,6 +555,7 @@ function App() {
                 alert(
                     "Please enter a target job role."
                 );
+
                 return;
             }
 
@@ -556,6 +563,7 @@ function App() {
                 alert(
                     "Please enter a job description."
                 );
+
                 return;
             }
 
@@ -600,6 +608,7 @@ function App() {
                     data.message ||
                         "Failed to analyze job."
                 );
+
                 return;
             }
 
@@ -643,6 +652,18 @@ function App() {
                 );
             }
 
+            /*
+             * Automatically move the user
+             * to the AI results section.
+             */
+            setTimeout(() => {
+                document
+                    .getElementById("analysis-results")
+                    ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+            }, 200);
         } catch (error) {
             console.error(
                 "Job analysis error:",
@@ -665,7 +686,6 @@ function App() {
                     onRegisterSuccess={
                         handleRegisterSuccess
                     }
-
                     onGoToLogin={() => {
                         setShowRegister(false);
                     }}
@@ -676,11 +696,9 @@ function App() {
         return (
             <Login
                 onLogin={handleLogin}
-
                 registrationSuccess={
                     registrationSuccess
                 }
-
                 onGoToRegister={() => {
                     setRegistrationSuccess(false);
                     setShowRegister(true);
@@ -769,8 +787,8 @@ function App() {
                         value={
                             latestAnalysis
                                 ? latestAnalysis
-                                    .matchedSkills
-                                    ?.length || 0
+                                      .matchedSkills
+                                      ?.length || 0
                                 : "12"
                         }
                         description="Skills match your target role"
@@ -782,8 +800,8 @@ function App() {
                         value={
                             latestAnalysis
                                 ? latestAnalysis
-                                    .missingSkills
-                                    ?.length || 0
+                                      .missingSkills
+                                      ?.length || 0
                                 : "5"
                         }
                         description="Skills need improvement"
@@ -936,6 +954,11 @@ function App() {
                     />
 
                 </div>
+
+                {/* AI ANALYSIS RESULTS */}
+                <AnalysisResults
+                    analysis={latestAnalysis}
+                />
 
                 {/* Skill Gaps */}
                 <div

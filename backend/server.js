@@ -7,6 +7,7 @@ const path = require("path");
 const userRoutes = require("./routes/userRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const analysisRoutes = require("./routes/analysisRoutes");
+const roadmapRoutes = require("./routes/roadmapRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/users", userRoutes);
 // Resume API routes
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/analysis", analysisRoutes);
+app.use("/api/roadmap", roadmapRoutes);
 
 // Serve static website
 app.use(express.static(path.join(__dirname, "public")));
