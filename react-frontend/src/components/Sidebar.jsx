@@ -1,4 +1,8 @@
-function Sidebar({ onLogout }) {
+function Sidebar({
+    onLogout,
+    onProfile,
+    onSettings
+}) {
     const handleLogoutClick = () => {
         const confirmed = window.confirm(
             "Are you sure you want to logout?"
@@ -50,14 +54,25 @@ function Sidebar({ onLogout }) {
             {/* Bottom Navigation */}
             <div className="sidebar-bottom">
 
-                <a href="#">
+                {/* My Profile */}
+                <button
+                    type="button"
+                    className="sidebar-bottom-link"
+                    onClick={onProfile}
+                >
                     👤 My Profile
-                </a>
+                </button>
 
-                <a href="#">
+                {/* Settings */}
+                <button
+                    type="button"
+                    className="sidebar-bottom-link"
+                    onClick={onSettings}
+                >
                     ⚙️ Settings
-                </a>
+                </button>
 
+                {/* Logout */}
                 <button
                     type="button"
                     className="logout-button"

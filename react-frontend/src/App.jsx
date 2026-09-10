@@ -13,6 +13,8 @@ import JobDescriptionForm from "./components/JobDescriptionForm";
 import ResumeList from "./components/ResumeList";
 import AnalysisResults from "./components/AnalysisResults";
 import AnalysisHistory from "./components/AnalysisHistory";
+import Profile from "./components/Profile";
+import Settings from "./components/Settings";
 
 function App() {
     const [targetRole, setTargetRole] = useState(
@@ -41,6 +43,10 @@ function App() {
     // Overall learning roadmap progress
     const [roadmapProgress, setRoadmapProgress] =
         useState(0);
+
+    // Active application page
+    const [activePage, setActivePage] =
+        useState("dashboard");
 
     // All saved AI analyses
     const [analyses, setAnalyses] = useState([]);
@@ -240,6 +246,26 @@ function App() {
         setLatestAnalysis(null);
         setAnalyses([]);
         setRoadmapProgress(0);
+        setActivePage("dashboard");
+    };
+
+
+    /*
+     * =========================================================
+     * PROFILE / SETTINGS NAVIGATION
+     * =========================================================
+     */
+
+    const handleProfile = () => {
+        setActivePage("profile");
+    };
+
+    const handleSettings = () => {
+        setActivePage("settings");
+    };
+
+    const handleDashboard = () => {
+        setActivePage("dashboard");
     };
 
 
@@ -965,12 +991,75 @@ function App() {
      * MAIN DASHBOARD
      * =========================================================
      */
+    /*
+     * =========================================================
+     * PROFILE PAGE
+     * =========================================================
+     */
+
+    if (activePage === "profile") {
+        return (
+            <div className="app">
+
+                <Sidebar
+                    onLogout={handleLogout}
+                    onProfile={handleProfile}
+                    onSettings={handleSettings}
+                />
+
+                <main className="main-content">
+
+                    <Profile
+                        targetRole={targetRole}
+                        resumes={resumes}
+                        analyses={analyses}
+                        roadmapProgress={roadmapProgress}
+                        onBackToDashboard={handleDashboard}
+                    />
+
+                </main>
+
+            </div>
+        );
+    }
+
+    if (activePage === "settings") {
+    return (
+        <div className="app">
+            <Sidebar
+                onLogout={handleLogout}
+                onProfile={handleProfile}
+                onSettings={handleSettings}
+            />
+
+            <main className="main-content">
+                <Settings
+                    targetRole={targetRole}
+                    onSaveTargetRole={(newRole) => {
+                        setTargetRole(newRole);
+                    }}
+                    onBackToDashboard={handleDashboard}
+                />
+            </main>
+        </div>
+    );
+}
+
+
+    /*
+     * =========================================================
+     * MAIN DASHBOARD
+     * =========================================================
+     */
+
     return (
         <div className="app">
 
             {/* Sidebar */}
             <Sidebar
                 onLogout={handleLogout}
+                onProfile={handleProfile}
+                onSettings={handleSettings}
             />
 
 
