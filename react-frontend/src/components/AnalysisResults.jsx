@@ -9,10 +9,6 @@ function AnalysisResults({ analysis, onRoadmapProgressChange }) {
 
     const [progressUpdating, setProgressUpdating] = useState(null);
 
-    if (!analysis) {
-        return null;
-    }
-
     const token = localStorage.getItem("careerAI_token");
 
 
@@ -217,6 +213,11 @@ function AnalysisResults({ analysis, onRoadmapProgressChange }) {
 
         onRoadmapProgressChange(overallProgress);
     }, [roadmap, onRoadmapProgressChange]);
+
+
+    if (!analysis) {
+        return null;
+    }
 
 
     /*
