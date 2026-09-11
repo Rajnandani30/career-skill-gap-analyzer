@@ -38,7 +38,6 @@ router.post("/register", async (req, res) => {
         }
 
         // Normalize email to prevent duplicate accounts
-        // such as User@gmail.com and user@gmail.com
         const normalizedEmail = email.trim().toLowerCase();
 
         // Check whether the email is already registered
@@ -183,6 +182,114 @@ router.post("/login", async (req, res) => {
         res.status(500).json({
             success: false,
             message: error.message
+        });
+    }
+});
+
+
+/*
+ * =========================================================
+ * RESET PASSWORD
+ * =========================================================
+ *
+ * Endpoint:
+ * POST /api/users/reset-password
+ *
+ * Receives:
+ * {
+ *   email,
+ *   newPassword,
+ *   confirmPassword
+ * }
+ */
+router.post("/reset-password", async (req, res) => {
+    try {
+        const { email, newPassword, confirmPassword } = req.body;
+
+        // Validate required fields
+        if (!email || !newPassword || !confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Email, new password and confirm password are required."
+            });
+        }
+
+        // Normalize email
+        const normalizedEmail = email.trim().toLowerCase();
+
+        // Check whether the passwords match
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "New password and confirm password do not match."
+            });
+        }
+
+        // Validate password length
+        if (newPassword.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Password must be at least 6 characters."
+            });
+        }
+
+        // Find the user by email
+        const user = await User.findOne({
+            email: normalizedEmail
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "No account found with this email address."
+            });
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the password
+        user.password = hashedPassword;
+        await user.save();
+
+        /*
+         * Send password-reset confirmation email.
+         * If email sending fails, the password is still updated.
+         */
+        try {
+            await sendCareerAIEmail({
+                to: user.email,
+                subject: "CareerAI Password Reset Confirmation",
+                title: "Password Reset Successful",
+                message:
+                    "Your CareerAI password has been reset successfully.\n\n" +
+                    "You can now log in to your CareerAI account using your new password."
+            });
+
+            console.log(
+                `Password reset confirmation email sent to ${user.email}`
+            );
+        } catch (emailError) {
+            console.error(
+                "Password reset confirmation email could not be sent:",
+                emailError.message
+            );
+        }
+
+        // Send success response
+        res.status(200).json({
+            success: true,
+            message:
+                "Password reset successful! A confirmation email has been sent."
+        });
+    } catch (error) {
+        console.error("Reset password error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to reset password. Please try again."
         });
     }
 });
