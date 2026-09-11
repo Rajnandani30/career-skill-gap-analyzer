@@ -40,9 +40,10 @@ function App() {
     const [latestAnalysis, setLatestAnalysis] =
         useState(null);
 
-    // Overall learning roadmap progress
-   const [roadmapProgress, setRoadmapProgress] = useState({});
-const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
+    // Learning roadmap progress
+    const [roadmapProgress, setRoadmapProgress] = useState({});
+    const [overallRoadmapProgress, setOverallRoadmapProgress] =
+        useState(0);
 
     // Active application page
     const [activePage, setActivePage] =
@@ -63,7 +64,6 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
     const [registrationSuccess, setRegistrationSuccess] =
         useState(false);
 
-
     /*
      * =========================================================
      * LOAD USER DATA
@@ -74,6 +74,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
      * 2. All saved analyses
      * 3. Latest analysis
      */
+
     useEffect(() => {
         if (!isLoggedIn) {
             return;
@@ -88,12 +89,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     return;
                 }
 
-
                 /*
                  * =================================================
                  * LOAD SAVED RESUMES
                  * =================================================
                  */
+
                 const resumeResponse = await fetch(
                     "http://localhost:5000/api/resumes",
                     {
@@ -121,6 +122,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     /*
                      * Select the most recently updated resume
                      */
+
                     if (savedResumes.length > 0) {
                         setSelectedResumeId(
                             savedResumes[0]._id
@@ -131,7 +133,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                         );
 
                         setResumeText(
-                            savedResumes[0].resumeText
+                            savedResumes[0].resumeText || ""
                         );
 
                         setIsCreatingNewResume(false);
@@ -143,12 +145,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     }
                 }
 
-
                 /*
                  * =================================================
                  * LOAD SAVED ANALYSES
                  * =================================================
                  */
+
                 const analysisResponse = await fetch(
                     "http://localhost:5000/api/analysis",
                     {
@@ -177,21 +179,19 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                 /*
                  * Store ALL analyses for History
                  */
+
                 setAnalyses(savedAnalyses);
 
                 /*
-                 * The backend returns newest analyses first.
-                 * Restore the latest analysis.
+                 * Restore the latest analysis if one exists.
+                 * Otherwise, reset all analysis-related dashboard data.
                  */
+
                 if (savedAnalyses.length > 0) {
                     const latest = savedAnalyses[0];
 
                     setLatestAnalysis(latest);
 
-                    /*
-                     * Restore job role and job description
-                     * after page refresh.
-                     */
                     setTargetRole(
                         latest.targetRole ||
                             "Full Stack Developer"
@@ -200,6 +200,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     setJobDescription(
                         latest.jobDescription || ""
                     );
+                } else {
+                    setLatestAnalysis(null);
+                    setRoadmapProgress({});
+                    setOverallRoadmapProgress(0);
+                    setJobDescription("");
+                    setTargetRole("Full Stack Developer");
                 }
             } catch (error) {
                 console.error(
@@ -212,24 +218,24 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         loadUserData();
     }, [isLoggedIn]);
 
-
     /*
      * =========================================================
      * LOGIN
      * =========================================================
      */
+
     const handleLogin = () => {
         setIsLoggedIn(true);
         setShowRegister(false);
         setRegistrationSuccess(false);
     };
 
-
     /*
      * =========================================================
      * LOGOUT
      * =========================================================
      */
+
     const handleLogout = () => {
         localStorage.removeItem("careerAI_token");
         localStorage.removeItem("careerAI_user");
@@ -245,10 +251,11 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         setJobDescription("");
         setLatestAnalysis(null);
         setAnalyses([]);
-        setRoadmapProgress(0);
+        setRoadmapProgress({});
+        setOverallRoadmapProgress(0);
+        setTargetRole("Full Stack Developer");
         setActivePage("dashboard");
     };
-
 
     /*
      * =========================================================
@@ -268,23 +275,23 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         setActivePage("dashboard");
     };
 
-
     /*
      * =========================================================
      * REGISTRATION SUCCESS
      * =========================================================
      */
+
     const handleRegisterSuccess = () => {
         setShowRegister(false);
         setRegistrationSuccess(true);
     };
-
 
     /*
      * =========================================================
      * QUICK ACTIONS
      * =========================================================
      */
+
     const handleAction = (action) => {
         if (action === "resume") {
             document
@@ -319,12 +326,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         }
     };
 
-
     /*
      * =========================================================
      * ADD NEW RESUME
      * =========================================================
      */
+
     const handleAddResume = () => {
         setSelectedResumeId(null);
         setResumeTitle("");
@@ -338,16 +345,16 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             });
     };
 
-
     /*
      * =========================================================
      * SELECT EXISTING RESUME
      * =========================================================
      */
+
     const handleSelectResume = (resume) => {
         setSelectedResumeId(resume._id);
         setResumeTitle(resume.title || "");
-        setResumeText(resume.resumeText);
+        setResumeText(resume.resumeText || "");
         setIsCreatingNewResume(false);
 
         document
@@ -357,12 +364,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             });
     };
 
-
     /*
      * =========================================================
      * DELETE RESUME
      * =========================================================
      */
+
     const handleDeleteResume = async (resumeId) => {
         const confirmed = window.confirm(
             "Are you sure you want to delete this resume?"
@@ -413,6 +420,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * If deleted resume was active
              */
+
             if (selectedResumeId === resumeId) {
                 if (remainingResumes.length > 0) {
                     setSelectedResumeId(
@@ -424,7 +432,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     );
 
                     setResumeText(
-                        remainingResumes[0].resumeText
+                        remainingResumes[0].resumeText || ""
                     );
 
                     setIsCreatingNewResume(false);
@@ -435,6 +443,8 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     setIsCreatingNewResume(true);
                 }
             }
+
+            alert("Resume deleted successfully!");
         } catch (error) {
             console.error(
                 "Resume delete error:",
@@ -447,12 +457,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         }
     };
 
-
     /*
      * =========================================================
      * SAVE OR UPDATE RESUME
      * =========================================================
      */
+
     const handleSaveResume = async () => {
         try {
             const token =
@@ -484,6 +494,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * CREATE NEW RESUME
              */
+
             if (
                 isCreatingNewResume ||
                 !selectedResumeId
@@ -513,6 +524,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * UPDATE EXISTING RESUME
              */
+
             else {
                 response = await fetch(
                     `http://localhost:5000/api/resumes/${selectedResumeId}`,
@@ -552,6 +564,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * CREATE NEW RESUME IN LIST
              */
+
             if (
                 isCreatingNewResume ||
                 !selectedResumeId
@@ -565,6 +578,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * UPDATE EXISTING RESUME IN LIST
              */
+
             else {
                 setResumes((currentResumes) =>
                     currentResumes.map(
@@ -586,7 +600,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             );
 
             setResumeText(
-                savedResume.resumeText
+                savedResume.resumeText || ""
             );
 
             setIsCreatingNewResume(false);
@@ -609,12 +623,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         }
     };
 
-
     /*
      * =========================================================
      * ANALYZE JOB DESCRIPTION
      * =========================================================
      */
+
     const handleAnalyzeJob = async () => {
         try {
             const token =
@@ -690,6 +704,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * Store returned analysis
              */
+
             setLatestAnalysis(
                 data.analysis
             );
@@ -697,6 +712,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * Add/update analysis in history
              */
+
             setAnalyses((currentAnalyses) => {
                 const returnedAnalysis =
                     data.analysis;
@@ -731,6 +747,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             /*
              * Keep returned values in the form
              */
+
             setTargetRole(
                 data.analysis?.targetRole ||
                     targetRole
@@ -763,6 +780,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
              * Automatically move user
              * to AI results
              */
+
             setTimeout(() => {
                 document
                     .getElementById(
@@ -785,12 +803,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         }
     };
 
-
     /*
      * =========================================================
      * VIEW PREVIOUS ANALYSIS
      * =========================================================
      */
+
     const handleViewAnalysis = (analysis) => {
         if (!analysis) {
             return;
@@ -799,11 +817,13 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         /*
          * Restore selected analysis
          */
+
         setLatestAnalysis(analysis);
 
         /*
          * Restore target role
          */
+
         setTargetRole(
             analysis.targetRole ||
                 "Full Stack Developer"
@@ -812,6 +832,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         /*
          * Restore job description
          */
+
         setJobDescription(
             analysis.jobDescription || ""
         );
@@ -819,6 +840,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         /*
          * Restore resume information
          */
+
         if (analysis.resumeId) {
             const resumeId =
                 typeof analysis.resumeId ===
@@ -843,7 +865,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                 );
 
                 setResumeText(
-                    matchingResume.resumeText
+                    matchingResume.resumeText || ""
                 );
 
                 setIsCreatingNewResume(false);
@@ -853,6 +875,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         /*
          * Move back to analysis results
          */
+
         setTimeout(() => {
             document
                 .getElementById(
@@ -865,12 +888,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         }, 100);
     };
 
-
     /*
      * =========================================================
      * DELETE ANALYSIS
      * =========================================================
      */
+
     const handleDeleteAnalysis = async (
         analysisId
     ) => {
@@ -915,26 +938,48 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
             }
 
             /*
-             * Remove analysis from history
+             * Remove analysis from history.
+             * Also reset or update the dashboard analysis.
              */
-            setAnalyses((currentAnalyses) =>
-                currentAnalyses.filter(
-                    (analysis) =>
-                        analysis._id !==
-                        analysisId
-                )
-            );
 
-            /*
-             * If the deleted analysis is
-             * currently displayed, clear it.
-             */
-            if (
-                latestAnalysis?._id ===
-                analysisId
-            ) {
-                setLatestAnalysis(null);
-            }
+            setAnalyses((currentAnalyses) => {
+                const remainingAnalyses =
+                    currentAnalyses.filter(
+                        (analysis) =>
+                            analysis._id !==
+                            analysisId
+                    );
+
+                /*
+                 * If no analyses remain,
+                 * reset dashboard values to zero.
+                 */
+
+                if (remainingAnalyses.length === 0) {
+                    setLatestAnalysis(null);
+                    setRoadmapProgress({});
+                    setOverallRoadmapProgress(0);
+                    setJobDescription("");
+                    setTargetRole("Full Stack Developer");
+                }
+
+                /*
+                 * If the deleted analysis was the
+                 * currently displayed analysis,
+                 * show the newest remaining analysis.
+                 */
+
+                else if (
+                    latestAnalysis?._id ===
+                    analysisId
+                ) {
+                    setLatestAnalysis(
+                        remainingAnalyses[0]
+                    );
+                }
+
+                return remainingAnalyses;
+            });
 
             alert(
                 "Analysis deleted successfully!"
@@ -951,12 +996,12 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         }
     };
 
-
     /*
      * =========================================================
      * AUTHENTICATION SCREENS
      * =========================================================
      */
+
     if (!isLoggedIn) {
         if (showRegister) {
             return (
@@ -985,12 +1030,6 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         );
     }
 
-
-    /*
-     * =========================================================
-     * MAIN DASHBOARD
-     * =========================================================
-     */
     /*
      * =========================================================
      * PROFILE PAGE
@@ -1000,7 +1039,6 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
     if (activePage === "profile") {
         return (
             <div className="app">
-
                 <Sidebar
                     onLogout={handleLogout}
                     onProfile={handleProfile}
@@ -1008,43 +1046,51 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                 />
 
                 <main className="main-content">
-
                     <Profile
                         targetRole={targetRole}
                         resumes={resumes}
                         analyses={analyses}
-                        roadmapProgress={overallRoadmapProgress}
-                        onBackToDashboard={handleDashboard}
+                        roadmapProgress={
+                            overallRoadmapProgress
+                        }
+                        onBackToDashboard={
+                            handleDashboard
+                        }
                     />
-
                 </main>
-
             </div>
         );
     }
 
+    /*
+     * =========================================================
+     * SETTINGS PAGE
+     * =========================================================
+     */
+
     if (activePage === "settings") {
-    return (
-        <div className="app">
-            <Sidebar
-                onLogout={handleLogout}
-                onProfile={handleProfile}
-                onSettings={handleSettings}
-            />
-
-            <main className="main-content">
-                <Settings
-                    targetRole={targetRole}
-                    onSaveTargetRole={(newRole) => {
-                        setTargetRole(newRole);
-                    }}
-                    onBackToDashboard={handleDashboard}
+        return (
+            <div className="app">
+                <Sidebar
+                    onLogout={handleLogout}
+                    onProfile={handleProfile}
+                    onSettings={handleSettings}
                 />
-            </main>
-        </div>
-    );
-}
 
+                <main className="main-content">
+                    <Settings
+                        targetRole={targetRole}
+                        onSaveTargetRole={(newRole) => {
+                            setTargetRole(newRole);
+                        }}
+                        onBackToDashboard={
+                            handleDashboard
+                        }
+                    />
+                </main>
+            </div>
+        );
+    }
 
     /*
      * =========================================================
@@ -1056,23 +1102,24 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
         <div className="app">
 
             {/* Sidebar */}
+
             <Sidebar
                 onLogout={handleLogout}
                 onProfile={handleProfile}
                 onSettings={handleSettings}
             />
 
-
             {/* Main Content */}
+
             <main className="main-content">
 
                 {/* Header */}
+
                 <Header />
 
-
                 {/* Target Career */}
-                <div className="target-career">
 
+                <div className="target-career">
                     <div>
                         <p className="section-label">
                             YOUR TARGET CAREER
@@ -1107,24 +1154,23 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     >
                         ✏️ Change Target Role
                     </button>
-
                 </div>
 
-
                 {/* Statistics */}
+
                 <div className="stats-grid">
 
                     <StatCard
                         title="Career Readiness"
                         value={
                             latestAnalysis
-                                ? `${latestAnalysis.matchScore}%`
-                                : "78%"
+                                ? `${latestAnalysis.matchScore || 0}%`
+                                : "0%"
                         }
                         description={
                             latestAnalysis
                                 ? "Based on your latest AI analysis"
-                                : "Good progress"
+                                : "No analysis available yet"
                         }
                         icon="📈"
                     />
@@ -1133,10 +1179,8 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                         title="Skills Matched"
                         value={
                             latestAnalysis
-                                ? latestAnalysis
-                                      .matchedSkills
-                                      ?.length || 0
-                                : "12"
+                                ? latestAnalysis.matchedSkills?.length || 0
+                                : 0
                         }
                         description="Skills match your target role"
                         icon="✓"
@@ -1146,10 +1190,8 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                         title="Skill Gaps"
                         value={
                             latestAnalysis
-                                ? latestAnalysis
-                                      .missingSkills
-                                      ?.length || 0
-                                : "5"
+                                ? latestAnalysis.missingSkills?.length || 0
+                                : 0
                         }
                         description="Skills need improvement"
                         icon="⚠️"
@@ -1157,22 +1199,21 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
 
                     <StatCard
                         title="Learning Progress"
-                       value={`${overallRoadmapProgress}%`}
+                        value={`${overallRoadmapProgress || 0}%`}
                         description="Roadmap completed"
                         icon="📚"
                     />
 
                 </div>
 
-
                 {/* Dashboard Grid */}
+
                 <div className="dashboard-grid">
 
                     {/* Career Readiness */}
+
                     <div className="dashboard-card">
-
                         <div className="card-header">
-
                             <div>
                                 <h3>
                                     Career Readiness
@@ -1186,138 +1227,117 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
 
                             <strong>
                                 {latestAnalysis
-                                    ? `${latestAnalysis.matchScore}%`
-                                    : "78%"}
+                                    ? `${latestAnalysis.matchScore || 0}%`
+                                    : "0%"}
                             </strong>
-
                         </div>
 
-
                         <div className="progress">
-
                             <div
                                 className="progress-bar"
                                 style={{
                                     width: `${
                                         latestAnalysis
-                                            ? latestAnalysis.matchScore
-                                            : 78
+                                            ? latestAnalysis.matchScore || 0
+                                            : 0
                                     }%`
                                 }}
                             ></div>
-
                         </div>
-
 
                         <div className="progress-labels">
                             <span>Beginner</span>
                             <span>Job Ready</span>
                         </div>
-
                     </div>
 
-
                     {/* Quick Actions */}
-                    <div className="dashboard-card">
 
+                    <div className="dashboard-card">
                         <QuickActions
                             onAction={handleAction}
                         />
-
                     </div>
 
                 </div>
 
-
                 {/* My Resumes */}
-                <div className="dashboard-card">
 
+                <div className="dashboard-card">
                     <ResumeList
                         resumes={resumes}
-
                         selectedResumeId={
                             selectedResumeId
                         }
-
                         onSelectResume={
                             handleSelectResume
                         }
-
                         onDeleteResume={
                             handleDeleteResume
                         }
-
                         onAddResume={
                             handleAddResume
                         }
                     />
-
                 </div>
 
-
                 {/* Resume Analysis / Editor */}
+
                 <div
                     className="dashboard-card"
                     id="resume-analysis"
                 >
-
                     <ResumeForm
                         resumeTitle={resumeTitle}
-
                         setResumeTitle={
                             setResumeTitle
                         }
-
                         resumeText={resumeText}
-
                         setResumeText={
                             setResumeText
                         }
-
                         onAnalyze={
                             handleSaveResume
                         }
                     />
-
                 </div>
 
-
                 {/* Job Description Analysis */}
-                <div className="dashboard-card">
 
+                <div className="dashboard-card">
                     <JobDescriptionForm
                         jobDescription={
                             jobDescription
                         }
-
                         setJobDescription={
                             setJobDescription
                         }
-
                         targetRole={
                             targetRole
                         }
-
                         setTargetRole={
                             setTargetRole
                         }
-
                         onAnalyze={
                             handleAnalyzeJob
                         }
                     />
-
                 </div>
 
-
                 {/* AI ANALYSIS RESULTS */}
+
                 <AnalysisResults
-    analysis={latestAnalysis}
-    onRoadmapProgressChange={setRoadmapProgress}
-    onOverallRoadmapProgressChange={setOverallRoadmapProgress}
-/>
+                    analysis={latestAnalysis}
+                    onRoadmapProgressChange={
+                        setRoadmapProgress
+                    }
+                    onOverallRoadmapProgressChange={
+                        setOverallRoadmapProgress
+                    }
+                />
 
                 {/* ANALYSIS HISTORY */}
+
                 <AnalysisHistory
                     analyses={analyses}
                     onViewAnalysis={
@@ -1328,15 +1348,13 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                     }
                 />
 
-
                 {/* Skill Gaps */}
+
                 <div
                     className="dashboard-card skill-section"
                     id="skill-gaps"
                 >
-
                     <div className="card-header">
-
                         <div>
                             <h3>
                                 🎯 Your Top Skill Gaps
@@ -1362,9 +1380,7 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                         >
                             View All
                         </button>
-
                     </div>
-
 
                     <div className="skill-grid">
 
@@ -1382,45 +1398,31 @@ const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
                                                 ? "High"
                                                 : "Medium"
                                         }
-                                    progress={roadmapProgress[skill] || 0}
+                                        progress={
+                                            roadmapProgress[skill] || 0
+                                        }
                                     />
                                 )
                             )
                         ) : (
-                            <>
-                                <SkillGap
-                                    skill="MongoDB"
-                                    priority="High"
-                                    progress={30}
-                                />
-
-                                <SkillGap
-                                    skill="Docker"
-                                    priority="Medium"
-                                    progress={45}
-                                />
-
-                                <SkillGap
-                                    skill="REST APIs"
-                                    priority="Medium"
-                                    progress={55}
-                                />
-                            </>
+                            <p className="empty-state">
+                                No skill gaps available yet.
+                                Analyze a job description to
+                                see your skill gaps.
+                            </p>
                         )}
 
                     </div>
-
                 </div>
 
-
                 {/* Footer */}
+
                 <footer>
                     © 2026 CareerAI — AI-Powered Career
                     Readiness Platform
                 </footer>
 
             </main>
-
         </div>
     );
 }
