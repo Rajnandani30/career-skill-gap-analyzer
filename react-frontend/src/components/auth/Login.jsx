@@ -9,6 +9,7 @@ function Login({
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -127,16 +128,71 @@ function Login({
                         Password
                     </label>
 
-                    <input
-                        id="login-password"
-                        type="password"
-                        value={password}
-                        onChange={(event) =>
-                            setPassword(event.target.value)
-                        }
-                        placeholder="Enter your password"
-                        required
-                    />
+                    {/* Password Input with Show/Hide Feature */}
+                    <div className="password-input-wrapper">
+
+                        <input
+                            id="login-password"
+                            type={
+                                showPassword
+                                    ? "text"
+                                    : "password"
+                            }
+                            value={password}
+                            onChange={(event) =>
+                                setPassword(event.target.value)
+                            }
+                            placeholder="Enter your password"
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() =>
+                                setShowPassword(
+                                    (previous) => !previous
+                                )
+                            }
+                            aria-label={
+                                showPassword
+                                    ? "Hide password"
+                                    : "Show password"
+                            }
+                            title={
+                                showPassword
+                                    ? "Hide password"
+                                    : "Show password"
+                            }
+                        >
+                            {showPassword ? (
+                                /* Slashed Eye - Password Visible */
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M3 3l18 18" />
+                                    <path d="M10.7 10.7a2 2 0 0 0 2.6 2.6" />
+                                    <path d="M6.6 6.6C4.4 8.1 2.9 10.2 2 12c1.3 2.7 4.7 7 10 7 1.8 0 3.4-.5 4.8-1.2" />
+                                    <path d="M9.4 5.2c.8-.3 1.7-.5 2.6-.5 5.3 0 8.7 4.3 10 7.3-.5 1.1-1.2 2.3-2.2 3.4" />
+                                </svg>
+                            ) : (
+                                /* Normal Eye - Password Hidden */
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z" />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2.8"
+                                    />
+                                </svg>
+                            )}
+                        </button>
+
+                    </div>
 
                     <button
                         type="submit"

@@ -8144,3 +8144,2702 @@ body.light-mode .main-content .analysis-results
     border-color: #fda4af !important;
     color: #be123c !important;
 }
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 48px;
+    box-sizing: border-box;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    font-size: 18px;
+    padding: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    opacity: 0.75;
+}
+
+/* Password field container */
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Password input */
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 50px !important;
+    box-sizing: border-box;
+}
+
+/* Password input wrapper */
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Password input */
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 52px !important;
+    box-sizing: border-box;
+}
+
+/* Password toggle button */
+.password-input-wrapper .password-toggle {
+    position: absolute !important;
+    top: 50% !important;
+    right: 10px !important;
+    transform: translateY(-50%) !important;
+
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    color: #64748b !important;
+
+    cursor: pointer !important;
+    box-shadow: none !important;
+}
+
+/* SVG eye icon */
+.password-input-wrapper .password-toggle svg {
+    width: 22px !important;
+    height: 22px !important;
+
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+
+    display: block !important;
+}
+
+/* Hover effect */
+.password-input-wrapper .password-toggle:hover {
+    color: #4338ca !important;
+    background: rgba(67, 56, 202, 0.08) !important;
+}
+
+/* Focus effect */
+.password-input-wrapper .password-toggle:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Danger Zone container */
+.danger-zone {
+    background: linear-gradient(
+        135deg,
+        rgba(127, 29, 29, 0.18),
+        rgba(30, 41, 59, 0.95)
+    ) !important;
+
+    border: 1px solid #ef4444 !important;
+    border-radius: 22px !important;
+
+    padding: 28px 40px !important;
+
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Danger Zone heading */
+.danger-zone h2,
+.danger-zone h3 {
+    color: #ff6b6b !important;
+    opacity: 1 !important;
+    font-weight: 800 !important;
+}
+
+/* Danger Zone main description */
+.danger-zone > p {
+    color: #a8b8d0 !important;
+    opacity: 1 !important;
+    font-size: 18px !important;
+}
+
+/* Delete account inner card */
+.danger-zone .danger-card,
+.danger-zone .delete-account-card {
+    background: rgba(127, 29, 29, 0.16) !important;
+    border: 1px solid rgba(239, 68, 68, 0.65) !important;
+    border-radius: 18px !important;
+    opacity: 1 !important;
+}
+
+/* Delete account title */
+.danger-zone .danger-card h3,
+.danger-zone .delete-account-card h3 {
+    color: #ffb4b4 !important;
+    opacity: 1 !important;
+    font-weight: 750 !important;
+}
+
+/* Delete account warning text */
+.danger-zone .danger-card p,
+.danger-zone .delete-account-card p {
+    color: #aebed4 !important;
+    opacity: 1 !important;
+    line-height: 1.7 !important;
+}
+
+/* Delete Account button */
+.danger-zone button {
+    background: #dc5a5a !important;
+    color: #ffffff !important;
+    border: 1px solid #ff6b6b !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+}
+
+/* Delete button hover */
+.danger-zone button:hover {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+/* =====================================================
+   CAREERAI - DANGER ZONE VISIBILITY OVERRIDE
+   Paste this entire block at the bottom of your CSS
+   ===================================================== */
+
+/* Make all possible danger-zone containers fully visible */
+.danger-zone,
+.settings-danger-zone,
+.account-danger-zone,
+.delete-account-section,
+.danger-section {
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+    color: #dbeafe !important;
+}
+
+/* Main danger-zone heading */
+.danger-zone h1,
+.danger-zone h2,
+.danger-zone h3,
+.settings-danger-zone h1,
+.settings-danger-zone h2,
+.settings-danger-zone h3,
+.account-danger-zone h1,
+.account-danger-zone h2,
+.account-danger-zone h3,
+.delete-account-section h1,
+.delete-account-section h2,
+.delete-account-section h3,
+.danger-section h1,
+.danger-section h2,
+.danger-section h3 {
+    color: #ff6b6b !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* All paragraphs and descriptive text */
+.danger-zone p,
+.settings-danger-zone p,
+.account-danger-zone p,
+.delete-account-section p,
+.danger-section p {
+    color: #aebed4 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* Inner delete-account card */
+.danger-zone > div,
+.settings-danger-zone > div,
+.account-danger-zone > div,
+.delete-account-section > div,
+.danger-section > div {
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+}
+
+/* Delete account title */
+.danger-zone strong,
+.danger-zone .delete-title,
+.settings-danger-zone strong,
+.settings-danger-zone .delete-title,
+.account-danger-zone strong,
+.account-danger-zone .delete-title,
+.delete-account-section strong,
+.delete-account-section .delete-title {
+    color: #ffb4b4 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Delete account button */
+.danger-zone button,
+.settings-danger-zone button,
+.account-danger-zone button,
+.delete-account-section button,
+.danger-section button {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    color: #ffffff !important;
+    background: #dc5a5a !important;
+    border-color: #ff6b6b !important;
+    font-weight: 700 !important;
+}
+
+/* Delete button hover */
+.danger-zone button:hover,
+.settings-danger-zone button:hover,
+.account-danger-zone button:hover,
+.delete-account-section button:hover,
+.danger-section button:hover {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+/* Prevent faded parent elements from affecting the content */
+.danger-zone *,
+.settings-danger-zone *,
+.account-danger-zone *,
+.delete-account-section *,
+.danger-section * {
+    visibility: visible;
+}
+
+/* =========================================================
+   CAREERAI - STRONG DANGER ZONE VISIBILITY FIX
+   Paste at the very bottom of the CSS file
+   ========================================================= */
+
+/* Target Danger Zone using multiple possible class names */
+[class*="danger"],
+[class*="Danger"],
+[class*="delete"],
+[class*="Delete"] {
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+}
+
+/* Danger Zone headings */
+[class*="danger"] h1,
+[class*="danger"] h2,
+[class*="danger"] h3,
+[class*="danger"] h4,
+[class*="Danger"] h1,
+[class*="Danger"] h2,
+[class*="Danger"] h3,
+[class*="Danger"] h4,
+[class*="delete"] h1,
+[class*="delete"] h2,
+[class*="delete"] h3,
+[class*="delete"] h4,
+[class*="Delete"] h1,
+[class*="Delete"] h2,
+[class*="Delete"] h3,
+[class*="Delete"] h4 {
+    color: #ff6b6b !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* All Danger Zone paragraph text */
+[class*="danger"] p,
+[class*="Danger"] p,
+[class*="delete"] p,
+[class*="Delete"] p {
+    color: #e2e8f0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+}
+
+/* Strong/title text inside Danger Zone */
+[class*="danger"] strong,
+[class*="Danger"] strong,
+[class*="delete"] strong,
+[class*="Delete"] strong {
+    color: #fecaca !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Text inside nested elements */
+[class*="danger"] span,
+[class*="Danger"] span,
+[class*="delete"] span,
+[class*="Delete"] span {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Inner Danger Zone cards */
+[class*="danger"] > div,
+[class*="Danger"] > div,
+[class*="delete"] > div,
+[class*="Delete"] > div {
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+}
+
+/* Improve the inner card background */
+[class*="danger"] [class*="card"],
+[class*="Danger"] [class*="card"],
+[class*="delete"] [class*="card"],
+[class*="Delete"] [class*="card"] {
+    background: rgba(30, 41, 59, 0.75) !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Delete Account button */
+[class*="danger"] button,
+[class*="Danger"] button,
+[class*="delete"] button,
+[class*="Delete"] button {
+    background: #dc5a5a !important;
+    color: #ffffff !important;
+    border: 1px solid #ff6b6b !important;
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+    font-weight: 700 !important;
+}
+
+/* Button hover */
+[class*="danger"] button:hover,
+[class*="Danger"] button:hover,
+[class*="delete"] button:hover,
+[class*="Delete"] button:hover {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+/* Remove possible faded text colors */
+[class*="danger"] *,
+[class*="Danger"] *,
+[class*="delete"] *,
+[class*="Delete"] * {
+    text-shadow: none !important;
+}
+
+/* Direct visual enhancement for the Danger Zone layout */
+.danger-zone,
+.danger-zone-section,
+.danger-zone-container,
+.account-danger-zone,
+.settings-danger-zone {
+    background: linear-gradient(
+        135deg,
+        #3b343b 0%,
+        #252936 100%
+    ) !important;
+
+    border: 1px solid #ef6b6b !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Make descriptions clearly readable */
+.danger-zone p,
+.danger-zone-section p,
+.danger-zone-container p,
+.account-danger-zone p,
+.settings-danger-zone p {
+    color: #dbeafe !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+/* Inner delete card */
+.danger-zone .danger-card,
+.danger-zone .delete-account-card,
+.danger-zone-section .danger-card,
+.danger-zone-section .delete-account-card,
+.danger-zone-container .danger-card,
+.danger-zone-container .delete-account-card {
+    background: #34303a !important;
+    border: 1px solid #d96b75 !important;
+    opacity: 1 !important;
+}
+
+/* Inner card description */
+.danger-zone .danger-card p,
+.danger-zone .delete-account-card p,
+.danger-zone-section .danger-card p,
+.danger-zone-section .delete-account-card p {
+    color: #dbeafe !important;
+    opacity: 1 !important;
+}
+
+/* ============================================================
+   FINAL CAREERAI DANGER ZONE CONTRAST OVERRIDE
+   Add this at the absolute bottom of your CSS file
+   ============================================================ */
+
+/* Force the complete settings/account area to remain visible */
+.settings-page,
+.settings-content,
+.settings-container,
+.account-settings,
+.profile-settings,
+.account-section,
+.settings-card {
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+}
+
+/* Strong readable text throughout settings cards */
+.settings-page p,
+.settings-content p,
+.settings-container p,
+.account-settings p,
+.profile-settings p,
+.account-section p,
+.settings-card p {
+    color: #dbeafe !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Danger-themed headings */
+.settings-page h2,
+.settings-page h3,
+.settings-content h2,
+.settings-content h3,
+.settings-container h2,
+.settings-container h3,
+.account-settings h2,
+.account-settings h3,
+.profile-settings h2,
+.profile-settings h3,
+.account-section h2,
+.account-section h3,
+.settings-card h2,
+.settings-card h3 {
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Make red danger headings brighter */
+.settings-page h2[style*="red"],
+.settings-page h3[style*="red"],
+.settings-content h2[style*="red"],
+.settings-content h3[style*="red"],
+.settings-container h2[style*="red"],
+.settings-container h3[style*="red"] {
+    color: #ff6b6b !important;
+}
+
+/* Force all nested content to be visible */
+.settings-page *,
+.settings-content *,
+.settings-container *,
+.account-settings *,
+.profile-settings *,
+.account-section *,
+.settings-card * {
+    visibility: visible !important;
+}
+
+/* Buttons in the account/settings area */
+.settings-page button,
+.settings-content button,
+.settings-container button,
+.account-settings button,
+.profile-settings button,
+.account-section button,
+.settings-card button {
+    opacity: 1 !important;
+    filter: none !important;
+    color: #ffffff !important;
+}
+
+/* Delete/danger buttons */
+.settings-page button[class*="delete"],
+.settings-page button[class*="danger"],
+.settings-content button[class*="delete"],
+.settings-content button[class*="danger"],
+.settings-container button[class*="delete"],
+.settings-container button[class*="danger"],
+.account-settings button[class*="delete"],
+.account-settings button[class*="danger"],
+.profile-settings button[class*="delete"],
+.profile-settings button[class*="danger"] {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border-color: #f87171 !important;
+}
+
+/* =========================================================
+   CAREERAI - FINAL PROFESSIONAL DANGER ZONE DESIGN
+   Add this at the very bottom of your CSS file
+   ========================================================= */
+
+/* Outer Danger Zone */
+.danger-zone,
+.danger-zone-section,
+.danger-zone-container,
+.account-danger-zone,
+.settings-danger-zone {
+    background: linear-gradient(
+        135deg,
+        #302b35 0%,
+        #202532 100%
+    ) !important;
+
+    border: 1px solid rgba(248, 113, 113, 0.85) !important;
+    border-radius: 22px !important;
+
+    padding: 32px 40px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
+
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+}
+
+/* Danger Zone heading */
+.danger-zone h1,
+.danger-zone h2,
+.danger-zone h3,
+.danger-zone-section h1,
+.danger-zone-section h2,
+.danger-zone-section h3,
+.danger-zone-container h1,
+.danger-zone-container h2,
+.danger-zone-container h3,
+.account-danger-zone h1,
+.account-danger-zone h2,
+.account-danger-zone h3,
+.settings-danger-zone h1,
+.settings-danger-zone h2,
+.settings-danger-zone h3 {
+    color: #ff7777 !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+    opacity: 1 !important;
+}
+
+/* Main description */
+.danger-zone > p,
+.danger-zone-section > p,
+.danger-zone-container > p,
+.account-danger-zone > p,
+.settings-danger-zone > p {
+    color: #cbd5e1 !important;
+    font-size: 17px !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+/* Inner delete-account card */
+.danger-zone .danger-card,
+.danger-zone .delete-account-card,
+.danger-zone-section .danger-card,
+.danger-zone-section .delete-account-card,
+.danger-zone-container .danger-card,
+.danger-zone-container .delete-account-card,
+.account-danger-zone .danger-card,
+.account-danger-zone .delete-account-card,
+.settings-danger-zone .danger-card,
+.settings-danger-zone .delete-account-card {
+    background: linear-gradient(
+        135deg,
+        rgba(127, 29, 29, 0.32),
+        rgba(30, 27, 36, 0.85)
+    ) !important;
+
+    border: 1px solid rgba(248, 113, 113, 0.55) !important;
+    border-radius: 18px !important;
+
+    padding: 26px 28px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Inner card title */
+.danger-zone .danger-card h3,
+.danger-zone .delete-account-card h3,
+.danger-zone-section .danger-card h3,
+.danger-zone-section .delete-account-card h3,
+.danger-zone-container .danger-card h3,
+.danger-zone-container .delete-account-card h3,
+.account-danger-zone .danger-card h3,
+.account-danger-zone .delete-account-card h3,
+.settings-danger-zone .danger-card h3,
+.settings-danger-zone .delete-account-card h3 {
+    color: #ffb4b4 !important;
+    font-size: 20px !important;
+    font-weight: 750 !important;
+    margin-bottom: 12px !important;
+    opacity: 1 !important;
+}
+
+/* Inner card warning text */
+.danger-zone .danger-card p,
+.danger-zone .delete-account-card p,
+.danger-zone-section .danger-card p,
+.danger-zone-section .delete-account-card p,
+.danger-zone-container .danger-card p,
+.danger-zone-container .delete-account-card p,
+.account-danger-zone .danger-card p,
+.account-danger-zone .delete-account-card p,
+.settings-danger-zone .danger-card p,
+.settings-danger-zone .delete-account-card p {
+    color: #dbe4f0 !important;
+    font-size: 16px !important;
+    line-height: 1.75 !important;
+    font-weight: 450 !important;
+    opacity: 1 !important;
+}
+
+/* Delete Account button */
+.danger-zone button,
+.danger-zone-section button,
+.danger-zone-container button,
+.account-danger-zone button,
+.settings-danger-zone button {
+    background: #c94f5a !important;
+    color: #ffffff !important;
+
+    border: 1px solid #f87171 !important;
+    border-radius: 12px !important;
+
+    padding: 13px 24px !important;
+    min-height: 48px !important;
+
+    font-size: 16px !important;
+    font-weight: 750 !important;
+
+    box-shadow: 0 5px 12px rgba(127, 29, 29, 0.25) !important;
+
+    opacity: 1 !important;
+    filter: none !important;
+    cursor: pointer !important;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease !important;
+}
+
+/* Delete button hover */
+.danger-zone button:hover,
+.danger-zone-section button:hover,
+.danger-zone-container button:hover,
+.account-danger-zone button:hover,
+.settings-danger-zone button:hover {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 7px 16px rgba(127, 29, 29, 0.35) !important;
+}
+
+/* Delete button active */
+.danger-zone button:active,
+.danger-zone-section button:active,
+.danger-zone-container button:active,
+.account-danger-zone button:active,
+.settings-danger-zone button:active {
+    transform: translateY(0) !important;
+}
+
+/* =========================================================
+   CAREERAI - CLEAN AND PROFESSIONAL DANGER ZONE
+   Paste at the absolute bottom of the CSS file
+   ========================================================= */
+
+/* Outer Danger Zone - remove all faded gradients */
+.danger-zone,
+.danger-zone-section,
+.danger-zone-container,
+.account-danger-zone,
+.settings-danger-zone {
+    background: #202532 !important;
+    background-image: none !important;
+
+    border: 1px solid #ef6b6b !important;
+    border-radius: 20px !important;
+
+    padding: 32px 40px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Remove unwanted pseudo-element overlays */
+.danger-zone::before,
+.danger-zone::after,
+.danger-zone-section::before,
+.danger-zone-section::after,
+.danger-zone-container::before,
+.danger-zone-container::after,
+.account-danger-zone::before,
+.account-danger-zone::after,
+.settings-danger-zone::before,
+.settings-danger-zone::after {
+    background: none !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: none !important;
+}
+
+/* Main Danger Zone heading */
+.danger-zone h1,
+.danger-zone h2,
+.danger-zone h3,
+.danger-zone-section h1,
+.danger-zone-section h2,
+.danger-zone-section h3,
+.danger-zone-container h1,
+.danger-zone-container h2,
+.danger-zone-container h3,
+.account-danger-zone h1,
+.account-danger-zone h2,
+.account-danger-zone h3,
+.settings-danger-zone h1,
+.settings-danger-zone h2,
+.settings-danger-zone h3 {
+    color: #ff7373 !important;
+    -webkit-text-fill-color: #ff7373 !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Main description */
+.danger-zone > p,
+.danger-zone-section > p,
+.danger-zone-container > p,
+.account-danger-zone > p,
+.settings-danger-zone > p {
+    color: #e2e8f0 !important;
+    -webkit-text-fill-color: #e2e8f0 !important;
+    font-size: 17px !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+/* Inner delete-account card - clean dark background */
+.danger-zone .danger-card,
+.danger-zone .delete-account-card,
+.danger-zone-section .danger-card,
+.danger-zone-section .delete-account-card,
+.danger-zone-container .danger-card,
+.danger-zone-container .delete-account-card,
+.account-danger-zone .danger-card,
+.account-danger-zone .delete-account-card,
+.settings-danger-zone .danger-card,
+.settings-danger-zone .delete-account-card {
+    background: #30313b !important;
+    background-image: none !important;
+
+    border: 1px solid rgba(248, 113, 113, 0.65) !important;
+    border-radius: 16px !important;
+
+    padding: 26px 28px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+
+    box-shadow: none !important;
+}
+
+/* Inner card title */
+.danger-zone .danger-card h3,
+.danger-zone .delete-account-card h3,
+.danger-zone-section .danger-card h3,
+.danger-zone-section .delete-account-card h3,
+.danger-zone-container .danger-card h3,
+.danger-zone-container .delete-account-card h3,
+.account-danger-zone .danger-card h3,
+.account-danger-zone .delete-account-card h3,
+.settings-danger-zone .danger-card h3,
+.settings-danger-zone .delete-account-card h3 {
+    color: #ffb3b3 !important;
+    -webkit-text-fill-color: #ffb3b3 !important;
+    font-size: 20px !important;
+    font-weight: 750 !important;
+    opacity: 1 !important;
+}
+
+/* Inner card warning description */
+.danger-zone .danger-card p,
+.danger-zone .delete-account-card p,
+.danger-zone-section .danger-card p,
+.danger-zone-section .delete-account-card p,
+.danger-zone-container .danger-card p,
+.danger-zone-container .delete-account-card p,
+.account-danger-zone .danger-card p,
+.account-danger-zone .delete-account-card p,
+.settings-danger-zone .danger-card p,
+.settings-danger-zone .delete-account-card p {
+    color: #e5edf7 !important;
+    -webkit-text-fill-color: #e5edf7 !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+/* Delete Account button */
+.danger-zone button,
+.danger-zone-section button,
+.danger-zone-container button,
+.account-danger-zone button,
+.settings-danger-zone button {
+    background: #d0525d !important;
+    background-image: none !important;
+
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+
+    border: 1px solid #ff7777 !important;
+    border-radius: 11px !important;
+
+    padding: 13px 24px !important;
+    min-height: 48px !important;
+
+    font-size: 16px !important;
+    font-weight: 750 !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    box-shadow: none !important;
+
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Delete button hover */
+.danger-zone button:hover,
+.danger-zone-section button:hover,
+.danger-zone-container button:hover,
+.account-danger-zone button:hover,
+.settings-danger-zone button:hover {
+    background: #e0525f !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 5px 12px rgba(208, 82, 93, 0.3) !important;
+}
+
+/* Ensure text does not become faded */
+.danger-zone *,
+.danger-zone-section *,
+.danger-zone-container *,
+.account-danger-zone *,
+.settings-danger-zone * {
+    text-shadow: none !important;
+}
+
+/* =========================================================
+   CAREERAI - DANGER ZONE MATCHING DATA & PRIVACY DESIGN
+   Paste this at the absolute bottom of your CSS file
+   ========================================================= */
+
+/* Main Danger Zone container */
+.danger-zone {
+    background: #121827 !important;
+    background-image: none !important;
+    background-color: #121827 !important;
+
+    border: 1px solid #26344d !important;
+    border-radius: 22px !important;
+
+    padding: 32px 40px !important;
+    margin-top: 24px !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove any gradient or overlay from Danger Zone */
+.danger-zone::before,
+.danger-zone::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    background-image: none !important;
+}
+
+/* Danger Zone heading */
+.danger-zone h1,
+.danger-zone h2,
+.danger-zone h3 {
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+/* Warning icon / emoji */
+.danger-zone h1:first-letter,
+.danger-zone h2:first-letter,
+.danger-zone h3:first-letter {
+    color: #fbbf24 !important;
+}
+
+/* Main Danger Zone description */
+.danger-zone > p {
+    color: #e2e8f0 !important;
+    -webkit-text-fill-color: #e2e8f0 !important;
+    font-size: 17px !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+/* Inner Delete Account card */
+.danger-zone .danger-card,
+.danger-zone .delete-account-card {
+    background: #1b2436 !important;
+    background-image: none !important;
+    background-color: #1b2436 !important;
+
+    border: 1px solid #334155 !important;
+    border-left: 4px solid #6366f1 !important;
+    border-radius: 16px !important;
+
+    padding: 26px 28px !important;
+    margin-top: 24px !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    box-shadow: none !important;
+}
+
+/* If the inner card is a direct div instead of a named class */
+.danger-zone > div {
+    background-color: #1b2436 !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Delete Account title */
+.danger-zone .danger-card h3,
+.danger-zone .delete-account-card h3,
+.danger-zone > div h3 {
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
+    font-size: 20px !important;
+    font-weight: 750 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+/* Delete Account description */
+.danger-zone .danger-card p,
+.danger-zone .delete-account-card p,
+.danger-zone > div p {
+    color: #e2e8f0 !important;
+    -webkit-text-fill-color: #e2e8f0 !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+/* Delete Account button */
+.danger-zone button {
+    background: #dc2626 !important;
+    background-image: none !important;
+    background-color: #dc2626 !important;
+
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+
+    border: 1px solid #ef4444 !important;
+    border-radius: 10px !important;
+
+    padding: 12px 24px !important;
+    min-height: 46px !important;
+
+    font-size: 15px !important;
+    font-weight: 700 !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    box-shadow: none !important;
+
+    cursor: pointer !important;
+    transition: background 0.2s ease, transform 0.2s ease !important;
+}
+
+/* Delete Account button hover */
+.danger-zone button:hover {
+    background: #b91c1c !important;
+    background-color: #b91c1c !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Ensure all Danger Zone text remains visible */
+.danger-zone span,
+.danger-zone strong,
+.danger-zone label {
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* =========================================================
+   CAREERAI - RESTORE SETTINGS AND PROFILE VISIBILITY
+   Paste at the absolute bottom of the CSS file
+   ========================================================= */
+
+/* Main Settings/Profile page containers */
+.settings-page,
+.settings-container,
+.settings-content,
+.profile-page,
+.profile-container,
+.profile-content,
+.preferences-page,
+.account-page,
+.page-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* Restore headings */
+.settings-page h1,
+.settings-page h2,
+.settings-page h3,
+.settings-container h1,
+.settings-container h2,
+.settings-container h3,
+.settings-content h1,
+.settings-content h2,
+.settings-content h3,
+.profile-page h1,
+.profile-page h2,
+.profile-page h3,
+.profile-container h1,
+.profile-container h2,
+.profile-container h3,
+.preferences-page h1,
+.preferences-page h2,
+.preferences-page h3 {
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+}
+
+/* Restore small labels such as PREFERENCES */
+.settings-page span,
+.settings-page p,
+.settings-container span,
+.settings-container p,
+.settings-content span,
+.settings-content p,
+.profile-page span,
+.profile-page p,
+.profile-container span,
+.profile-container p,
+.preferences-page span,
+.preferences-page p {
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+}
+
+/* Restore cards and sections */
+.settings-page section,
+.settings-page article,
+.settings-container section,
+.settings-container article,
+.settings-content section,
+.settings-content article,
+.profile-page section,
+.profile-page article,
+.profile-container section,
+.profile-container article {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* Remove possible page overlays */
+.settings-page::before,
+.settings-page::after,
+.settings-container::before,
+.settings-container::after,
+.settings-content::before,
+.settings-content::after,
+.profile-page::before,
+.profile-page::after,
+.profile-container::before,
+.profile-container::after {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Restore common page header text */
+.settings-header,
+.profile-header,
+.page-header,
+.settings-hero,
+.profile-hero {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+.settings-header *,
+.profile-header *,
+.page-header *,
+.settings-hero *,
+.profile-hero * {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* =========================================================
+   FINAL SETTINGS HEADER VISIBILITY FIX
+   Paste at the very bottom of the CSS file
+   ========================================================= */
+
+/* Settings page heading area */
+.settings-page,
+.settings-container,
+.settings-content,
+.preferences-page {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    color: #0f172a !important;
+}
+
+/* Preferences label */
+.settings-page .eyebrow,
+.settings-page .section-label,
+.settings-page .overline,
+.settings-container .eyebrow,
+.settings-container .section-label,
+.settings-container .overline,
+.preferences-page .eyebrow,
+.preferences-page .section-label,
+.preferences-page .overline {
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* Settings main heading */
+.settings-page h1,
+.settings-container h1,
+.settings-content h1,
+.preferences-page h1 {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+/* Settings subtitle */
+.settings-page .page-subtitle,
+.settings-page .subtitle,
+.settings-page > p,
+.settings-container .page-subtitle,
+.settings-container .subtitle,
+.settings-container > p,
+.preferences-page .page-subtitle,
+.preferences-page .subtitle,
+.preferences-page > p {
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+}
+
+/* Force direct heading descendants to remain visible */
+.settings-page h1 *,
+.settings-page h2 *,
+.settings-page p *,
+.settings-container h1 *,
+.settings-container h2 *,
+.settings-container p *,
+.preferences-page h1 *,
+.preferences-page h2 *,
+.preferences-page p * {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* =========================================================
+   SETTINGS HEADER - CLEAR AND READABLE DESIGN
+   Paste at the very bottom of your CSS file
+   ========================================================= */
+
+/* Preferences label */
+.settings-page .eyebrow,
+.settings-page .section-label,
+.settings-page .overline,
+.settings-container .eyebrow,
+.settings-container .section-label,
+.settings-container .overline,
+.preferences-page .eyebrow,
+.preferences-page .section-label,
+.preferences-page .overline {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+}
+
+/* Main Settings heading */
+.settings-page h1,
+.settings-container h1,
+.settings-content h1,
+.preferences-page h1 {
+    color: #020617 !important;
+    -webkit-text-fill-color: #020617 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 800 !important;
+    text-shadow: none !important;
+}
+
+/* Settings subtitle - make it clearly visible */
+.settings-page .page-subtitle,
+.settings-page .subtitle,
+.settings-page > p,
+.settings-container .page-subtitle,
+.settings-container .subtitle,
+.settings-container > p,
+.settings-content .page-subtitle,
+.settings-content .subtitle,
+.settings-content > p,
+.preferences-page .page-subtitle,
+.preferences-page .subtitle,
+.preferences-page > p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 500 !important;
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+    text-shadow: none !important;
+}
+
+/* =========================================================
+   SETTINGS SUBTITLE - DARK AND CLEAR
+   Paste at the absolute bottom of the CSS file
+   ========================================================= */
+
+.settings-page .auth-subtitle,
+.settings-page .page-subtitle,
+.settings-page .subtitle,
+.settings-page .description,
+.settings-page > p,
+.settings-container .auth-subtitle,
+.settings-container .page-subtitle,
+.settings-container .subtitle,
+.settings-container .description,
+.settings-container > p,
+.settings-content .auth-subtitle,
+.settings-content .page-subtitle,
+.settings-content .subtitle,
+.settings-content .description,
+.settings-content > p,
+.preferences-page .auth-subtitle,
+.preferences-page .page-subtitle,
+.preferences-page .subtitle,
+.preferences-page .description,
+.preferences-page > p {
+    color: #1e293b !important;
+    -webkit-text-fill-color: #1e293b !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+}
+
+/* =========================================================
+   FINAL FIX - SETTINGS DESCRIPTION VISIBILITY
+   Paste this at the ABSOLUTE BOTTOM of your CSS file
+   ========================================================= */
+
+/* Settings page header containers */
+.settings-header,
+.settings-page-header,
+.page-header,
+.settings-hero,
+.settings-heading,
+.preferences-header,
+.account-settings-header {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* Settings subtitle / description */
+.settings-header p,
+.settings-page-header p,
+.page-header p,
+.settings-hero p,
+.settings-heading p,
+.preferences-header p,
+.account-settings-header p,
+.settings-header .subtitle,
+.settings-page-header .subtitle,
+.page-header .subtitle,
+.settings-header .description,
+.settings-page-header .description,
+.page-header .description,
+.settings-header .page-subtitle,
+.settings-page-header .page-subtitle,
+.page-header .page-subtitle {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+}
+
+/* Force all paragraphs inside the Settings main area to be dark */
+.settings-page p,
+.settings-container p,
+.settings-content p,
+.preferences-page p,
+.account-settings p {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* Keep the main Settings title strong */
+.settings-page h1,
+.settings-container h1,
+.settings-content h1,
+.preferences-page h1 {
+    color: #020617 !important;
+    -webkit-text-fill-color: #020617 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================================================
+   CAREERAI SETTINGS - FINAL TEXT VISIBILITY FIX
+   Improves only text readability.
+   Does not change text, layout, buttons, cards, or functionality.
+   ========================================================= */
+
+/* Main section descriptions */
+.settings-page p,
+.settings-container p,
+.settings-content p,
+.preferences-page p,
+.profile-settings p,
+.profile-section p,
+.career-preferences p,
+.appearance-section p,
+.notifications-section p,
+.security-section p,
+.data-privacy-section p,
+.danger-zone p {
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+/* Descriptions immediately below section headings */
+.settings-page h1 + p,
+.settings-page h2 + p,
+.settings-page h3 + p,
+.settings-container h1 + p,
+.settings-container h2 + p,
+.settings-container h3 + p,
+.settings-content h1 + p,
+.settings-content h2 + p,
+.settings-content h3 + p {
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 500 !important;
+}
+
+/* Inner card descriptions */
+.settings-page .card p,
+.settings-container .card p,
+.settings-content .card p,
+.settings-page .settings-card p,
+.settings-container .settings-card p,
+.settings-content .settings-card p,
+.profile-card p,
+.preference-card p,
+.appearance-card p,
+.notification-card p,
+.security-card p,
+.privacy-card p,
+.danger-card p,
+.delete-account-card p {
+    color: #dbeafe !important;
+    -webkit-text-fill-color: #dbeafe !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+/* Specifically improve the text visible in your screenshots */
+.settings-page .section-description,
+.settings-page .section-subtitle,
+.settings-page .description,
+.settings-page .subtitle,
+.settings-page .page-description,
+.settings-page .helper-text,
+.settings-container .section-description,
+.settings-container .section-subtitle,
+.settings-container .description,
+.settings-container .subtitle,
+.settings-container .page-description,
+.settings-container .helper-text {
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+/* Text inside security and privacy information boxes */
+.security-section p,
+.data-privacy-section p,
+.privacy-section p,
+.security-card p,
+.privacy-card p,
+.data-card p {
+    color: #dbeafe !important;
+    -webkit-text-fill-color: #dbeafe !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Keep labels and inner headings bright */
+.settings-page label,
+.settings-container label,
+.settings-content label,
+.settings-page .card h3,
+.settings-container .card h3,
+.settings-content .card h3,
+.settings-page strong,
+.settings-container strong,
+.settings-content strong {
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Make muted helper text readable but not too bright */
+.settings-page small,
+.settings-container small,
+.settings-content small,
+.settings-page .helper-text,
+.settings-container .helper-text {
+    color: #94a3b8 !important;
+    -webkit-text-fill-color: #94a3b8 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================================================
+   PROFILE PAGE - FINAL TEXT VISIBILITY FIX
+   Paste at the absolute bottom of your CSS file
+   ========================================================= */
+
+/* Profile page header container */
+.profile-page,
+.profile-container,
+.profile-content,
+.account-page,
+.account-container {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* Small label: ACCOUNT */
+.profile-page .eyebrow,
+.profile-page .overline,
+.profile-page .section-label,
+.profile-container .eyebrow,
+.profile-container .overline,
+.profile-container .section-label,
+.account-page .eyebrow,
+.account-page .overline,
+.account-page .section-label {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+}
+
+/* Main title: My Profile */
+.profile-page h1,
+.profile-container h1,
+.profile-content h1,
+.account-page h1,
+.account-container h1 {
+    color: #020617 !important;
+    -webkit-text-fill-color: #020617 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+/* Profile page description */
+.profile-page > p,
+.profile-page h1 + p,
+.profile-container > p,
+.profile-container h1 + p,
+.profile-content > p,
+.profile-content h1 + p,
+.account-page > p,
+.account-page h1 + p,
+.account-container > p,
+.account-container h1 + p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+}
+
+/* Generic profile header subtitle selectors */
+.profile-header p,
+.profile-page-header p,
+.account-header p,
+.profile-hero p,
+.profile-heading p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    font-weight: 600 !important;
+}
+
+/* Force the visible text in the profile header to remain readable */
+.profile-page h1 *,
+.profile-container h1 *,
+.profile-content h1 *,
+.account-page h1 *,
+.account-container h1 *,
+.profile-page p *,
+.profile-container p *,
+.profile-content p *,
+.account-page p *,
+.account-container p * {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* =========================================================
+   SETTINGS PAGE - FINAL TEXT VISIBILITY FIX
+   Paste at the absolute bottom of your CSS file
+   Only improves text visibility.
+   Does not change wording, layout, cards, buttons, or functionality.
+   ========================================================= */
+
+/* Settings page main container */
+.settings-page,
+.settings-container,
+.settings-content,
+.preferences-page,
+.account-settings-page {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* Small label: PREFERENCES */
+.settings-page .eyebrow,
+.settings-page .overline,
+.settings-page .section-label,
+.settings-container .eyebrow,
+.settings-container .overline,
+.settings-container .section-label,
+.preferences-page .eyebrow,
+.preferences-page .overline,
+.preferences-page .section-label,
+.account-settings-page .eyebrow,
+.account-settings-page .overline,
+.account-settings-page .section-label {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+}
+
+/* Main title: Settings */
+.settings-page h1,
+.settings-container h1,
+.settings-content h1,
+.preferences-page h1,
+.account-settings-page h1 {
+    color: #020617 !important;
+    -webkit-text-fill-color: #020617 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+/* Settings page main description */
+.settings-page > p,
+.settings-page h1 + p,
+.settings-container > p,
+.settings-container h1 + p,
+.settings-content > p,
+.settings-content h1 + p,
+.preferences-page > p,
+.preferences-page h1 + p,
+.account-settings-page > p,
+.account-settings-page h1 + p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+}
+
+/* Generic Settings header descriptions */
+.settings-header p,
+.settings-page-header p,
+.preferences-header p,
+.account-settings-header p,
+.settings-hero p,
+.settings-heading p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    font-weight: 600 !important;
+    line-height: 1.6 !important;
+}
+
+/* Section descriptions inside Settings */
+.settings-page section > p,
+.settings-container section > p,
+.settings-content section > p,
+.preferences-page section > p,
+.settings-page section h2 + p,
+.settings-container section h2 + p,
+.settings-content section h2 + p,
+.preferences-page section h2 + p {
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+/* Text inside Settings cards */
+.settings-page .card p,
+.settings-container .card p,
+.settings-content .card p,
+.preferences-page .card p,
+.settings-page .settings-card p,
+.settings-container .settings-card p,
+.settings-content .settings-card p,
+.profile-settings p,
+.career-preferences p,
+.appearance-section p,
+.notifications-section p,
+.security-section p,
+.data-privacy-section p,
+.danger-zone p {
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    text-shadow: none !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+/* Inner card headings and labels */
+.settings-page .card h2,
+.settings-page .card h3,
+.settings-container .card h2,
+.settings-container .card h3,
+.settings-content .card h2,
+.settings-content .card h3,
+.preferences-page .card h2,
+.preferences-page .card h3,
+.settings-page label,
+.settings-container label,
+.settings-content label {
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* Force nested text elements to remain visible */
+.settings-page p *,
+.settings-container p *,
+.settings-content p *,
+.preferences-page p *,
+.settings-page h1 *,
+.settings-container h1 *,
+.settings-content h1 *,
+.preferences-page h1 * {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
+
+/* =====================================================
+   CAREERAI - DANGER ZONE DARK BACKGROUND FIX
+   Paste this at the very bottom of your CSS file
+   ===================================================== */
+
+/* Main Danger Zone background */
+.danger-zone {
+    background: #141827 !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Inner Delete Account card background */
+.danger-zone > div,
+.danger-zone .danger-card,
+.danger-zone .delete-account-card {
+    background: #1b2335 !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* =====================================================
+   CAREERAI - DANGER ZONE TEXT VISIBILITY FIX
+   Add this at the very bottom of your CSS file
+   ===================================================== */
+
+/* Danger Zone heading */
+.danger-zone h1,
+.danger-zone h2,
+.danger-zone h3,
+.danger-zone h4 {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* Danger Zone main description */
+.danger-zone > p {
+    color: #f8fafc !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* Delete Account title */
+.danger-zone strong,
+.danger-zone .delete-title,
+.danger-zone .danger-card h1,
+.danger-zone .danger-card h2,
+.danger-zone .danger-card h3,
+.danger-zone .delete-account-card h1,
+.danger-zone .delete-account-card h2,
+.danger-zone .delete-account-card h3 {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* Delete Account warning/description text */
+.danger-zone .danger-card p,
+.danger-zone .delete-account-card p,
+.danger-zone .danger-card > p,
+.danger-zone .delete-account-card > p {
+    color: #f8fafc !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* Any spans inside Danger Zone */
+.danger-zone span {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Delete Account button text */
+.danger-zone button {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 700 !important;
+}
+
+/* Ensure text is not faded by filters */
+.danger-zone,
+.danger-zone * {
+    text-shadow: none !important;
+}
+
+/* =========================================
+   DARK DANGER ZONE
+========================================= */
+
+.danger-zone {
+  background: #111827 !important;
+  border: 1px solid #ef4444 !important;
+  border-radius: 22px !important;
+  padding: 32px 40px !important;
+  margin-top: 30px !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+.danger-zone h3 {
+  color: #ffffff !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  margin: 0 0 12px !important;
+}
+
+.danger-zone-description {
+  color: #d1d5db !important;
+  font-size: 16px !important;
+  margin: 0 !important;
+}
+
+.danger-zone-card {
+  background: #1f2937 !important;
+  border: 1px solid #ef4444 !important;
+  border-radius: 18px !important;
+  padding: 28px !important;
+  margin-top: 30px !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.danger-zone-card strong {
+  display: block;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  margin-bottom: 14px !important;
+}
+
+.danger-zone-card p {
+  color: #d1d5db !important;
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+  margin: 0 0 24px !important;
+}
+
+.delete-account-button {
+  margin-top: 5px !important;
+  padding: 13px 24px !important;
+  border-radius: 10px !important;
+  border: 1px solid #ef4444 !important;
+  background: #b91c1c !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  transition: 0.2s ease !important;
+}
+
+.delete-account-button:hover {
+  background: #991b1b !important;
+  transform: translateY(-2px);
+}
+
+.settings-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  margin-top: 25px !important;
+}
+
+/* =========================================================
+   FINAL LIGHT MODE TEXT FIX
+   Settings + Danger Zone
+========================================================= */
+
+/* Main Settings page text */
+body.light-mode .settings-page {
+    color: #172033 !important;
+}
+
+/* Settings section headings */
+body.light-mode .settings-page h1,
+body.light-mode .settings-page h2,
+body.light-mode .settings-page h3,
+body.light-mode .settings-page h4 {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Settings descriptions and paragraphs */
+body.light-mode .settings-page p {
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================================================
+   DANGER ZONE - LIGHT MODE
+========================================================= */
+
+body.light-mode .danger-zone {
+    background: #fff7f7 !important;
+    background-image: none !important;
+    border: 1px solid #ef4444 !important;
+    color: #172033 !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Danger Zone heading */
+body.light-mode .danger-zone h3 {
+    color: #991b1b !important;
+    -webkit-text-fill-color: #991b1b !important;
+    opacity: 1 !important;
+}
+
+/* Danger Zone main description */
+body.light-mode .danger-zone-description,
+body.light-mode .danger-zone > p {
+    color: #7f1d1d !important;
+    -webkit-text-fill-color: #7f1d1d !important;
+    opacity: 1 !important;
+}
+
+/* Inner Delete Account card */
+body.light-mode .danger-zone-card {
+    background: #fef2f2 !important;
+    background-image: none !important;
+    border: 1px solid #fca5a5 !important;
+    color: #172033 !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Delete Account title */
+body.light-mode .danger-zone-card strong {
+    color: #991b1b !important;
+    -webkit-text-fill-color: #991b1b !important;
+    opacity: 1 !important;
+}
+
+/* Delete Account description */
+body.light-mode .danger-zone-card p {
+    color: #7f1d1d !important;
+    -webkit-text-fill-color: #7f1d1d !important;
+    opacity: 1 !important;
+}
+
+/* Delete Account button */
+body.light-mode .delete-account-button {
+    background: #dc2626 !important;
+    border: 1px solid #b91c1c !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+body.light-mode .delete-account-button:hover {
+    background: #b91c1c !important;
+}
+
+/* =========================================================
+   FINAL LIGHT MODE VISIBILITY FIX
+   Applies only when Light Mode is active
+========================================================= */
+
+/* All headings inside the Settings page */
+body.light-mode .settings-page h1,
+body.light-mode .settings-page h2,
+body.light-mode .settings-page h3,
+body.light-mode .settings-page h4,
+body.light-mode .settings-page h5,
+body.light-mode .settings-page h6 {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* All normal paragraphs inside Settings */
+body.light-mode .settings-page p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* All labels inside Settings */
+body.light-mode .settings-page label {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Small text and helper text */
+body.light-mode .settings-page small,
+body.light-mode .settings-page span {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================================================
+   LIGHT MODE - DANGER ZONE
+========================================================= */
+
+body.light-mode .danger-zone {
+    background: #fff7f7 !important;
+    background-image: none !important;
+    border: 1px solid #ef4444 !important;
+    color: #172033 !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Danger Zone heading - your JSX uses h2 */
+body.light-mode .danger-zone h2,
+body.light-mode .danger-zone h3 {
+    color: #991b1b !important;
+    -webkit-text-fill-color: #991b1b !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Danger Zone main description */
+body.light-mode .danger-zone .danger-zone-description,
+body.light-mode .danger-zone > p {
+    color: #7f1d1d !important;
+    -webkit-text-fill-color: #7f1d1d !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Remove dark background from Danger Zone heading area */
+body.light-mode .danger-zone h2,
+body.light-mode .danger-zone h3 {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Inner Delete Account card */
+body.light-mode .danger-zone-card {
+    background: #fef2f2 !important;
+    background-image: none !important;
+    border: 1px solid #fca5a5 !important;
+    color: #172033 !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Delete Account heading */
+body.light-mode .danger-zone-card h3,
+body.light-mode .danger-zone-card h4,
+body.light-mode .danger-zone-card strong {
+    color: #991b1b !important;
+    -webkit-text-fill-color: #991b1b !important;
+    opacity: 1 !important;
+}
+
+/* Delete Account description */
+body.light-mode .danger-zone-card p {
+    color: #7f1d1d !important;
+    -webkit-text-fill-color: #7f1d1d !important;
+    opacity: 1 !important;
+}
+
+/* Delete Account button */
+body.light-mode .delete-account-button {
+    background: #dc2626 !important;
+    border: 1px solid #b91c1c !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+body.light-mode .delete-account-button:hover {
+    background: #b91c1c !important;
+}
+
+/* =========================================================
+   LIGHT MODE - SETTINGS INFORMATION BOXES
+========================================================= */
+
+body.light-mode .settings-info-box,
+body.light-mode .security-card,
+body.light-mode .privacy-card,
+body.light-mode .settings-card {
+    color: #334155 !important;
+    background: #f8fafc !important;
+    border-color: #d8e0eb !important;
+    opacity: 1 !important;
+}
+
+/* Text inside information boxes */
+body.light-mode .settings-info-box p,
+body.light-mode .security-card p,
+body.light-mode .privacy-card p,
+body.light-mode .settings-card p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+}
+
+/* Section subtitles */
+body.light-mode .settings-section-description,
+body.light-mode .section-description {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+    opacity: 1 !important;
+}
+
+/* =========================================================
+   COMPLETE LIGHT MODE TEXT VISIBILITY FIX
+========================================================= */
+
+/* Make all text inside settings readable in light mode */
+body.light-mode .settings-page *,
+body.light-mode .settings-container * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* All headings inside settings */
+body.light-mode .settings-page h1,
+body.light-mode .settings-page h2,
+body.light-mode .settings-page h3,
+body.light-mode .settings-page h4,
+body.light-mode .settings-page h5,
+body.light-mode .settings-page h6,
+body.light-mode .settings-container h1,
+body.light-mode .settings-container h2,
+body.light-mode .settings-container h3,
+body.light-mode .settings-container h4,
+body.light-mode .settings-container h5,
+body.light-mode .settings-container h6 {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* All paragraphs */
+body.light-mode .settings-page p,
+body.light-mode .settings-container p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Labels and text used for switches/options */
+body.light-mode .settings-page label,
+body.light-mode .settings-container label,
+body.light-mode .settings-page .setting-label,
+body.light-mode .settings-page .setting-title,
+body.light-mode .settings-page .option-label,
+body.light-mode .settings-page .option-title,
+body.light-mode .settings-page .toggle-label,
+body.light-mode .settings-page .preference-label,
+body.light-mode .settings-page .field-label {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Specifically fix common invisible setting headings */
+body.light-mode .settings-page strong,
+body.light-mode .settings-page b,
+body.light-mode .settings-container strong,
+body.light-mode .settings-container b {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    opacity: 1 !important;
+}
+
+/* =========================================================
+   APPEARANCE AND NOTIFICATION TEXT
+========================================================= */
+
+body.light-mode .settings-page .appearance-section *,
+body.light-mode .settings-page .notifications-section *,
+body.light-mode .settings-page .notification-section *,
+body.light-mode .settings-page .toggle-row *,
+body.light-mode .settings-page .setting-row * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+body.light-mode .settings-page .appearance-section h4,
+body.light-mode .settings-page .notifications-section h4,
+body.light-mode .settings-page .notification-section h4,
+body.light-mode .settings-page .toggle-row h4,
+body.light-mode .settings-page .setting-row h4 {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+}
+
+body.light-mode .settings-page .appearance-section p,
+body.light-mode .settings-page .notifications-section p,
+body.light-mode .settings-page .notification-section p,
+body.light-mode .settings-page .toggle-row p,
+body.light-mode .settings-page .setting-row p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+}
+
+/* =========================================================
+   DANGER ZONE LIGHT MODE
+========================================================= */
+
+body.light-mode .danger-zone {
+    background: #fff7f7 !important;
+    background-image: none !important;
+    border: 1px solid #ef4444 !important;
+    color: #172033 !important;
+    opacity: 1 !important;
+}
+
+/* Remove the unwanted dark strip behind the Danger Zone heading */
+body.light-mode .danger-zone > div,
+body.light-mode .danger-zone > header {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Danger Zone heading */
+body.light-mode .danger-zone h2,
+body.light-mode .danger-zone h3 {
+    color: #991b1b !important;
+    -webkit-text-fill-color: #991b1b !important;
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Danger Zone description */
+body.light-mode .danger-zone-description,
+body.light-mode .danger-zone > p {
+    color: #7f1d1d !important;
+    -webkit-text-fill-color: #7f1d1d !important;
+}
+
+/* Inner card */
+body.light-mode .danger-zone-card {
+    background: #fef2f2 !important;
+    background-image: none !important;
+    border: 1px solid #fca5a5 !important;
+    color: #172033 !important;
+}
+
+/* Inner card heading */
+body.light-mode .danger-zone-card h3,
+body.light-mode .danger-zone-card h4,
+body.light-mode .danger-zone-card strong {
+    color: #991b1b !important;
+    -webkit-text-fill-color: #991b1b !important;
+}
+
+/* Inner card paragraph */
+body.light-mode .danger-zone-card p {
+    color: #7f1d1d !important;
+    -webkit-text-fill-color: #7f1d1d !important;
+}
+
+/* Delete button must remain white text */
+body.light-mode .delete-account-button {
+    background: #dc2626 !important;
+    border: 1px solid #b91c1c !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* =========================================================
+   FIX INVISIBLE BUTTON TEXT IN LIGHT MODE
+========================================================= */
+
+/* Buttons inside the Settings page */
+body.light-mode .settings-page button,
+body.light-mode .settings-container button {
+    opacity: 1 !important;
+    visibility: visible !important;
+    -webkit-text-fill-color: #172033 !important;
+}
+
+/* Empty-looking outlined button in Notifications section */
+body.light-mode .settings-page button:not(.delete-account-button),
+body.light-mode .settings-container button:not(.delete-account-button) {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    background: #ffffff !important;
+    border-color: #7c3aed !important;
+}
+
+/* Save Changes button */
+body.light-mode .settings-page .save-button,
+body.light-mode .settings-container .save-button,
+body.light-mode button[type="submit"] {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #6d28d9 !important;
+    border-color: #6d28d9 !important;
+}
+
+/* Reset button */
+body.light-mode .settings-page .reset-button,
+body.light-mode .settings-container .reset-button {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+}
+
+/* =========================================================
+   PROFILE PAGE - LIGHT MODE TEXT VISIBILITY FIX
+========================================================= */
+
+/* Main profile page text */
+body.light-mode .profile-page *,
+body.light-mode .profile-container *,
+body.light-mode .profile-content *,
+body.light-mode .profile-section * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Main headings */
+body.light-mode .profile-page h1,
+body.light-mode .profile-page h2,
+body.light-mode .profile-page h3,
+body.light-mode .profile-page h4,
+body.light-mode .profile-container h1,
+body.light-mode .profile-container h2,
+body.light-mode .profile-container h3,
+body.light-mode .profile-container h4,
+body.light-mode .profile-content h1,
+body.light-mode .profile-content h2,
+body.light-mode .profile-content h3,
+body.light-mode .profile-content h4 {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* All paragraphs and descriptions */
+body.light-mode .profile-page p,
+body.light-mode .profile-container p,
+body.light-mode .profile-content p,
+body.light-mode .profile-section p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Labels such as Account Name, Email Address, Target Career */
+body.light-mode .profile-page label,
+body.light-mode .profile-container label,
+body.light-mode .profile-content label,
+body.light-mode .profile-page .label,
+body.light-mode .profile-container .label,
+body.light-mode .profile-content .label {
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Profile values such as CareerAI User and Full Stack Developer */
+body.light-mode .profile-page strong,
+body.light-mode .profile-page b,
+body.light-mode .profile-container strong,
+body.light-mode .profile-container b,
+body.light-mode .profile-content strong,
+body.light-mode .profile-content b {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Text inside profile cards */
+body.light-mode .profile-card *,
+body.light-mode .career-overview *,
+body.light-mode .career-overview-card *,
+body.light-mode .analysis-card *,
+body.light-mode .account-information *,
+body.light-mode .account-info-card * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Card headings */
+body.light-mode .profile-card h2,
+body.light-mode .profile-card h3,
+body.light-mode .career-overview h2,
+body.light-mode .career-overview h3,
+body.light-mode .career-overview-card h3,
+body.light-mode .analysis-card h3,
+body.light-mode .account-information h2,
+body.light-mode .account-information h3 {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+}
+
+/* Card descriptions */
+body.light-mode .profile-card p,
+body.light-mode .career-overview p,
+body.light-mode .career-overview-card p,
+body.light-mode .analysis-card p,
+body.light-mode .account-information p {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+}
+
+/* Small labels in statistic cards */
+body.light-mode .profile-page .stat-label,
+body.light-mode .profile-page .card-label,
+body.light-mode .profile-page .metric-label,
+body.light-mode .profile-page .overview-label,
+body.light-mode .profile-page .status-label {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+}
+
+/* Account information left-side labels */
+body.light-mode .profile-page .account-label,
+body.light-mode .profile-page .info-label,
+body.light-mode .profile-page .field-label {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+}
+
+/* Account information right-side values */
+body.light-mode .profile-page .account-value,
+body.light-mode .profile-page .info-value,
+body.light-mode .profile-page .field-value {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+}
+
+/* Edit Profile button */
+body.light-mode .profile-page button,
+body.light-mode .profile-container button {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Keep purple button text readable */
+body.light-mode .profile-page .edit-profile-button,
+body.light-mode .profile-page button {
+    color: #5b21b6 !important;
+    -webkit-text-fill-color: #5b21b6 !important;
+}
+
+/* Status badge */
+body.light-mode .profile-page .status-badge {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+}
+
+/* =========================================================
+   PROFILE LABELS - LIGHT MODE FINAL FIX
+========================================================= */
+
+/* Statistic card labels */
+body.light-mode .profile-page .stat-label,
+body.light-mode .profile-page .card-label,
+body.light-mode .profile-page .metric-label,
+body.light-mode .profile-page .overview-label,
+body.light-mode .profile-page .stat-title,
+body.light-mode .profile-page .metric-title,
+body.light-mode .profile-page .card-title {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Account information labels */
+body.light-mode .profile-page .account-label,
+body.light-mode .profile-page .info-label,
+body.light-mode .profile-page .field-label,
+body.light-mode .profile-page .account-name-label,
+body.light-mode .profile-page .account-info-label {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Any span used as a profile label */
+body.light-mode .profile-page span,
+body.light-mode .profile-container span,
+body.light-mode .profile-content span {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Prevent pale text caused by inherited styles */
+body.light-mode .profile-page span:not(.status-badge),
+body.light-mode .profile-container span:not(.status-badge),
+body.light-mode .profile-content span:not(.status-badge) {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+}
+
+/* Keep account values dark */
+body.light-mode .profile-page .account-value,
+body.light-mode .profile-page .info-value,
+body.light-mode .profile-page .field-value {
+    color: #172033 !important;
+    -webkit-text-fill-color: #172033 !important;
+    font-weight: 700 !important;
+}

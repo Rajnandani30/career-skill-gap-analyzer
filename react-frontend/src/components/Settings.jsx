@@ -678,64 +678,36 @@ function Settings({
 
             {/* Danger Zone */}
 
-            <div
-                className="settings-section-card"
-                style={{
-                    border: "1px solid rgba(239, 68, 68, 0.45)",
-                    background:
-                        "linear-gradient(145deg, rgba(127, 29, 29, 0.18), rgba(17, 24, 39, 0.95))"
-                }}
-            >
-                <div className="settings-section-heading">
-                    <div>
-                        <h3 style={{ color: "#f87171" }}>
-                            ⚠️ Danger Zone
-                        </h3>
+<section className="danger-zone">
+  <div className="settings-section-heading">
+    <div>
+      <h3>⚠️ Danger Zone</h3>
 
-                        <p>
-                            Permanently delete your CareerAI
-                            account and all associated
-                            application data.
-                        </p>
-                    </div>
-                </div>
+      <p className="danger-zone-description">
+        Permanently delete your CareerAI account and all associated
+        application data.
+      </p>
+    </div>
+  </div>
 
-                <div
-                    className="settings-info-box"
-                    style={{
-                        border: "1px solid rgba(239, 68, 68, 0.3)",
-                        background: "rgba(127, 29, 29, 0.12)"
-                    }}
-                >
-                    <strong style={{ color: "#fca5a5" }}>
-                        Delete Account Permanently
-                    </strong>
+  <div className="danger-zone-card">
+    <strong>Delete Account Permanently</strong>
 
-                    <p>
-                        This action will permanently delete
-                        your account, resume analyses, uploaded
-                        resumes, learning roadmaps, and saved
-                        preferences. This action cannot be undone.
-                    </p>
+    <p>
+      This action will permanently delete your account, resume analyses,
+      uploaded resumes, learning roadmaps, and saved preferences. This action
+      cannot be undone.
+    </p>
 
-                    <button
-                        type="button"
-                        onClick={() => setShowDeleteModal(true)}
-                        style={{
-                            marginTop: "14px",
-                            padding: "12px 18px",
-                            borderRadius: "10px",
-                            border: "1px solid #ef4444",
-                            background: "rgba(127, 29, 29, 0.35)",
-                            color: "#fca5a5",
-                            cursor: "pointer",
-                            fontWeight: "700"
-                        }}
-                    >
-                        Delete Account
-                    </button>
-                </div>
-            </div>
+    <button
+      type="button"
+      className="delete-account-button"
+      onClick={() => setShowDeleteModal(true)}
+    >
+      Delete Account
+    </button>
+  </div>
+</section>
 
             {/* Actions */}
 

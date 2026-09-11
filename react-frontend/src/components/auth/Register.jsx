@@ -9,6 +9,10 @@ function Register({ onRegisterSuccess, onGoToLogin }) {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // Password visibility states
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -61,6 +65,10 @@ function Register({ onRegisterSuccess, onGoToLogin }) {
             setEmail("");
             setPassword("");
             setConfirmPassword("");
+
+            // Reset password visibility after registration
+            setShowPassword(false);
+            setShowConfirmPassword(false);
 
             if (onRegisterSuccess) {
                 onRegisterSuccess();
@@ -131,31 +139,103 @@ function Register({ onRegisterSuccess, onGoToLogin }) {
                         Password
                     </label>
 
-                    <input
-                        id="register-password"
-                        type="password"
-                        value={password}
-                        onChange={(event) =>
-                            setPassword(event.target.value)
-                        }
-                        placeholder="Create a password"
-                        required
-                    />
+                    {/* Password Input with Eye Icon */}
+                    <div className="password-input-wrapper">
+
+                        <input
+                            id="register-password"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(event) =>
+                                setPassword(event.target.value)
+                            }
+                            placeholder="Create a password"
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() =>
+                                setShowPassword((previous) => !previous)
+                            }
+                            aria-label={
+                                showPassword
+                                    ? "Hide password"
+                                    : "Show password"
+                            }
+                            title={
+                                showPassword
+                                    ? "Hide password"
+                                    : "Show password"
+                            }
+                        >
+                            <span
+                                className={
+                                    showPassword
+                                        ? "eye-icon eye-open"
+                                        : "eye-icon"
+                                }
+                            >
+                                👁
+                            </span>
+                        </button>
+
+                    </div>
 
                     <label htmlFor="confirm-password">
                         Confirm Password
                     </label>
 
-                    <input
-                        id="confirm-password"
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(event) =>
-                            setConfirmPassword(event.target.value)
-                        }
-                        placeholder="Confirm your password"
-                        required
-                    />
+                    {/* Confirm Password Input with Eye Icon */}
+                    <div className="password-input-wrapper">
+
+                        <input
+                            id="confirm-password"
+                            type={
+                                showConfirmPassword
+                                    ? "text"
+                                    : "password"
+                            }
+                            value={confirmPassword}
+                            onChange={(event) =>
+                                setConfirmPassword(event.target.value)
+                            }
+                            placeholder="Confirm your password"
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() =>
+                                setShowConfirmPassword(
+                                    (previous) => !previous
+                                )
+                            }
+                            aria-label={
+                                showConfirmPassword
+                                    ? "Hide confirm password"
+                                    : "Show confirm password"
+                            }
+                            title={
+                                showConfirmPassword
+                                    ? "Hide confirm password"
+                                    : "Show confirm password"
+                            }
+                        >
+                            <span
+                                className={
+                                    showConfirmPassword
+                                        ? "eye-icon eye-open"
+                                        : "eye-icon"
+                                }
+                            >
+                                👁
+                            </span>
+                        </button>
+
+                    </div>
 
                     <button
                         type="submit"
@@ -175,6 +255,7 @@ function Register({ onRegisterSuccess, onGoToLogin }) {
                 )}
 
                 <div className="auth-switch">
+
                     <span>
                         Already have an account?
                     </span>
@@ -186,6 +267,7 @@ function Register({ onRegisterSuccess, onGoToLogin }) {
                     >
                         Sign in
                     </button>
+
                 </div>
 
             </div>
