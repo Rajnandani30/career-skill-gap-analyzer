@@ -22,11 +22,16 @@ function Settings({
     const [darkMode, setDarkMode] = useState(true);
     const [message, setMessage] = useState("");
 
+    // Delete account states
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+
     useEffect(() => {
         const loadSettings = async () => {
             try {
                 const rawUser =
                     localStorage.getItem("careerAI_user");
+
                 const user = rawUser
                     ? JSON.parse(rawUser)
                     : {};
@@ -43,12 +48,15 @@ function Settings({
                     setNotifications(
                         settings.notifications ?? true
                     );
+
                     setEmailUpdates(
                         settings.emailUpdates ?? true
                     );
+
                     setDarkMode(
                         settings.darkMode ?? true
                     );
+
                     setRole(
                         settings.targetRole || targetRole
                     );
@@ -77,12 +85,15 @@ function Settings({
                         setNotifications(
                             settings.notifications ?? true
                         );
+
                         setEmailUpdates(
                             settings.emailUpdates ?? true
                         );
+
                         setDarkMode(
                             settings.darkMode ?? true
                         );
+
                         setRole(
                             settings.targetRole || targetRole
                         );
@@ -100,12 +111,12 @@ function Settings({
     }, [targetRole]);
 
     useEffect(() => {
-    if (darkMode) {
-        document.body.classList.remove("light-mode");
-    } else {
-        document.body.classList.add("light-mode");
-    }
-}, [darkMode]);
+        if (darkMode) {
+            document.body.classList.remove("light-mode");
+        } else {
+            document.body.classList.add("light-mode");
+        }
+    }, [darkMode]);
 
     const handleSave = async () => {
         try {
@@ -232,6 +243,58 @@ function Settings({
         } catch (error) {
             console.error("Test email error:", error);
             setMessage(`✕ ${error.message}`);
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        try {
+            setIsDeletingAccount(true);
+
+            const token = getAuthToken();
+
+            if (!token) {
+                setMessage(
+                    "Please log in again before deleting your account."
+                );
+                setShowDeleteModal(false);
+                return;
+            }
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/users/me`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "Failed to delete account."
+                );
+            }
+
+            // Clear authentication and user data
+            localStorage.removeItem("careerAI_token");
+            localStorage.removeItem("token");
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("careerAI_user");
+            localStorage.removeItem("careerAI_settings");
+
+            setShowDeleteModal(false);
+
+            // Redirect to the login page
+            window.location.href = "/login";
+        } catch (error) {
+            console.error("Delete account error:", error);
+            setMessage(`✕ ${error.message}`);
+            setShowDeleteModal(false);
+        } finally {
+            setIsDeletingAccount(false);
         }
     };
 
@@ -392,7 +455,6 @@ function Settings({
                             <option>
                                 DevOps Engineer
                             </option>
-
                         </select>
                     </div>
 
@@ -614,6 +676,67 @@ function Settings({
 
             </div>
 
+            {/* Danger Zone */}
+
+            <div
+                className="settings-section-card"
+                style={{
+                    border: "1px solid rgba(239, 68, 68, 0.45)",
+                    background:
+                        "linear-gradient(145deg, rgba(127, 29, 29, 0.18), rgba(17, 24, 39, 0.95))"
+                }}
+            >
+                <div className="settings-section-heading">
+                    <div>
+                        <h3 style={{ color: "#f87171" }}>
+                            ⚠️ Danger Zone
+                        </h3>
+
+                        <p>
+                            Permanently delete your CareerAI
+                            account and all associated
+                            application data.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    className="settings-info-box"
+                    style={{
+                        border: "1px solid rgba(239, 68, 68, 0.3)",
+                        background: "rgba(127, 29, 29, 0.12)"
+                    }}
+                >
+                    <strong style={{ color: "#fca5a5" }}>
+                        Delete Account Permanently
+                    </strong>
+
+                    <p>
+                        This action will permanently delete
+                        your account, resume analyses, uploaded
+                        resumes, learning roadmaps, and saved
+                        preferences. This action cannot be undone.
+                    </p>
+
+                    <button
+                        type="button"
+                        onClick={() => setShowDeleteModal(true)}
+                        style={{
+                            marginTop: "14px",
+                            padding: "12px 18px",
+                            borderRadius: "10px",
+                            border: "1px solid #ef4444",
+                            background: "rgba(127, 29, 29, 0.35)",
+                            color: "#fca5a5",
+                            cursor: "pointer",
+                            fontWeight: "700"
+                        }}
+                    >
+                        Delete Account
+                    </button>
+                </div>
+            </div>
+
             {/* Actions */}
 
             <div className="settings-actions">
@@ -635,6 +758,142 @@ function Settings({
                 </button>
 
             </div>
+
+            {/* Delete Account Confirmation Modal */}
+
+            {showDeleteModal && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.75)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "20px",
+                        zIndex: 9999
+                    }}
+                >
+                    <div
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="delete-account-title"
+                        style={{
+                            width: "100%",
+                            maxWidth: "480px",
+                            borderRadius: "18px",
+                            padding: "28px",
+                            background:
+                                "linear-gradient(145deg, #1f2937, #111827)",
+                            border: "1px solid rgba(239, 68, 68, 0.5)",
+                            boxShadow:
+                                "0 25px 80px rgba(0, 0, 0, 0.55)"
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: "52px",
+                                height: "52px",
+                                borderRadius: "50%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                background: "rgba(239, 68, 68, 0.15)",
+                                fontSize: "25px",
+                                marginBottom: "18px"
+                            }}
+                        >
+                            ⚠️
+                        </div>
+
+                        <h2
+                            id="delete-account-title"
+                            style={{
+                                margin: "0 0 12px",
+                                color: "#f9fafb",
+                                fontSize: "24px"
+                            }}
+                        >
+                            Delete your account?
+                        </h2>
+
+                        <p
+                            style={{
+                                color: "#d1d5db",
+                                lineHeight: 1.7,
+                                marginBottom: "12px"
+                            }}
+                        >
+                            Are you sure you want to delete this account?
+                        </p>
+
+                        <p
+                            style={{
+                                color: "#fca5a5",
+                                lineHeight: 1.6,
+                                fontSize: "14px",
+                                marginBottom: "25px"
+                            }}
+                        >
+                            Your account, resume analyses, resumes,
+                            learning roadmaps, and associated data
+                            will be permanently deleted. This action
+                            cannot be undone.
+                        </p>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                gap: "12px",
+                                flexWrap: "wrap"
+                            }}
+                        >
+                            <button
+                                type="button"
+                                onClick={() => setShowDeleteModal(false)}
+                                disabled={isDeletingAccount}
+                                style={{
+                                    padding: "11px 18px",
+                                    borderRadius: "10px",
+                                    border: "1px solid #4b5563",
+                                    background: "transparent",
+                                    color: "#d1d5db",
+                                    cursor: isDeletingAccount
+                                        ? "not-allowed"
+                                        : "pointer",
+                                    fontWeight: "600",
+                                    opacity: isDeletingAccount ? 0.6 : 1
+                                }}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={handleDeleteAccount}
+                                disabled={isDeletingAccount}
+                                style={{
+                                    padding: "11px 18px",
+                                    borderRadius: "10px",
+                                    border: "1px solid #dc2626",
+                                    background: "#dc2626",
+                                    color: "#ffffff",
+                                    cursor: isDeletingAccount
+                                        ? "not-allowed"
+                                        : "pointer",
+                                    fontWeight: "700",
+                                    opacity: isDeletingAccount ? 0.7 : 1
+                                }}
+                            >
+                                {isDeletingAccount
+                                    ? "Deleting..."
+                                    : "Delete Permanently"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </div>
     );
