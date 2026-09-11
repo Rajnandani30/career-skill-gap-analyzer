@@ -41,8 +41,8 @@ function App() {
         useState(null);
 
     // Overall learning roadmap progress
-    const [roadmapProgress, setRoadmapProgress] =
-        useState(0);
+   const [roadmapProgress, setRoadmapProgress] = useState({});
+const [overallRoadmapProgress, setOverallRoadmapProgress] = useState(0);
 
     // Active application page
     const [activePage, setActivePage] =
@@ -1013,7 +1013,7 @@ function App() {
                         targetRole={targetRole}
                         resumes={resumes}
                         analyses={analyses}
-                        roadmapProgress={roadmapProgress}
+                        roadmapProgress={overallRoadmapProgress}
                         onBackToDashboard={handleDashboard}
                     />
 
@@ -1157,7 +1157,7 @@ function App() {
 
                     <StatCard
                         title="Learning Progress"
-                        value={`${roadmapProgress}%`}
+                       value={`${overallRoadmapProgress}%`}
                         description="Roadmap completed"
                         icon="📚"
                     />
@@ -1312,10 +1312,10 @@ function App() {
 
                 {/* AI ANALYSIS RESULTS */}
                 <AnalysisResults
-                    analysis={latestAnalysis}
-                    onRoadmapProgressChange={setRoadmapProgress}
-                />
-
+    analysis={latestAnalysis}
+    onRoadmapProgressChange={setRoadmapProgress}
+    onOverallRoadmapProgressChange={setOverallRoadmapProgress}
+/>
 
                 {/* ANALYSIS HISTORY */}
                 <AnalysisHistory
@@ -1382,7 +1382,7 @@ function App() {
                                                 ? "High"
                                                 : "Medium"
                                         }
-                                        progress={roadmapProgress}
+                                    progress={roadmapProgress[skill] || 0}
                                     />
                                 )
                             )

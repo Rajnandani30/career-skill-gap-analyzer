@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-function AnalysisResults({ analysis, onRoadmapProgressChange }) {
+function AnalysisResults({
+    analysis,
+    onRoadmapProgressChange,
+    onOverallRoadmapProgressChange
+}) {
     const [roadmap, setRoadmap] = useState(null);
     const [roadmapLoading, setRoadmapLoading] = useState(false);
 
@@ -204,15 +208,34 @@ function AnalysisResults({ analysis, onRoadmapProgressChange }) {
      */
 
     useEffect(() => {
-        if (!onRoadmapProgressChange) {
+        if (!roadmap) {
             return;
         }
+
+        const skillProgressMap = {};
+
+        (roadmap.roadmap || []).forEach((skillPlan) => {
+            skillProgressMap[skillPlan.skill] =
+                calculateSkillProgress(skillPlan);
+        });
 
         const overallProgress =
             calculateOverallProgress(roadmap);
 
-        onRoadmapProgressChange(overallProgress);
-    }, [roadmap, onRoadmapProgressChange]);
+        // Send individual progress for each skill gap.
+        if (onRoadmapProgressChange) {
+            onRoadmapProgressChange(skillProgressMap);
+        }
+
+        // Send overall progress separately for profile/dashboard statistics.
+        if (onOverallRoadmapProgressChange) {
+            onOverallRoadmapProgressChange(overallProgress);
+        }
+    }, [
+        roadmap,
+        onRoadmapProgressChange,
+        onOverallRoadmapProgressChange
+    ]);
 
 
     if (!analysis) {
@@ -288,7 +311,10 @@ function AnalysisResults({ analysis, onRoadmapProgressChange }) {
                 CAREER ANALYSIS
             ================================================= */}
 
-            <section className="analysis-results">
+          <section
+    className="analysis-results"
+    id="analysis-results"
+>
 
                 <div className="analysis-header">
 
