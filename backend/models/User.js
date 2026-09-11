@@ -20,6 +20,30 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             minlength: 6
+        },
+
+        // Career and account preferences
+        targetRole: {
+            type: String,
+            default: "Full Stack Developer",
+            trim: true
+        },
+
+        // Notification preferences
+        notifications: {
+            type: Boolean,
+            default: true
+        },
+
+        emailUpdates: {
+            type: Boolean,
+            default: true
+        },
+
+        // Appearance preference
+        darkMode: {
+            type: Boolean,
+            default: true
         }
     },
     {

@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+
+/*
+ * =========================================================
+ * ROADMAP STEP SCHEMA
+ * =========================================================
+ */
 const roadmapStepSchema = new mongoose.Schema(
     {
         stepNumber: {
@@ -37,6 +43,12 @@ const roadmapStepSchema = new mongoose.Schema(
     }
 );
 
+
+/*
+ * =========================================================
+ * ROADMAP SKILL / MODULE SCHEMA
+ * =========================================================
+ */
 const roadmapSkillSchema = new mongoose.Schema(
     {
         skill: {
@@ -94,6 +106,12 @@ const roadmapSkillSchema = new mongoose.Schema(
     }
 );
 
+
+/*
+ * =========================================================
+ * COMPLETE ROADMAP SCHEMA
+ * =========================================================
+ */
 const roadmapSchema = new mongoose.Schema(
     {
         userId: {
@@ -122,12 +140,34 @@ const roadmapSchema = new mongoose.Schema(
         roadmap: {
             type: [roadmapSkillSchema],
             default: []
+        },
+
+        /*
+         * Stores the skill/module names for which
+         * milestone emails have already been sent.
+         *
+         * Example:
+         * ["React.js", "JavaScript"]
+         */
+        completedMilestoneEmails: {
+            type: [String],
+            default: []
+        },
+
+        /*
+         * Ensures that the final roadmap-completion
+         * email is sent only once.
+         */
+        roadmapCompletionEmailSent: {
+            type: Boolean,
+            default: false
         }
     },
     {
         timestamps: true
     }
 );
+
 
 const Roadmap = mongoose.model(
     "Roadmap",

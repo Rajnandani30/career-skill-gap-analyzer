@@ -1,11 +1,16 @@
 const express = require("express");
 const Roadmap = require("../models/Roadmap");
 const Analysis = require("../models/Analysis");
+const User = require("../models/User");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const {
     generateLearningRoadmap
 } = require("../services/aiService");
+
+const {
+    sendCareerAIEmail
+} = require("../services/emailService");
 
 const router = express.Router();
 
@@ -81,6 +86,61 @@ router.post("/", authMiddleware, async (req, res) => {
         const savedRoadmap =
             await roadmapDocument.save();
 
+
+        /*
+         * =====================================================
+         * AUTOMATIC ROADMAP EMAIL NOTIFICATION
+         * =====================================================
+         *
+         * Email is sent only when:
+         * - User exists
+         * - User has a registered email
+         * - Email updates are enabled
+         * - Notifications are enabled
+         *
+         * If email fails, roadmap generation still succeeds.
+         */
+        try {
+            const user = await User.findById(req.userId).select(
+                "name email emailUpdates notifications"
+            );
+
+            if (
+                user &&
+                user.email &&
+                user.emailUpdates &&
+                user.notifications
+            ) {
+                await sendCareerAIEmail({
+                    to: user.email,
+                    subject:
+                        "Your CareerAI Learning Roadmap Is Ready",
+                    title:
+                        "Learning Roadmap Generated Successfully!",
+                    message:
+                        `Hello ${user.name || "CareerAI User"},\n\n` +
+                        `Your personalized learning roadmap for the role ` +
+                        `"${analysis.targetRole}" has been generated successfully.\n\n` +
+                        `You can now open CareerAI and start working on your identified skill gaps.\n\n` +
+                        `Keep learning and improving your career readiness!`
+                });
+
+                console.log(
+                    `Roadmap email sent successfully to ${user.email}`
+                );
+            } else {
+                console.log(
+                    "Roadmap email skipped because notifications or email updates are disabled."
+                );
+            }
+        } catch (emailError) {
+            console.error(
+                "Roadmap email notification error:",
+                emailError.message
+            );
+        }
+
+
         res.status(201).json({
             success: true,
             message:
@@ -110,6 +170,17 @@ router.post("/", authMiddleware, async (req, res) => {
  * =========================================================
  *
  * PATCH /api/roadmap/:roadmapId/step
+ */
+/*
+ * =========================================================
+ * UPDATE ROADMAP STEP PROGRESS
+ * =========================================================
+ *
+ * PATCH /api/roadmap/:roadmapId/step
+ *
+ * Sends:
+ * 1. A milestone email when all steps of a skill are completed.
+ * 2. A final email when the entire roadmap is completed.
  */
 router.patch(
     "/:roadmapId/step",
@@ -156,13 +227,162 @@ router.patch(
                 });
             }
 
-            roadmap.roadmap[
-                skillIndex
-            ].steps[
-                stepIndex
-            ].completed = Boolean(completed);
+            const selectedSkill =
+                roadmap.roadmap[skillIndex];
+
+            const selectedStep =
+                selectedSkill.steps[stepIndex];
+
+            const wasAlreadyCompleted =
+                selectedStep.completed;
+
+            selectedStep.completed = Boolean(completed);
 
             await roadmap.save();
+
+
+            /*
+             * =====================================================
+             * PROGRESS EMAIL NOTIFICATIONS
+             * =====================================================
+             *
+             * Emails are checked only when a step is marked
+             * as completed.
+             */
+            if (
+                Boolean(completed) &&
+                !wasAlreadyCompleted
+            ) {
+                try {
+                    const user = await User.findById(
+                        req.userId
+                    ).select(
+                        "name email emailUpdates notifications"
+                    );
+
+                    if (
+                        user &&
+                        user.email &&
+                        user.emailUpdates &&
+                        user.notifications
+                    ) {
+                        /*
+                         * -------------------------------------------------
+                         * CHECK WHETHER THE CURRENT SKILL IS COMPLETED
+                         * -------------------------------------------------
+                         */
+                        const skillCompleted =
+                            selectedSkill.steps.length > 0 &&
+                            selectedSkill.steps.every(
+                                (step) => step.completed === true
+                            );
+
+                        let milestoneEmailSent = false;
+
+                        if (skillCompleted) {
+                            const skillName =
+                                selectedSkill.skill;
+
+                            const alreadySent =
+                                roadmap.completedMilestoneEmails.includes(
+                                    skillName
+                                );
+
+                            if (!alreadySent) {
+                                await sendCareerAIEmail({
+                                    to: user.email,
+                                    subject:
+                                        `CareerAI Milestone Achieved: ${skillName}`,
+                                    title:
+                                        "Learning Milestone Achieved!",
+                                    message:
+                                        `Hello ${user.name || "CareerAI User"},\n\n` +
+                                        `Congratulations! You have completed the "${skillName}" learning module in your ${roadmap.targetRole} roadmap.\n\n` +
+                                        `This is an important milestone in your career-readiness journey. Continue working on the remaining skills to strengthen your profile.\n\n` +
+                                        `Keep learning and growing with CareerAI!`
+                                });
+
+                                roadmap.completedMilestoneEmails.push(
+                                    skillName
+                                );
+
+                                milestoneEmailSent = true;
+
+                                console.log(
+                                    `Milestone email sent for ${skillName} to ${user.email}`
+                                );
+                            }
+                        }
+
+
+                        /*
+                         * -------------------------------------------------
+                         * CHECK WHETHER THE ENTIRE ROADMAP IS COMPLETED
+                         * -------------------------------------------------
+                         */
+                        const entireRoadmapCompleted =
+                            roadmap.roadmap.length > 0 &&
+                            roadmap.roadmap.every(
+                                (skillModule) =>
+                                    skillModule.steps.length > 0 &&
+                                    skillModule.steps.every(
+                                        (step) =>
+                                            step.completed === true
+                                    )
+                            );
+
+                        let finalRoadmapEmailSent = false;
+
+                        if (
+                            entireRoadmapCompleted &&
+                            !roadmap.roadmapCompletionEmailSent
+                        ) {
+                            await sendCareerAIEmail({
+                                to: user.email,
+                                subject:
+                                    "CareerAI Roadmap Completed Successfully!",
+                                title:
+                                    "Congratulations! Your Entire Roadmap Is Complete!",
+                                message:
+                                    `Hello ${user.name || "CareerAI User"},\n\n` +
+                                    `Amazing work! You have completed your entire learning roadmap for the role "${roadmap.targetRole}".\n\n` +
+                                    `You have successfully worked through all the learning modules and their steps.\n\n` +
+                                    `Keep applying your knowledge through projects, practice, and interview preparation.\n\n` +
+                                    `Congratulations on completing this important career-readiness milestone!`
+                            });
+
+                            roadmap.roadmapCompletionEmailSent =
+                                true;
+
+                            finalRoadmapEmailSent = true;
+
+                            console.log(
+                                `Final roadmap completion email sent to ${user.email}`
+                            );
+                        }
+
+                        if (
+                            milestoneEmailSent ||
+                            finalRoadmapEmailSent
+                        ) {
+                            await roadmap.save();
+                        }
+                    } else {
+                        console.log(
+                            "Progress email skipped because notifications or email updates are disabled."
+                        );
+                    }
+                } catch (emailError) {
+                    /*
+                     * Email errors must not stop progress updates.
+                     */
+                    console.error(
+                        "Progress email notification error:",
+                        emailError.message
+                    );
+                }
+            }
+
 
             res.status(200).json({
                 success: true,
@@ -186,6 +406,11 @@ router.patch(
         }
     }
 );
+        
+         
+      
+     
+  
 
 
 /*

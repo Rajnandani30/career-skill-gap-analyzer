@@ -5,10 +5,13 @@ require("dotenv").config();
 
 const path = require("path");
 const userRoutes = require("./routes/userRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const analysisRoutes = require("./routes/analysisRoutes");
 const roadmapRoutes = require("./routes/roadmapRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
+
 
 const app = express();
 
@@ -19,6 +22,8 @@ app.use(express.json());
 
 // User API routes
 app.use("/api/users", userRoutes);
+app.use("/api/settings", settingsRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Resume API routes
 app.use("/api/resumes", resumeRoutes);

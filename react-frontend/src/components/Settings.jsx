@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 
+const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const getAuthToken = () =>
+    localStorage.getItem("careerAI_token") ||
+    localStorage.getItem("token") ||
+    localStorage.getItem("authToken") ||
+    "";
+
 function Settings({
     targetRole = "Full Stack Developer",
     onSaveTargetRole,
@@ -14,42 +23,80 @@ function Settings({
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        try {
-            const rawUser = localStorage.getItem("careerAI_user");
-            const user = rawUser ? JSON.parse(rawUser) : {};
-
-            setName(user?.name || user?.fullName || "");
-            setEmail(user?.email || "");
-        } catch (error) {
-            console.error("Unable to load settings:", error);
-        }
-
-        const savedSettings =
-            localStorage.getItem("careerAI_settings");
-
-        if (savedSettings) {
+        const loadSettings = async () => {
             try {
-                const settings = JSON.parse(savedSettings);
+                const rawUser =
+                    localStorage.getItem("careerAI_user");
+                const user = rawUser
+                    ? JSON.parse(rawUser)
+                    : {};
 
-                setNotifications(
-                    settings.notifications ?? true
-                );
-                setEmailUpdates(
-                    settings.emailUpdates ?? true
-                );
-                setDarkMode(
-                    settings.darkMode ?? true
-                );
-                setRole(
-                    settings.targetRole || targetRole
-                );
+                setName(user?.name || user?.fullName || "");
+                setEmail(user?.email || "");
+
+                const savedSettings =
+                    localStorage.getItem("careerAI_settings");
+
+                if (savedSettings) {
+                    const settings = JSON.parse(savedSettings);
+
+                    setNotifications(
+                        settings.notifications ?? true
+                    );
+                    setEmailUpdates(
+                        settings.emailUpdates ?? true
+                    );
+                    setDarkMode(
+                        settings.darkMode ?? true
+                    );
+                    setRole(
+                        settings.targetRole || targetRole
+                    );
+                }
+
+                /*
+                 * If the backend settings endpoint exists,
+                 * use MongoDB preferences as the latest source.
+                 */
+                const token = getAuthToken();
+
+                if (token) {
+                    const response = await fetch(
+                        `${API_BASE_URL}/api/settings`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const settings = data.settings || data;
+
+                        setNotifications(
+                            settings.notifications ?? true
+                        );
+                        setEmailUpdates(
+                            settings.emailUpdates ?? true
+                        );
+                        setDarkMode(
+                            settings.darkMode ?? true
+                        );
+                        setRole(
+                            settings.targetRole || targetRole
+                        );
+                    }
+                }
             } catch (error) {
                 console.error(
-                    "Unable to load saved settings:",
+                    "Unable to load settings:",
                     error
                 );
             }
-        }
+        };
+
+        loadSettings();
     }, [targetRole]);
 
     useEffect(() => {
@@ -60,7 +107,7 @@ function Settings({
     }
 }, [darkMode]);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         try {
             const rawUser = localStorage.getItem(
                 "careerAI_user"
@@ -70,6 +117,17 @@ function Settings({
                 ? JSON.parse(rawUser)
                 : {};
 
+            const settingsPayload = {
+                notifications,
+                emailUpdates,
+                darkMode,
+                targetRole: role
+            };
+
+            /*
+             * Keep a local copy so preferences remain available
+             * during development and when the backend is offline.
+             */
             localStorage.setItem(
                 "careerAI_user",
                 JSON.stringify({
@@ -80,19 +138,45 @@ function Settings({
 
             localStorage.setItem(
                 "careerAI_settings",
-                JSON.stringify({
-                    notifications,
-                    emailUpdates,
-                    darkMode,
-                    targetRole: role
-                })
+                JSON.stringify(settingsPayload)
             );
+
+            /*
+             * Persist preferences in MongoDB when the authenticated
+             * backend endpoint is available.
+             */
+            const token = getAuthToken();
+
+            if (token) {
+                const response = await fetch(
+                    `${API_BASE_URL}/api/settings`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            name,
+                            ...settingsPayload
+                        })
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Unable to save settings to the server."
+                    );
+                }
+            }
 
             if (onSaveTargetRole) {
                 onSaveTargetRole(role);
             }
 
-            setMessage("✓ Settings saved successfully.");
+            setMessage(
+                "✓ Settings saved successfully."
+            );
 
             setTimeout(() => {
                 setMessage("");
@@ -104,8 +188,50 @@ function Settings({
             );
 
             setMessage(
-                "Unable to save settings. Please try again."
+                "Settings saved locally. Server synchronization is unavailable."
             );
+        }
+    };
+
+    const handleTestEmail = async () => {
+        setMessage("Sending test email...");
+
+        try {
+            const token = getAuthToken();
+
+            if (!token) {
+                setMessage("Please log in again before testing email.");
+                return;
+            }
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/notifications/test-email`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "Test email could not be sent."
+                );
+            }
+
+            setMessage(
+                `✓ Test email sent successfully to ${data.email}`
+            );
+
+            setTimeout(() => {
+                setMessage("");
+            }, 5000);
+        } catch (error) {
+            console.error("Test email error:", error);
+            setMessage(`✕ ${error.message}`);
         }
     };
 
@@ -400,6 +526,23 @@ function Settings({
                     </div>
 
                 </div>
+
+                <button
+                    type="button"
+                    onClick={handleTestEmail}
+                    style={{
+                        marginTop: "20px",
+                        padding: "12px 18px",
+                        borderRadius: "10px",
+                        border: "1px solid #8b5cf6",
+                        background: "transparent",
+                        color: "#c4b5fd",
+                        cursor: "pointer",
+                        fontWeight: "600"
+                    }}
+                >
+                    ✉ Send Test Email
+                </button>
 
             </div>
 
