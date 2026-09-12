@@ -632,9 +632,9 @@ function Settings({
                         for this application.
                     </p>
 
-                    <span className="settings-status-badge">
-                        ✓ ACCOUNT PROTECTED
-                    </span>
+                   <span className="settings-status-badge">
+    ✓ AUTHENTICATION ENABLED
+</span>
 
                 </div>
 
