@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,62 +13,514 @@
         href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"
     />
 
+    <!-- CareerAI Custom CSS -->
+    <style>
+
+        /* ==============================
+           Global Styling
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b1020;
+        }
+
+        [data-role="page"] {
+            background: #0b1020;
+            color: #f5f7ff;
+        }
+
+        [data-role="header"] {
+            background: #111a33 !important;
+            border-color: #263456 !important;
+            color: #ffffff !important;
+            text-shadow: none !important;
+            min-height: 52px;
+        }
+
+        [data-role="header"] h1 {
+            color: #ffd43b;
+            font-weight: bold;
+            text-shadow: none !important;
+        }
+
+        [data-role="content"] {
+            padding: 24px 18px;
+        }
+
+        [data-role="footer"] {
+            background: #111a33 !important;
+            border-color: #263456 !important;
+            color: #b8c2df !important;
+            text-shadow: none !important;
+        }
+
+        [data-role="footer"] h4 {
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        /* ==============================
+           Headings and Text
+        ============================== */
+
+        h2 {
+            color: #4dd9ff;
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        h3 {
+            color: #ffd43b;
+            font-size: 20px;
+        }
+
+        h4 {
+            color: #4dd9ff;
+        }
+
+        p {
+            color: #d7def5;
+            line-height: 1.6;
+        }
+
+        .mobile-section-intro {
+            background: #151f3d;
+            border: 1px solid #2b3b68;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .mobile-section-intro h2 {
+            margin-top: 0;
+        }
+
+        /* ==============================
+           Home Page
+        ============================== */
+
+        #home [data-role="content"] {
+            text-align: center;
+            padding-top: 45px;
+        }
+
+        #home [data-role="content"] h2 {
+            color: #ffd43b;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        #home [data-role="content"] p {
+            font-size: 16px;
+            margin-bottom: 28px;
+        }
+
+        .home-brand {
+            font-size: 18px;
+            color: #4dd9ff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .home-card {
+            background: #151f3d;
+            border: 1px solid #2b3b68;
+            border-radius: 18px;
+            padding: 22px 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .home-card p {
+            margin-bottom: 0;
+        }
+
+        /* ==============================
+           Buttons
+        ============================== */
+
+        .ui-btn {
+            border-radius: 12px !important;
+            text-shadow: none !important;
+            font-weight: bold !important;
+            padding: 13px !important;
+            margin-top: 14px !important;
+        }
+
+        .ui-btn-b {
+            background: #2563eb !important;
+            border-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+
+        .ui-btn-b:hover {
+            background: #1d4ed8 !important;
+        }
+
+        #home .ui-btn {
+            background: #172554 !important;
+            border: 1px solid #3b82f6 !important;
+            color: #ffffff !important;
+        }
+
+        #home .ui-btn:hover {
+            background: #1e40af !important;
+        }
+
+        /* ==============================
+           Form Fields
+        ============================== */
+
+        label {
+            color: #dce5ff !important;
+            font-size: 15px;
+            margin-top: 16px !important;
+        }
+
+        input,
+        textarea {
+            background: #111827 !important;
+            border: 1px solid #34466f !important;
+            border-radius: 10px !important;
+            color: #ffffff !important;
+            font-size: 15px !important;
+            text-shadow: none !important;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #4dd9ff !important;
+            box-shadow: 0 0 6px rgba(77, 217, 255, 0.4) !important;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #8995b5 !important;
+        }
+
+        /* ==============================
+           Result Box
+        ============================== */
+
+        .mobile-result-box {
+            background: #14213d;
+            border: 1px solid #3b82f6;
+            border-left: 5px solid #4dd9ff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 22px;
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .mobile-result-box h3 {
+            margin-top: 0;
+            color: #ffd43b;
+        }
+
+        .mobile-result-box h4 {
+            color: #4dd9ff;
+        }
+
+        .mobile-result-box p {
+            color: #e5eaff;
+        }
+
+        .mobile-result-box li {
+            color: #dce5ff;
+            margin-bottom: 8px;
+        }
+
+        /* ==============================
+           Interview Cards
+        ============================== */
+
+        .interview-card {
+            background: #151f3d;
+            border: 1px solid #2b3b68;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .interview-card h3 {
+            margin-top: 0;
+        }
+
+        .interview-card p strong {
+            color: #ffffff;
+        }
+
+        /* ==============================
+           Roadmap List
+        ============================== */
+
+        #roadmap .ui-listview {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #roadmap .ui-listview li {
+            background: #151f3d !important;
+            border-color: #2b3b68 !important;
+            color: #ffffff !important;
+            text-shadow: none !important;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        #roadmap .ui-listview li h3 {
+            color: #ffd43b;
+            margin-bottom: 6px;
+        }
+
+        #roadmap .ui-listview li p {
+            color: #cbd5f1;
+        }
+
+        #roadmap .ui-listview .ui-li-divider {
+            background: #1e3a8a !important;
+            color: #ffffff !important;
+            border-color: #3b82f6 !important;
+            text-shadow: none !important;
+            font-weight: bold;
+        }
+
+        /* ==============================
+           Popup Menu
+        ============================== */
+
+        #mobileMenu {
+            background: #111a33 !important;
+            border: 1px solid #3b82f6 !important;
+            border-radius: 14px;
+            min-width: 250px;
+        }
+
+        #mobileMenu .ui-listview {
+            margin: 0;
+        }
+
+        #mobileMenu .ui-listview li {
+            background: #151f3d !important;
+            border-color: #2b3b68 !important;
+        }
+
+        #mobileMenu .ui-listview li a {
+            color: #ffffff !important;
+            text-shadow: none !important;
+        }
+
+        #mobileMenu .ui-listview li a:hover {
+            background: #1e40af !important;
+        }
+
+        #mobileMenu .ui-listview .ui-li-divider {
+            background: #1e3a8a !important;
+            color: #ffd43b !important;
+        }
+
+        /* ==============================
+           General jQuery Mobile Fixes
+        ============================== */
+
+        .ui-body-a,
+        .ui-body-a input,
+        .ui-body-a textarea,
+        .ui-body-a button {
+            text-shadow: none !important;
+        }
+
+        .ui-content {
+            overflow-x: hidden;
+        }
+
+        a {
+            text-shadow: none !important;
+        }
+
+    </style>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
     <!-- jQuery Mobile -->
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
 </head>
 
 <body>
 
-    <!-- Home Page -->
+    <!-- =================================
+         Home Page
+    ================================== -->
+
     <div data-role="page" id="home">
 
         <div data-role="header">
+
             <h1>✦ CareerAI</h1>
+
+            <a
+                href="#mobileMenu"
+                data-rel="popup"
+                data-role="button"
+                data-inline="true"
+                data-icon="bars"
+                data-iconpos="notext"
+            >
+                Menu
+            </a>
+
+        </div>
+
+        <!-- Popup Navigation Menu -->
+
+        <div
+            data-role="popup"
+            id="mobileMenu"
+            data-theme="a"
+            class="ui-corner-all"
+        >
+
+            <ul data-role="listview" data-inset="true">
+
+                <li data-role="list-divider">
+                    CareerAI Menu
+                </li>
+
+                <li>
+                    <a href="#home">
+                        🏠 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#analysis">
+                        🎯 Skill Analysis
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#roadmap">
+                        📚 Learning Roadmap
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#interview">
+                        🎤 Interview Preparation
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="http://localhost:5173"
+                        target="_blank"
+                    >
+                        🌐 Open Main CareerAI
+                    </a>
+                </li>
+
+            </ul>
+
         </div>
 
         <div data-role="content">
 
-            <h2>Career Readiness</h2>
-            <p>
-                Check your career readiness and identify the skills
-                you need to improve.
-            </p>
+            <div class="home-card">
 
-            <a href="#analysis" data-role="button">
+                <div class="home-brand">
+                    AI-POWERED CAREER ASSISTANT
+                </div>
+
+                <h2>Career Readiness</h2>
+
+                <p>
+                    Check your career readiness, identify skill gaps,
+                    create a learning roadmap, and prepare for interviews.
+                </p>
+
+            </div>
+
+            <a
+                href="#analysis"
+                data-role="button"
+            >
                 🎯 Start Skill Analysis
             </a>
 
-            <a href="#roadmap" data-role="button">
+            <a
+                href="#roadmap"
+                data-role="button"
+            >
                 📚 Learning Roadmap
             </a>
 
-            <a href="#interview" data-role="button">
+            <a
+                href="#interview"
+                data-role="button"
+            >
                 🎤 Interview Preparation
             </a>
 
         </div>
 
         <div data-role="footer">
-            <h4>CareerAI © 2026</h4>
+
+            <h4>CareerAI © 2026 | Career Growth Assistant</h4>
+
         </div>
 
     </div>
 
 
-    <!-- Skill Analysis Page -->
+    <!-- =================================
+         Skill Analysis Page
+    ================================== -->
+
     <div data-role="page" id="analysis">
 
         <div data-role="header">
-            <a href="#home" data-icon="back">Back</a>
+
+            <a
+                href="#home"
+                data-icon="back"
+            >
+                Back
+            </a>
+
             <h1>Skill Analysis</h1>
+
         </div>
 
         <div data-role="content">
 
-            <label for="role">Target Job Role:</label>
+            <div class="mobile-section-intro">
+
+                <h2>🎯 Career Skill Analysis</h2>
+
+                <p>
+                    Enter your target role and skills to identify your
+                    strengths and areas for improvement.
+                </p>
+
+            </div>
+
+            <label for="role">
+                <strong>Target Job Role</strong>
+            </label>
 
             <input
                 type="text"
@@ -75,94 +528,465 @@
                 placeholder="e.g. Full Stack Developer"
             />
 
-            <label for="skills">Your Skills:</label>
+            <label for="skills">
+                <strong>Your Skills or Resume</strong>
+            </label>
 
             <textarea
                 id="skills"
-                placeholder="Enter your skills..."
+                rows="8"
+                placeholder="Enter your skills or paste your resume here..."
             ></textarea>
 
-            <button id="analyzeButton">
+            <button
+                id="analyzeButton"
+                data-theme="b"
+            >
                 🤖 Analyze Skills
             </button>
 
-            <div id="result"></div>
+            <div
+                id="result"
+                class="mobile-result-box"
+                style="display: none;"
+            ></div>
+
+            <a
+                href="http://localhost:5173"
+                target="_blank"
+                data-role="button"
+                data-icon="external-link"
+            >
+                🌐 Open Full CareerAI Analysis
+            </a>
 
         </div>
 
     </div>
 
 
-    <!-- Roadmap Page -->
+    <!-- =================================
+         Learning Roadmap Page
+    ================================== -->
+
     <div data-role="page" id="roadmap">
 
         <div data-role="header">
-            <a href="#home" data-icon="back">Back</a>
+
+            <a
+                href="#home"
+                data-icon="back"
+            >
+                Back
+            </a>
+
             <h1>Learning Roadmap</h1>
+
         </div>
 
         <div data-role="content">
 
-            <ul data-role="listview">
-                <li>📚 Learn MongoDB</li>
-                <li>🌐 Practice REST APIs</li>
-                <li>🐳 Learn Docker</li>
-                <li>⚛️ Improve React Skills</li>
-                <li>🤖 Practice AI Integration</li>
+            <div class="mobile-section-intro">
+
+                <h2>📚 Career Learning Roadmap</h2>
+
+                <p>
+                    Follow these learning steps to improve your technical
+                    skills and become job-ready.
+                </p>
+
+            </div>
+
+            <ul
+                data-role="listview"
+                data-inset="true"
+            >
+
+                <li data-role="list-divider">
+                    Step 1: Foundation
+                </li>
+
+                <li>
+                    <h3>🌐 HTML and CSS</h3>
+                    <p>
+                        Learn webpage structure, styling, layouts,
+                        and responsive design.
+                    </p>
+                </li>
+
+                <li>
+                    <h3>⚡ JavaScript</h3>
+                    <p>
+                        Practice variables, functions, arrays, objects,
+                        and DOM manipulation.
+                    </p>
+                </li>
+
+                <li data-role="list-divider">
+                    Step 2: Frontend Development
+                </li>
+
+                <li>
+                    <h3>⚛️ React.js</h3>
+                    <p>
+                        Learn components, props, state, hooks,
+                        and API integration.
+                    </p>
+                </li>
+
+                <li>
+                    <h3>🎨 UI and Responsive Design</h3>
+                    <p>
+                        Build mobile-friendly and professional
+                        user interfaces.
+                    </p>
+                </li>
+
+                <li data-role="list-divider">
+                    Step 3: Backend Development
+                </li>
+
+                <li>
+                    <h3>🟢 Node.js and Express.js</h3>
+                    <p>
+                        Build backend servers and REST APIs.
+                    </p>
+                </li>
+
+                <li>
+                    <h3>🍃 MongoDB</h3>
+                    <p>
+                        Learn database design, CRUD operations,
+                        and data management.
+                    </p>
+                </li>
+
+                <li data-role="list-divider">
+                    Step 4: Career Readiness
+                </li>
+
+                <li>
+                    <h3>🐳 Docker and Cloud Deployment</h3>
+                    <p>
+                        Learn how to containerize and deploy applications.
+                    </p>
+                </li>
+
+                <li>
+                    <h3>💼 Projects and GitHub</h3>
+                    <p>
+                        Create projects, maintain repositories,
+                        and build your portfolio.
+                    </p>
+                </li>
+
+                <li>
+                    <h3>🎤 Interview Preparation</h3>
+                    <p>
+                        Practice technical questions, coding problems,
+                        and HR interviews.
+                    </p>
+                </li>
+
             </ul>
+
+            <a
+                href="http://localhost:5173"
+                target="_blank"
+                data-role="button"
+                data-icon="external-link"
+            >
+                🌐 Open Full CareerAI Dashboard
+            </a>
 
         </div>
 
     </div>
 
 
-    <!-- Interview Page -->
+    <!-- =================================
+         Interview Preparation Page
+    ================================== -->
+
     <div data-role="page" id="interview">
 
         <div data-role="header">
-            <a href="#home" data-icon="back">Back</a>
+
+            <a
+                href="#home"
+                data-icon="back"
+            >
+                Back
+            </a>
+
             <h1>Interview Prep</h1>
+
         </div>
 
         <div data-role="content">
 
-            <h3>Sample Question</h3>
+            <div class="mobile-section-intro">
 
-            <p>
-                What is the difference between REST API and SOAP API?
-            </p>
+                <h2>🎤 Interview Preparation</h2>
 
-            <textarea placeholder="Write your answer here..."></textarea>
+                <p>
+                    Practice common technical interview questions and
+                    evaluate your answers.
+                </p>
 
-            <button>
-                Submit Answer
-            </button>
+            </div>
+
+            <div class="interview-card">
+
+                <h3>💻 Technical Question</h3>
+
+                <p>
+                    <strong>
+                        What is the difference between REST API and SOAP API?
+                    </strong>
+                </p>
+
+                <label for="interviewAnswer">
+                    <strong>Your Answer</strong>
+                </label>
+
+                <textarea
+                    id="interviewAnswer"
+                    rows="8"
+                    placeholder="Write your answer here..."
+                ></textarea>
+
+                <button
+                    id="submitInterview"
+                    data-theme="b"
+                >
+                    📝 Submit Answer
+                </button>
+
+                <div
+                    id="interviewFeedback"
+                    class="mobile-result-box"
+                    style="display: none;"
+                ></div>
+
+            </div>
+
+            <div class="interview-card">
+
+                <h3>📌 Interview Tips</h3>
+
+                <ul
+                    data-role="listview"
+                    data-inset="true"
+                >
+                    <li>
+                        Understand the question before answering.
+                    </li>
+
+                    <li>
+                        Explain concepts using simple examples.
+                    </li>
+
+                    <li>
+                        Keep your answer structured and clear.
+                    </li>
+
+                    <li>
+                        Practice coding and technical questions regularly.
+                    </li>
+
+                    <li>
+                        Be honest if you do not know an answer.
+                    </li>
+                </ul>
+
+            </div>
+
+            <a
+                href="http://localhost:5173"
+                target="_blank"
+                data-role="button"
+                data-icon="external-link"
+            >
+                🌐 Open Full CareerAI Dashboard
+            </a>
 
         </div>
 
     </div>
 
 
+    <!-- =================================
+         JavaScript Functionality
+    ================================== -->
+
     <script>
+
+        /* ==============================
+           Skill Analysis
+        ============================== */
+
         $(document).on("click", "#analyzeButton", function () {
 
-            const role = $("#role").val();
-            const skills = $("#skills").val();
+            const role = $("#role").val().trim();
+            const skills = $("#skills").val().trim();
 
             if (role === "" || skills === "") {
-                $("#result").html(
-                    "<p>Please enter your target role and skills.</p>"
-                );
+
+                $("#result")
+                    .html(
+                        "<p><strong>⚠️ Please complete both fields.</strong><br>" +
+                        "Enter your target job role and your skills or resume.</p>"
+                    )
+                    .show();
+
                 return;
             }
 
-            $("#result").html(
-                "<p><strong>Analysis started!</strong><br>" +
-                "CareerAI will compare your skills with the requirements for " +
-                role + ".</p>"
-            );
+            const skillsText = skills.toLowerCase();
+
+            const detectedSkills = [];
+            const suggestedSkills = [];
+
+            const skillKeywords = [
+                "html",
+                "css",
+                "javascript",
+                "react",
+                "node.js",
+                "node",
+                "express",
+                "mongodb",
+                "sql",
+                "python",
+                "git",
+                "github",
+                "rest api",
+                "docker"
+            ];
+
+            skillKeywords.forEach(function (skill) {
+
+                if (skillsText.includes(skill)) {
+                    detectedSkills.push(skill);
+                }
+
+            });
+
+            const improvementSkills = [
+                "Docker",
+                "Testing",
+                "Cloud Deployment",
+                "System Design",
+                "Data Structures and Algorithms"
+            ];
+
+            improvementSkills.forEach(function (skill) {
+
+                if (!skillsText.includes(skill.toLowerCase())) {
+                    suggestedSkills.push(skill);
+                }
+
+            });
+
+            const detectedHtml = detectedSkills.length > 0
+
+                ? detectedSkills.map(function (skill) {
+                    return "<li>✅ " + skill + "</li>";
+                }).join("")
+
+                : "<li>No specific skills detected. Try entering a more detailed skill list.</li>";
+
+            const suggestedHtml = suggestedSkills
+                .slice(0, 4)
+                .map(function (skill) {
+                    return "<li>📌 " + skill + "</li>";
+                })
+                .join("");
+
+            $("#result")
+                .html(
+                    "<h3>📊 Analysis Result</h3>" +
+
+                    "<p><strong>Target Role:</strong> " +
+                    role +
+                    "</p>" +
+
+                    "<h4>✅ Detected Skills</h4>" +
+                    "<ul>" +
+                    detectedHtml +
+                    "</ul>" +
+
+                    "<h4>📚 Suggested Areas to Improve</h4>" +
+                    "<ul>" +
+                    suggestedHtml +
+                    "</ul>" +
+
+                    "<p><strong>Next Step:</strong> Open the full CareerAI " +
+                    "application for detailed AI-powered analysis and " +
+                    "personalized recommendations.</p>"
+                )
+                .show();
+
         });
+
+
+        /* ==============================
+           Interview Preparation
+        ============================== */
+
+        $(document).on("click", "#submitInterview", function () {
+
+            const answer = $("#interviewAnswer").val().trim();
+
+            if (answer === "") {
+
+                $("#interviewFeedback")
+                    .html(
+                        "<p><strong>⚠️ Please write an answer first.</strong></p>"
+                    )
+                    .show();
+
+                return;
+            }
+
+            const answerLength = answer.length;
+
+            if (answerLength < 80) {
+
+                $("#interviewFeedback")
+                    .html(
+                        "<h3>📝 Feedback</h3>" +
+
+                        "<p>Your answer has been submitted.</p>" +
+
+                        "<p>Try adding more details, examples, and key differences " +
+                        "between REST API and SOAP API.</p>" +
+
+                        "<p><strong>Suggestion:</strong> Explain communication style, " +
+                        "data format, flexibility, and usage.</p>"
+                    )
+                    .show();
+
+            } else {
+
+                $("#interviewFeedback")
+                    .html(
+                        "<h3>✅ Good Attempt!</h3>" +
+
+                        "<p>Your answer contains useful details.</p>" +
+
+                        "<p>To improve further, organize your answer using points " +
+                        "and include a practical example.</p>"
+                    )
+                    .show();
+
+            }
+
+        });
+
     </script>
 
 </body>
+
 </html>
